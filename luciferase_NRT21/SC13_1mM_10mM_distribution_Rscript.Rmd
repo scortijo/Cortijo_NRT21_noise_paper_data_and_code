@@ -1,0 +1,74 @@
+---
+title: "NRT2.1:luc 1mM, 10mM KNO3, distribution SC13"
+author: "Sandra"
+date: "2024-02-08"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+Preparation of the environment
+
+```{r, message=FALSE}
+library(tidyverse)
+library(ggpubr)
+library(RColorBrewer)
+```
+
+Loading and normalisation of signal by the background and root length
+
+```{r, message=FALSE}
+luc_SC13 <- read_tsv("SC13_1mM_10mM_distribution/20220324_SC_13_9D_analyse.txt") 
+
+
+luc_SC13_norm <- mutate(luc_SC13, RawIntDenDivArea=raw_integrated_density/area) %>% 
+  filter(seedling=="background") %>% 
+  group_by(KNO3, plate) %>% 
+  summarise(MeanBack=mean(RawIntDenDivArea)) %>% 
+  full_join(luc_SC13, by=c(  "KNO3"="KNO3", "plate"="plate")) %>% 
+  mutate(RawIntDen_NormBack= raw_integrated_density-(MeanBack*area)) %>% 
+  mutate(root_length_mm= length/4,
+         RawIntDen_NormBack_NormLen=RawIntDen_NormBack/root_length_mm) %>% 
+  filter(seedling!="background")
+
+```
+
+
+graph for signal at 1mM and 10mM 
+
+```{r, message=FALSE}
+
+mutate(luc_SC13_norm, KNO3=factor(KNO3, levels=c("1mM", "10mM"))) %>% 
+ggplot( aes(x=KNO3, y=RawIntDen_NormBack_NormLen)) +
+  geom_boxplot()+
+  geom_jitter(height=0, width=0.15) +
+  xlab(bquote('Concentration of KNO'[3]*' in growth media')) +
+  ylab(expression(paste("Luciferase signal for ", italic("pNRT2.1:LUC")))) +
+  theme(legend.text=element_text(size=16),legend.title = element_text(size=16, face="bold"), 
+        axis.text=element_text(size=16), axis.title=element_text(size=16),
+        plot.title = element_text(size=20,face="bold"),
+        panel.background = element_rect(fill = "white", colour = "grey50"))
+
+ggsave("Distribution_1mM_10mM_SC13.jpg", height = 4.3, width = 4.8)
+
+```
+
+
+Measurement of differences between conditions vs spread in one conditon
+
+```{r}
+
+group_by(luc_SC13_norm, KNO3) %>% 
+  summarise(meanKNO3=(mean(RawIntDen_NormBack_NormLen)),
+            diffQuartiles=quantile(RawIntDen_NormBack_NormLen, 0.75)/quantile(RawIntDen_NormBack_NormLen, 0.25)) 
+
+# 2906.896/1673.501= 1.737015
+
+```
+
+
+

@@ -1,0 +1,345 @@
+---
+title: "RTqPCR"
+author: "Sandra"
+date: "2024-02-05"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+
+```{r}
+library(tidyverse)
+library(ggpubr)
+library(RColorBrewer)
+```
+
+
+AV3
+
+```{r, message=FALSE}
+AV3 <- read_tsv("AV3_RtqPCR_luc_1mM.txt") %>% 
+  mutate(expt="AV3")
+
+
+CV_AV3 <- group_by(AV3, expt, Primers, Name) %>% 
+  summarise(MeanCp=mean(Cp, na.rm = TRUE)) %>% 
+  pivot_wider(names_from = Primers, values_from = MeanCp) %>% 
+  rowwise() %>% 
+  mutate(MeanControls=mean(c(ACT2, UBQ10), na.rm = TRUE)) %>% 
+  ungroup() %>% 
+  mutate_at(c("HVG", "LVG", "NRT2.1"), funs(PercControl=(2^(-(.-MeanControls))*100))) %>% 
+  pivot_longer(cols=c(HVG_PercControl:NRT2.1_PercControl), names_to = "Gene", values_to = "PercControls") %>% 
+  group_by(Gene) %>% 
+  summarise(CV= sd(PercControls)/mean(PercControls)) %>% 
+  mutate(expt="AV3")
+
+
+group_by(AV3, expt, Primers, Name) %>% 
+  summarise(MeanCp=mean(Cp, na.rm = TRUE)) %>% 
+  pivot_wider(names_from = Primers, values_from = MeanCp) %>% 
+  rowwise() %>% 
+  mutate(MeanControls=mean(c(ACT2, UBQ10), na.rm = TRUE)) %>% 
+  ungroup() %>% 
+  mutate_at(c("HVG", "LVG", "NRT2.1"), funs(PercControl=(2^(-(.-MeanControls))*100))) %>% 
+  pivot_longer(cols=c(HVG_PercControl:NRT2.1_PercControl), names_to = "Gene", values_to = "PercControls") %>% 
+  group_by(Gene) %>% 
+  summarise(nb= n())
+
+CV_AV3
+```
+
+
+
+AV10
+
+```{r, message=FALSE}
+AV10_plate1 <- read_tsv("AV10_RtqPCR_WT_1mM_plate1.txt") %>% 
+  mutate(expt="AV10")
+
+AV10_plate2 <- read_tsv("AV10_RtqPCR_WT_1mM_plate2.txt") %>% 
+  mutate(expt="AV10")
+
+AV10 <- bind_rows(AV10_plate1, AV10_plate2)
+
+
+CV_AV10 <- group_by(AV10, expt, Primer, Name) %>% 
+  summarise(MeanCp=mean(Cp, na.rm = TRUE)) %>% 
+  pivot_wider(names_from = Primer, values_from = MeanCp) %>% 
+  rowwise() %>% 
+  mutate(MeanControls=mean(c(ACT2, UBQ10), na.rm = TRUE)) %>% 
+  ungroup() %>% 
+  mutate_at(c("HVG", "LVG", "NRT2.1"), funs(PercControl=(2^(-(.-MeanControls))*100))) %>% 
+  pivot_longer(cols=c(HVG_PercControl:NRT2.1_PercControl), names_to = "Gene", values_to = "PercControls") %>% 
+  group_by(Gene) %>% 
+  summarise(CV= sd(PercControls)/mean(PercControls)) %>% 
+  mutate(expt="AV10")
+
+group_by(AV10, expt, Primer, Name) %>% 
+  summarise(MeanCp=mean(Cp, na.rm = TRUE)) %>% 
+  pivot_wider(names_from = Primer, values_from = MeanCp) %>% 
+  rowwise() %>% 
+  mutate(MeanControls=mean(c(ACT2, UBQ10), na.rm = TRUE)) %>% 
+  ungroup() %>% 
+  mutate_at(c("HVG", "LVG", "NRT2.1"), funs(PercControl=(2^(-(.-MeanControls))*100))) %>% 
+  pivot_longer(cols=c(HVG_PercControl:NRT2.1_PercControl), names_to = "Gene", values_to = "PercControls") %>% 
+  group_by(Gene) %>% 
+  summarise(nb= n())
+
+CV_AV10
+```
+
+
+AV32
+
+```{r, message=FALSE}
+AV32_plate1 <- read_tsv("AV32_RtqPCR_luc_1mM_plate1.txt") %>% 
+  mutate(expt="AV32")
+
+AV32_plate2 <- read_tsv("AV32_RtqPCR_luc_1mM_plate2.txt") %>% 
+  mutate(expt="AV32")
+
+AV32 <- bind_rows(AV32_plate1, AV32_plate2)
+
+
+CV_AV32 <- group_by(AV32, expt, Primer, Name) %>% 
+  summarise(MeanCp=mean(Cp, na.rm = TRUE)) %>% 
+  pivot_wider(names_from = Primer, values_from = MeanCp) %>% 
+  rowwise() %>% 
+  mutate(MeanControls=mean(c(ACT2, UBQ10), na.rm = TRUE)) %>% 
+  ungroup() %>% 
+  mutate_at(c("HVG", "LVG", "NRT2.1"), funs(PercControl=(2^(-(.-MeanControls))*100))) %>% 
+  pivot_longer(cols=c(HVG_PercControl:NRT2.1_PercControl), names_to = "Gene", values_to = "PercControls") %>% 
+  group_by(Gene) %>% 
+  summarise(CV= sd(PercControls)/mean(PercControls)) %>% 
+  mutate(expt="AV32")
+
+group_by(AV32, expt, Primer, Name) %>% 
+  summarise(MeanCp=mean(Cp, na.rm = TRUE)) %>% 
+  pivot_wider(names_from = Primer, values_from = MeanCp) %>% 
+  rowwise() %>% 
+  mutate(MeanControls=mean(c(ACT2, UBQ10), na.rm = TRUE)) %>% 
+  ungroup() %>% 
+  mutate_at(c("HVG", "LVG", "NRT2.1"), funs(PercControl=(2^(-(.-MeanControls))*100))) %>% 
+  pivot_longer(cols=c(HVG_PercControl:NRT2.1_PercControl), names_to = "Gene", values_to = "PercControls") %>% 
+  group_by(Gene) %>% 
+  summarise(nb= n()) 
+
+CV_AV32
+```
+
+
+
+
+AR1267
+
+```{r, message=FALSE}
+AR1267_plate1 <- read_tsv("AR1267_RtqPCR_luc_1mM_plate1.txt") %>% 
+  mutate(expt="AR1267")
+
+AR1267_plate2 <- read_tsv("AR1267_RtqPCR_luc_1mM_plate2.txt") %>% 
+  mutate(expt="AR1267")
+
+
+AR1267 <- bind_rows(AR1267_plate1, AR1267_plate2)
+
+
+CV_AR1267 <- group_by(AR1267, expt, Primer, Name) %>% 
+  summarise(MeanCp=mean(Cp, na.rm = TRUE)) %>% 
+  pivot_wider(names_from = Primer, values_from = MeanCp) %>% 
+  rowwise() %>% 
+  mutate(MeanControls=mean(c(SandF, UBQ10), na.rm = TRUE)) %>% 
+  ungroup() %>% 
+  mutate_at(c("HVG", "LVG", "NRT2.1"), funs(PercControl=(2^(-(.-UBQ10))*100))) %>% 
+  pivot_longer(cols=c(HVG_PercControl:NRT2.1_PercControl), names_to = "Gene", values_to = "PercControls") %>% 
+  group_by(Gene) %>% 
+  summarise(CV= sd(PercControls)/mean(PercControls)) %>% 
+  mutate(expt="AR1267")
+
+group_by(AR1267, expt, Primer, Name) %>% 
+  summarise(MeanCp=mean(Cp, na.rm = TRUE)) %>% 
+  pivot_wider(names_from = Primer, values_from = MeanCp) %>% 
+  rowwise() %>% 
+  mutate(MeanControls=mean(c(SandF, UBQ10), na.rm = TRUE)) %>% 
+  ungroup() %>% 
+  mutate_at(c("HVG", "LVG", "NRT2.1"), funs(PercControl=(2^(-(.-UBQ10))*100))) %>% 
+  pivot_longer(cols=c(HVG_PercControl:NRT2.1_PercControl), names_to = "Gene", values_to = "PercControls") %>% 
+  group_by(Gene) %>% 
+  summarise(nb= n())
+
+CV_AR1267
+```
+
+
+AR1277
+
+```{r, message=FALSE}
+AR1277_plate1 <- read_tsv("AR1277_RtqPCR_luc_1mM_plate1.txt") %>% 
+  mutate(expt="AR1277")
+
+AR1277_plate2 <- read_tsv("AR1277_RtqPCR_luc_1mM_plate2.txt") %>% 
+  mutate(expt="AR1277")
+
+AR1277_plate3 <- read_tsv("AR1277_RtqPCR_luc_1mM_plate3.txt") %>% 
+  mutate(expt="AR1277")
+
+AR1277 <- bind_rows(AR1277_plate1, AR1277_plate2, AR1277_plate3)
+
+
+CV_AR1277 <- group_by(AR1277, expt, Primer, Name) %>% 
+  summarise(MeanCp=mean(Cp, na.rm = TRUE)) %>% 
+  pivot_wider(names_from = Primer, values_from = MeanCp) %>% 
+  rowwise() %>% 
+  mutate(MeanControls=mean(c(ACT2, UBQ10), na.rm = TRUE)) %>% 
+  ungroup() %>% 
+  mutate_at(c("HVG", "LVG", "NRT2.1"), funs(PercControl=(2^(-(.-MeanControls))*100))) %>% 
+  pivot_longer(cols=c(HVG_PercControl:NRT2.1_PercControl), names_to = "Gene", values_to = "PercControls") %>% 
+  group_by(Gene) %>% 
+  summarise(CV= sd(PercControls)/mean(PercControls)) %>% 
+  mutate(expt="AR1277")
+
+
+group_by(AR1277, expt, Primer, Name) %>% 
+  summarise(MeanCp=mean(Cp, na.rm = TRUE)) %>% 
+  pivot_wider(names_from = Primer, values_from = MeanCp) %>% 
+  rowwise() %>% 
+  mutate(MeanControls=mean(c(ACT2, UBQ10), na.rm = TRUE)) %>% 
+  ungroup() %>% 
+  mutate_at(c("HVG", "LVG", "NRT2.1"), funs(PercControl=(2^(-(.-MeanControls))*100))) %>% 
+  pivot_longer(cols=c(HVG_PercControl:NRT2.1_PercControl), names_to = "Gene", values_to = "PercControls") %>% 
+  group_by(Gene) %>% 
+  summarise(nb= n()) 
+
+CV_AR1277
+```
+
+
+
+
+SC18
+
+```{r, message=FALSE}
+SC18_plate1 <- read_tsv("SC18_RtqPCR_WT_1mM_plate1.txt") %>% 
+  mutate(expt="SC18")
+
+SC18_plate2 <- read_tsv("SC18_RtqPCR_WT_1mM_plate2.txt") %>% 
+  mutate(expt="SC18")
+
+
+SC18 <- bind_rows(SC18_plate1, SC18_plate2)
+
+
+CV_SC18 <- group_by(SC18, expt, Primers, Name) %>% 
+  summarise(MeanCp=mean(Cp, na.rm = TRUE)) %>% 
+  pivot_wider(names_from = Primers, values_from = MeanCp) %>% 
+  rowwise() %>% 
+  mutate(MeanControls=mean(c(ACT2, UBQ10), na.rm = TRUE)) %>% 
+  ungroup() %>% 
+  mutate_at(c("HVG", "LVG", "NRT2.1"), funs(PercControl=(2^(-(.-MeanControls))*100))) %>% 
+  pivot_longer(cols=c(HVG_PercControl:NRT2.1_PercControl), names_to = "Gene", values_to = "PercControls") %>% 
+  group_by(Gene) %>% 
+  summarise(CV= sd(PercControls)/mean(PercControls)) %>% 
+  mutate(expt="SC18")
+
+group_by(SC18, expt, Primers, Name) %>% 
+  summarise(MeanCp=mean(Cp, na.rm = TRUE)) %>% 
+  pivot_wider(names_from = Primers, values_from = MeanCp) %>% 
+  rowwise() %>% 
+  mutate(MeanControls=mean(c(ACT2, UBQ10), na.rm = TRUE)) %>% 
+  ungroup() %>% 
+  mutate_at(c("HVG", "LVG", "NRT2.1"), funs(PercControl=(2^(-(.-MeanControls))*100))) %>% 
+  pivot_longer(cols=c(HVG_PercControl:NRT2.1_PercControl), names_to = "Gene", values_to = "PercControls") %>% 
+  group_by(Gene) %>% 
+  summarise(nb= n())
+
+CV_SC18
+```
+
+
+
+
+
+SC24
+
+```{r, message=FALSE}
+SC24_plate1 <- read_tsv("SC24_RtqPCR_WT_1mM_plate1.txt") %>% 
+  mutate(expt="SC24")
+
+SC24_plate2 <- read_tsv("SC24_RtqPCR_WT_1mM_plate2.txt") %>% 
+  mutate(expt="SC24")
+
+
+SC24 <- bind_rows(SC24_plate1, SC24_plate2)
+
+
+CV_SC24 <- group_by(SC24, expt, Primer, Name) %>% 
+  summarise(MeanCp=mean(Cp, na.rm = TRUE)) %>% 
+  pivot_wider(names_from = Primer, values_from = MeanCp) %>% 
+  rowwise() %>% 
+  mutate(MeanControls=mean(c(ACT2, UBQ10), na.rm = TRUE)) %>% 
+  ungroup()  %>% 
+  mutate_at(c("HVG", "LVG", "NRT2.1"), funs(PercControl=(2^(-(.-MeanControls))*100))) %>% 
+  pivot_longer(cols=c(HVG_PercControl:NRT2.1_PercControl), names_to = "Gene", values_to = "PercControls") %>% 
+  group_by(Gene) %>% 
+  summarise(CV= sd(PercControls)/mean(PercControls)) %>% 
+  mutate(expt="SC24")
+
+group_by(SC24, expt, Primer, Name) %>% 
+  summarise(MeanCp=mean(Cp, na.rm = TRUE)) %>% 
+  pivot_wider(names_from = Primer, values_from = MeanCp) %>% 
+  rowwise() %>% 
+  mutate(MeanControls=mean(c(ACT2, UBQ10), na.rm = TRUE)) %>% 
+  ungroup()  %>% 
+  mutate_at(c("HVG", "LVG", "NRT2.1"), funs(PercControl=(2^(-(.-MeanControls))*100))) %>% 
+  pivot_longer(cols=c(HVG_PercControl:NRT2.1_PercControl), names_to = "Gene", values_to = "PercControls") %>% 
+  group_by(Gene) %>% 
+  summarise(nb= n())
+
+CV_SC24
+```
+
+All experiments combined together
+
+```{r}
+
+CV_all <- bind_rows(CV_AR1267, CV_AR1277, CV_AV10, CV_AV3, CV_AV32, CV_SC18, CV_SC24)
+
+CV_all
+
+stat_comparisons =list( c("HVG_PercControl","LVG_PercControl"), 
+                        c("LVG_PercControl","NRT2.1_PercControl"), 
+                        c("HVG_PercControl","NRT2.1_PercControl") )
+
+
+ggplot(CV_all, aes(x=Gene, y=CV)) +
+  geom_point(aes(color=expt),size=4) +
+  geom_line(aes(color=expt, group=expt), size=0.1, linetype="dashed") +
+  stat_compare_means(comparisons = stat_comparisons, size=5, method = "wilcox.test") +
+  scale_color_brewer(palette = "Dark2") +
+  scale_x_discrete(labels = c(
+      "HVG_PercControl" = "HVG",
+      "LVG_PercControl" = "LVG",
+      "NRT2.1_PercControl" = expression(italic("NRT2.1")))) +
+  ylim(0,0.85) +
+  ggtitle("") +
+  ylab("CV for relative expression \n measured by RT-qPCR") +
+  theme(legend.text=element_text(size=16),legend.title = element_text(size=16, face="bold"), 
+        axis.text=element_text(size=16), axis.title=element_text(size=16),
+        plot.title = element_text(size=16),
+        panel.background = element_rect(fill = "white", colour = "grey50"),
+        legend.position = "none")
+
+
+ggsave("CV_RTqPCR_HVG_LVG_NRT21_7reps.jpg", width=5, height = 4.5)
+
+```
+
+
+
+
+
+

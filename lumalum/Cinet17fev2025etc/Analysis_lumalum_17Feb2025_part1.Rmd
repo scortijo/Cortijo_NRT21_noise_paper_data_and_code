@@ -1,0 +1,79 @@
+---
+title: "lumalum Feb 2025"
+author: "Sandra"
+date: "2024-02-08"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+Preparation of the environment
+
+```{r, message=FALSE, warning=FALSE}
+
+library(tidyverse)
+library(ggpubr)
+library(RColorBrewer)
+
+```
+
+
+
+
+Loading of data
+
+```{r, message=FALSE}
+Lumalum_17Feb202part1 <- read_tsv("17au26fev2025_Part1/lumalum_17Feb2025_part1.txt")
+
+
+```
+
+
+
+Normalisation of signal by the background and root length
+
+
+```{r, message=FALSE, warning=FALSE}
+
+Lumalum_17Feb202part1_norm <- mutate(Lumalum_17Feb202part1, RawIntDenDivArea=RawIntDen/Area) %>% 
+  filter(seedling=="background") %>% 
+  group_by(Position, Slice) %>% 
+  summarise(MeanBack=mean(RawIntDenDivArea)) %>% 
+  full_join(Lumalum_17Feb202part1, by=c("Position"="Position", "Slice"="Slice")) %>% 
+  mutate(RawIntDen_NormBack= RawIntDen-(MeanBack*Area)) %>% 
+  mutate(root_length_mm= length/3.2,
+         RawIntDen_NormBack_NormLen=RawIntDen_NormBack/root_length_mm) %>% 
+  filter(seedling!="background")
+
+```
+
+
+Graph of signal over time
+
+
+```{r, message=FALSE, warning=FALSE}
+
+mutate(Lumalum_17Feb202part1_norm, hours= Slice*4, days=Slice*4/24,
+       genotype=factor(genotype, levels=c("pNRT2.1:luc", "p35S:luc"))) %>% 
+  filter(Position%in%c("Pos3", "Pos5", "Pos0", "Pos4", "Pos6")) %>% 
+ggplot(aes(x=days, y=RawIntDen_NormBack_NormLen, group=seedling)) +
+  geom_line(aes(col=seedling)) + 
+  scale_x_continuous(n.breaks = 9) +
+  facet_wrap(genotype~Position, scales = "free") +
+  ylab("Luciferase signal") +
+  xlab("Days since stratification")+
+  guides(colour = FALSE) +
+  theme(legend.text=element_text(size=16),legend.title = element_text(size=16, face="bold"), 
+        axis.text=element_text(size=16), axis.title=element_text(size=16),
+        plot.title = element_text(size=20,face="bold"),
+        panel.background = element_rect(fill = "white", colour = "grey50"))
+
+ggsave("Lumalum_signal_Feb2025_part1.jpg", width = 10, height = 5)
+
+```
+
+

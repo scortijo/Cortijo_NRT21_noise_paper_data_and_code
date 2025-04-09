@@ -1,0 +1,112 @@
+---
+title: "NRT2.1:luc 1mM, 10mM KNO3, CV all reps"
+author: "Sandra"
+date: ""
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Data preparation
+
+Preparation of the environment
+
+```{r, message=FALSE}
+library(tidyverse)
+library(ggpubr)
+library(RColorBrewer)
+```
+
+Loading and combing data 
+
+```{r, message=FALSE}
+
+
+T0 <- read_tsv("AV30_Effect_transfer/20230724_AV_30_T0_6J/20230724_AV_30_T0_6J.txt")
+
+T1 <- read_tsv("AV30_Effect_transfer/20230725_AV_30_T1_7J/20230724_AV_30_T1_7J.txt")
+
+T2 <- read_tsv("AV30_Effect_transfer/20230726_AV_30_T2_8J/20230726_AV_30_T2_8J.txt")
+
+T3 <- read_tsv("AV30_Effect_transfer/20230727_AV_30_T3_9J/20230727_AV_30_T3_9J.txt")
+
+T4 <- read_tsv("AV30_Effect_transfer/20230728_AV_30_T4_10J/20230727_AV_30_T4_10J.txt")
+
+
+
+
+All_time_points_luc <- bind_rows(T0, T1, T2, T3, T4)
+
+```
+
+
+
+Normalisation of signal by the background and root length
+
+```{r}
+
+All_time_points_luc_norm <- mutate(All_time_points_luc, RawIntDenDivArea=RawIntDen/area) %>% 
+  filter(seedling=="background") %>% 
+  group_by( KNO3, PLATE, DAY) %>% 
+  summarise(MeanBack=mean(RawIntDenDivArea)) %>% 
+  full_join(All_time_points_luc, by=c("KNO3"="KNO3", "PLATE"="PLATE", "DAY"="DAY")) %>% 
+  mutate(RawIntDen_NormBack= RawIntDen-(MeanBack*area)) %>% 
+  mutate(root_length_mm= length/4,
+         RawIntDen_NormBack_NormLen=RawIntDen_NormBack/root_length_mm) %>% 
+  filter(seedling!="background")
+
+
+```
+
+
+## Graph of signal over time
+
+```{r}
+
+filter(All_time_points_luc_norm, PLATE%in%c("plate5", "plate6"), 
+       !seedling%in%c("seedling33", "seedling36", "seedling37", "seedling44","seedling47")) %>% 
+  mutate(days=as.numeric(str_replace(DAY, "T", "")),
+         days= days+6,
+         PLATE=factor(PLATE, levels=c("plate6", "plate5"))) %>% 
+ggplot( aes(x=days, y=RawIntDen_NormBack_NormLen, group=seedling)) +
+  geom_line( size=1) +
+  geom_vline(xintercept=6.3, col="blue", linetype="dashed") +
+  facet_wrap(~PLATE) +
+  xlab("Age of plants (days)") +
+  ylab(expression(paste("Luciferase signal for ", italic("NRT2.1:LUC")))) +
+  theme(legend.text=element_text(size=16),legend.title = element_text(size=16, face="bold"), 
+        axis.text=element_text(size=16), axis.title=element_text(size=16),
+        plot.title = element_text(size=20,face="bold"),
+        panel.background = element_rect(fill = "white", colour = "grey50"), legend.position = "none")
+
+ggsave("Signal_seedlings_after_transfer.jpg", height = 4, width=5.5)
+
+```
+
+
+## Correlation before/after transfer
+
+
+Correlation before/after 1st transfer
+
+```{r}
+
+select(All_time_points_luc_norm, "KNO3", "PLATE", "DAY", "seedling", "RawIntDen_NormBack_NormLen" ) %>% 
+pivot_wider(names_from = "DAY", values_from = "RawIntDen_NormBack_NormLen") %>% 
+  ggplot(aes(x=T0, y=T4)) +
+  geom_point()+
+  xlab("Luciferase signal before transfer") +
+  ylab("luciferase signal after transfer") +
+  stat_cor(method="spearman", size=5) +
+  theme(legend.text=element_text(size=16),legend.title = element_text(size=16, face="bold"), 
+        axis.text=element_text(size=16), axis.title=element_text(size=16),
+        plot.title = element_text(size=20,face="bold"),
+        panel.background = element_rect(fill = "white", colour = "grey50"))
+
+ggsave("Correlation_before_after_first_transfer.jpg", height = 4.5, width=5)
+
+```
+
+

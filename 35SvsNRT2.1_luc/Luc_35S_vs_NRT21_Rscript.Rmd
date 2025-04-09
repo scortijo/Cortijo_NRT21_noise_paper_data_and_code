@@ -1,0 +1,177 @@
+---
+title: "35S vs NRT2.1 (luc)"
+author: "Sandra"
+date: "2024-02-08"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+Preparation of the environment
+
+```{r, message=FALSE}
+library(tidyverse)
+library(ggpubr)
+library(RColorBrewer)
+```
+
+Loading and formatting of data
+
+```{r, message=FALSE}
+luc_AR1278 <- read_tsv("AR1278_35S_NRT2.1_luc/AR1278_luciferase_analysis.txt") %>% 
+  mutate(exp="AR1278")
+
+
+luc_AR1289 <- read_tsv("AR1289_35S_NRT21_luc/AR1289_luciferase_analysis.txt") %>% 
+  mutate(exp="AR1289")
+
+
+luc_AR1301 <- read_tsv("AR1301_35S_NRT2.1_luc/AR1301_luciferase_analysis.txt") %>% 
+  mutate(exp="AR1301")
+
+luc_SC50 <- read_tsv("SC50_35S_NRT2.1_luc/SC50_luciferase_analysis.txt") %>% 
+  mutate(exp="SC50")
+
+luc_SC52 <- read_tsv("SC52_35S_NRT2.1_luc/SC52_luciferase_analysis.txt") %>% 
+  mutate(exp="SC52")
+
+
+
+luc_all <- bind_rows(luc_AR1278, luc_AR1289, luc_AR1301, luc_SC50, luc_SC52)
+
+```
+
+
+
+Normalisation of signal by the background and root length
+
+
+```{r, message=FALSE}
+
+luc_all_norm <- mutate(luc_all, RawIntDenDivArea=RawIntDen/area) %>% 
+  filter(seedling=="background") %>% 
+  group_by(exp, genotype,KNO3, plate) %>% 
+  summarise(MeanBack=mean(RawIntDenDivArea)) %>% 
+  full_join(luc_all, by=c( "exp"="exp", "KNO3"="KNO3", "genotype"="genotype", "plate"="plate")) %>% 
+  mutate(RawIntDen_NormBack= RawIntDen-(MeanBack*area)) %>% 
+  mutate(root_length_mm= length/4,
+         RawIntDen_NormBack_NormLen=RawIntDen_NormBack/root_length_mm) %>% 
+  filter(seedling!="background")
+
+```
+
+
+Extraction of CV and graph for seedlings grown with 1mM KNO3
+
+```{r, message=FALSE}
+
+my.colors<-brewer.pal(7, "Dark2")[2:7]
+
+group_by(luc_all_norm, exp, genotype, KNO3) %>% 
+  summarise(CV= sd(RawIntDen_NormBack_NormLen)/mean(RawIntDen_NormBack_NormLen)) %>% 
+  filter(KNO3=="1mM") %>% 
+  ggplot(aes(x=genotype, y=CV)) +
+  geom_point(aes(col=exp),size=4) +
+  stat_compare_means(label="p.format", label.x.npc= 0.3, label.y.npc= 0.95, size=6, method = "wilcox.test") +
+  ylim(0,0.6) +
+  scale_color_manual(values = my.colors) +
+    scale_x_discrete(labels = c(
+      "35s:luc" = expression(italic("p35S:LUC")),
+      "NRT2.1:luc" = expression(italic("pNRT2.1:LUC")))) +
+  ylab("CV for luciferase signal of reporters") +
+  theme(legend.text=element_text(size=16),legend.title = element_text(size=16, face="bold"), 
+        axis.text=element_text(size=16), axis.title=element_text(size=16),
+        plot.title = element_text(size=16),
+        panel.background = element_rect(fill = "white", colour = "grey50"),
+        legend.position = "none")
+
+ggsave("Luc_35S_vs_NRT2.1_1mM_5reps.jpg", width=4.7, height = 4.5)
+
+```
+
+
+Analysis of the correlation with root length for each reporter
+
+> p35S:luc
+
+At 1mM KNO3
+```{r}
+filter(luc_all_norm, KNO3=="1mM" & genotype=="35s:luc" &  exp%in%c("AR1278", "AR1289", "AR1301")) %>% 
+  ggplot(aes(x=root_length_mm, y=RawIntDen_NormBack_NormLen, color=exp)) +
+  geom_point(size=3) +
+  stat_cor(method="spearman", size=4.8,label.x = 53) +
+  ggtitle(bquote('Seedlings grown with 1mM KNO'[3])) +
+  xlab("primary root length (mm)") +
+  ylab(expression(paste("Luciferase signal for ", italic("p35S:LUC")))) +
+  theme(legend.text=element_text(size=16),legend.title = element_text(size=16, face="bold"), 
+        axis.text=element_text(size=16), axis.title=element_text(size=16),
+        plot.title = element_text(size=20,face="bold"),
+        panel.background = element_rect(fill = "white", colour = "grey50"),
+        legend.position = "none")
+
+ggsave("Correlation_rootlength_35SlucSignal_1mM.jpg", width=5.3, height = 4.4)
+
+```
+
+
+At 10mM KNO3
+```{r}
+filter(luc_all_norm, KNO3=="10mM" & genotype=="35s:luc" &  exp%in%c("AR1278", "AR1289", "AR1301")) %>% 
+  ggplot(aes(x=root_length_mm, y=RawIntDen_NormBack_NormLen, color=exp)) +
+  geom_point(size=3) +
+  stat_cor(method="spearman", size=4.8) +
+  ggtitle(bquote('Seedlings grown with 10mM KNO'[3])) +
+  ylim(1000,3750) +
+  xlab("primary root length (mm)") +
+  ylab(expression(paste("Luciferase signal for ", italic("p35S:LUC")))) +
+  theme(legend.text=element_text(size=16),legend.title = element_text(size=16, face="bold"), 
+        axis.text=element_text(size=16), axis.title=element_text(size=16),
+        plot.title = element_text(size=20,face="bold"),
+        panel.background = element_rect(fill = "white", colour = "grey50"),
+        legend.position = "none")
+
+ggsave("Correlation_rootlength_35SlucSignal_10mM.jpg", width=5.3, height = 4.4)
+
+```
+
+
+
+> pNRT2.1:luc
+
+
+At 1mM KNO3
+```{r}
+filter(luc_all_norm, KNO3=="1mM" & genotype=="NRT2.1:luc"&  exp%in%c("AR1278", "AR1289", "AR1301")) %>% 
+  ggplot(aes(x=root_length_mm, y=RawIntDen_NormBack_NormLen, color=exp)) +
+  geom_point(size=3) +
+  stat_cor(method="spearman", size=4.8) +
+  xlab("primary root length (mm)") +
+  ylab(expression(paste("Luciferase signal for ", italic("pNRT2.1:LUC")))) +
+  theme(legend.text=element_text(size=16),legend.title = element_text(size=16, face="bold"), 
+        axis.text=element_text(size=16), axis.title=element_text(size=16),
+        plot.title = element_text(size=20,face="bold"),
+        panel.background = element_rect(fill = "white", colour = "grey50"),
+        legend.position = "none")
+```
+
+At 10mM KNO3
+```{r}
+filter(luc_all_norm, KNO3=="10mM" & genotype=="NRT2.1:luc"&  exp%in%c("AR1278", "AR1289", "AR1301")) %>% 
+  ggplot(aes(x=root_length_mm, y=RawIntDen_NormBack_NormLen, color=exp)) +
+  geom_point(size=3) +
+  stat_cor(method="spearman", size=4.8) +
+  xlab("primary root length (mm)") +
+  ylab(expression(paste("Luciferase signal for ", italic("pNRT2.1:LUC")))) +
+  theme(legend.text=element_text(size=16),legend.title = element_text(size=16, face="bold"), 
+        axis.text=element_text(size=16), axis.title=element_text(size=16),
+        plot.title = element_text(size=20,face="bold"),
+        panel.background = element_rect(fill = "white", colour = "grey50"),
+        legend.position = "none")
+```
+
+
+

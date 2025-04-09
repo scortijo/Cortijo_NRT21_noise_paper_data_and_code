@@ -1,0 +1,80 @@
+---
+title: "NRT2.1:luc 1mM, 10mM KNO3, CV all reps"
+author: "Sandra"
+date: ""
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Data preparation
+
+Preparation of the environment
+
+```{r, message=FALSE}
+library(tidyverse)
+library(ggpubr)
+library(RColorBrewer)
+```
+
+
+
+
+## Analysis of signal at the primary root 
+
+
+Based on ROI that are lines following the primary root 
+```{r, message=FALSE}
+
+
+big_plate <- read_tsv("AV_44_big_plates/20240902_AV_44_vari_big_plates.txt")
+
+
+```
+
+Graph
+```{r}
+
+filter(big_plate, KNO3=="1mM" & seedling!="background" & DAY!=7 ,!seedling%in%c("seedling16", "seedling19", "seedling5", "seedling6")) %>% 
+  mutate(DAY=factor(DAY, levels=c("10", "14", "17", "21"))) %>% 
+ggplot( aes(x=DAY, y=RawIntDen_normBackg_normLen, group=seedling)) +
+  geom_line(aes(col=seedling), size=1) +
+  facet_wrap(~PLATE) +
+  xlab("Age of plants (days)") +
+  ylab(expression(paste("Luciferase signal for ", italic("NRT2.1:LUC")))) +
+  theme(legend.text=element_text(size=16),legend.title = element_text(size=16, face="bold"), 
+        axis.text=element_text(size=16), axis.title=element_text(size=16),
+        plot.title = element_text(size=20,face="bold"),
+        panel.background = element_rect(fill = "white", colour = "grey50"), legend.position = "none",  strip.text.x = element_blank())
+
+ggsave("Big_plates_10to21days_PR.jpg", height = 4, width=5.5)
+
+```
+
+
+Correlation beginning/end experiment
+
+```{r}
+
+select(big_plate, KNO3, PLATE, DAY, seedling, RawIntDen_normBackg_normLen ) %>% 
+  filter(KNO3=="1mM" & seedling!="background") %>% 
+  mutate(DAY=paste("T", DAY, sep="")) %>% 
+pivot_wider(names_from = "DAY", values_from = "RawIntDen_normBackg_normLen") %>% 
+  ggplot(aes(x=T10, y=T21)) +
+  geom_point()+
+  xlab(expression(paste(italic("NRT2.1:LUC")," luciferase signal in 10 days old seedlings"))) +
+  ylab(expression(paste(italic("NRT2.1:LUC")," luciferase signal in 21 days old seedlings"))) +
+  stat_cor(method="spearman", size=5) +
+  theme(legend.text=element_text(size=16),legend.title = element_text(size=16, face="bold"), 
+        axis.text=element_text(size=16), axis.title=element_text(size=16),
+        plot.title = element_text(size=20,face="bold"),
+        panel.background = element_rect(fill = "white", colour = "grey50"))
+
+ggsave("Correlation_big_plates_10dVS21d_PR.jpg", height = 6, width=6.5)
+
+```
+
+
+

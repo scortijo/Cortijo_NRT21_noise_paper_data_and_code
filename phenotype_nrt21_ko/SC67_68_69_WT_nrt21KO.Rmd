@@ -1,0 +1,106 @@
+---
+title: "WT, nrt21 KO, 1mM, 10mM KNO3. SC69"
+author: "Sandra"
+date: ""
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+Preparation of the environment
+
+```{r, message=FALSE}
+library(tidyverse)
+library(ggpubr)
+library(RColorBrewer)
+```
+
+Loading and combing data 
+
+```{r, message=FALSE}
+
+SC67 <- read_tsv("SC67_WT_nrt21_1mM_10mM/SC67_root_measure.txt") %>% 
+  mutate(root_length_mm=length_px/scale_px_mm,
+         KNO3= factor(KNO3, levels=c("1mM", "10mM")),
+         LRD=lateralRoots/root_length_mm) %>% 
+  mutate(rep="replicate 1")
+
+
+SC68 <- read_tsv("SC68_WT_nrt21_1mM_10mM/SC68_root_measurement.txt") %>% 
+  mutate(root_length_mm=length_px/scale_px_mm,
+         KNO3= factor(KNO3, levels=c("1mM", "10mM")),
+         LRD=lateralRoots/root_length_mm) %>% 
+  mutate(rep="replicate 2")
+
+
+SC69 <- read_tsv("SC69_WT_nrt21_1mM_10mM/SC69_root_measurement.txt") %>% 
+  mutate(root_length_mm=length_px/scale_px_mm,
+         KNO3= factor(KNO3, levels=c("1mM", "10mM")),
+         LRD=lateralRoots/root_length_mm) %>% 
+  mutate(rep="replicate 3")
+
+
+All_reps_WT_nrt21 <- bind_rows(SC67, SC68, SC69)
+
+```
+
+
+Graph of primary root length
+
+```{r}
+
+mutate(All_reps_WT_nrt21, KNO3 = paste(KNO3, "KNO3")) %>% 
+  mutate(KNO3=factor(KNO3, levels=c("1mM KNO3", "10mM KNO3"))) %>% 
+  ggplot( aes(x=rep, y=root_length_mm, col=genotype))+
+  geom_boxplot() +
+  geom_jitter(position = position_jitterdodge(jitter.width = 0.2, jitter.height = 0, dodge.width = 0.75)) +
+  facet_wrap(~KNO3) +
+  stat_compare_means(size=4, label="p.format", method="wilcox") +
+  scale_color_brewer(palette="Set2", name="", labels=c("Col0_WT"="Col0 WT", "nrt2.1_KO"=expression(italic("nrt2.1")))) +
+  ylab("Primary root length (mm)") +
+  xlab("")+
+  theme(legend.text=element_text(size=16),legend.title = element_text(size=16, face="bold"), 
+        axis.text=element_text(size=16), axis.title=element_text(size=16),
+        plot.title = element_text(size=20,face="bold"),strip.text.x = element_text(size = 12),
+        panel.background = element_rect(fill = "white", colour = "grey50"), legend.position="bottom")
+
+ggsave("Primary_root_length_WT_nrt21.jpg", height = 4, width=8)
+
+```
+
+
+Graph of lateral root density
+
+```{r}
+
+
+  mutate(All_reps_WT_nrt21, KNO3 = paste(KNO3, "KNO3")) %>%
+  mutate(KNO3=factor(KNO3, levels=c("1mM KNO3", "10mM KNO3"))) %>% 
+  ggplot( aes(x=rep, y=LRD, col=genotype))+
+  geom_boxplot() + 
+  geom_jitter(position = position_jitterdodge(jitter.width = 0.2, jitter.height = 0, dodge.width = 0.75)) +
+  facet_wrap(~KNO3) +
+  stat_compare_means(size=4, label="p.format", method="wilcox") +
+  scale_color_brewer(palette="Set2", name="", labels=c("Col0_WT"="Col0 WT", "nrt2.1_KO"=expression(italic("nrt2.1")))) +
+  ylab("Lateral root density") +
+  xlab("")+
+  theme(legend.text=element_text(size=16),legend.title = element_text(size=16, face="bold"), 
+        axis.text=element_text(size=16), axis.title=element_text(size=16),
+        plot.title = element_text(size=20,face="bold"),strip.text.x = element_text(size = 12),
+        panel.background = element_rect(fill = "white", colour = "grey50"), legend.position="bottom")
+
+
+
+ggsave("Lateral_root_density_WT_nrt21.jpg", height = 4, width=8)
+
+
+
+
+```
+
+
+

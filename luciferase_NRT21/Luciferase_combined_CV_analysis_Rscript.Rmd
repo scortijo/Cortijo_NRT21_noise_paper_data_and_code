@@ -1,0 +1,304 @@
+---
+title: "NRT2.1:luc 1mM, 10mM KNO3, CV all reps"
+author: "Sandra"
+date: ""
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+Preparation of the environment
+
+```{r, message=FALSE}
+library(tidyverse)
+library(ggpubr)
+library(RColorBrewer)
+```
+
+Loading and combing data 
+
+```{r, message=FALSE}
+
+
+AV01 <- read_tsv("compilation_pNRT21.LUC/AV01_luciferase/AV01_luciferase_measure.txt") %>% 
+  mutate(expt="AV01")
+
+AV05 <- read_tsv("compilation_pNRT21.LUC/AV05_luciferase/AV05_luciferase_measure.txt") %>% 
+  mutate(expt="AV05")
+
+AV07 <- read_tsv("compilation_pNRT21.LUC/AV07_luciferase/AV07_luciferase_measure.txt") %>% 
+  mutate(expt="AV07")
+
+AV08 <- read_tsv("compilation_pNRT21.LUC/AV08_luciferase/AV08_luciferase_measure.txt") %>% 
+  mutate(expt="AV08")
+
+AV12_rep1 <- read_tsv("compilation_pNRT21.LUC/AV12_luciferase_rep1/AV12_rep1_luciferase_measure.txt") %>% 
+  mutate(expt="AV12_rep1")
+
+AV12_rep2 <- read_tsv("compilation_pNRT21.LUC/AV12_luciferase_rep2/AV12_rep2_luciferase_measure.txt") %>% 
+  mutate(expt="AV12_rep2")
+
+AV12_rep3 <- read_tsv("compilation_pNRT21.LUC/AV12_luciferase_rep3/AV12_rep3_luciferase_measure.txt") %>% 
+  mutate(expt="AV12_rep3")
+
+AV13_rep2 <- read_tsv("compilation_pNRT21.LUC/AV13_luciferase_rep2/AV13_rep2_luciferase_measure.txt") %>% 
+  mutate(expt="AV13_rep2")
+
+AV13_rep2 <- read_tsv("compilation_pNRT21.LUC/AV13_luciferase_rep2/AV13_rep2_luciferase_measure.txt") %>% 
+  mutate(expt="AV13_rep2")
+
+AV13_rep3 <- read_tsv("compilation_pNRT21.LUC/AV13_luciferase_rep3/AV13_rep3_luciferase_measure.txt") %>% 
+  mutate(expt="AV13_rep3")
+
+AV13_rep4 <- read_tsv("compilation_pNRT21.LUC/AV13_luciferase_rep4/AV13_rep4_luciferase_measure.txt") %>% 
+  mutate(expt="AV13_rep4")
+
+AV14 <- read_tsv("compilation_pNRT21.LUC/AV14_luciferase/AV14_luciferase_measure.txt") %>% 
+  mutate(expt="AV14")
+
+AV15 <- read_tsv("compilation_pNRT21.LUC/AV15_luciferase/AV15_luciferase_measure.txt") %>% 
+  mutate(expt="AV15")
+
+AV16 <- read_tsv("compilation_pNRT21.LUC/AV16_luciferase/AV16_luciferase_measure.txt") %>% 
+  mutate(expt="AV16")
+
+AV18 <- read_tsv("compilation_pNRT21.LUC/AV18_luciferase/AV18_luciferase_measure.txt") %>% 
+  mutate(expt="AV18")
+
+AV19 <- read_tsv("compilation_pNRT21.LUC/AV19_luciferase/AV19_luciferase_measure.txt") %>% 
+  mutate(expt="AV19")
+
+AV26_rep1 <- read_tsv("compilation_pNRT21.LUC/AV26_luciferase_rep1/AV26_luciferase_measure.txt") %>% 
+  mutate(expt="AV26_rep1")
+
+AV26_rep2 <- read_tsv("compilation_pNRT21.LUC/AV26_luciferase_rep2/AV26_luciferase_measure_rep2.txt") %>% 
+  mutate(expt="AV26_rep2")
+
+AV26_rep3 <- read_tsv("compilation_pNRT21.LUC/AV26_luciferase_rep3/AV26_rep3_luciferase_measure.txt") %>% 
+  mutate(expt="AV26_rep3")
+
+
+AV26_rep5 <- read_tsv("compilation_pNRT21.LUC/AV26_luciferase_rep5/AV26_rep5_luciferase_measure.txt") %>% 
+  mutate(expt="AV26_rep5")
+
+AV28 <- read_tsv("compilation_pNRT21.LUC/AV28_luciferase/AV28_luciferase_measure.txt") %>% 
+  mutate(expt="AV28")
+
+SC13 <- read_tsv("compilation_pNRT21.LUC/SC13_luciferase/SC13_luciferase_measure.txt") %>% 
+  mutate(expt="SC13")
+
+SC15 <- read_tsv("compilation_pNRT21.LUC/SC15_luciferase/SC15_luciferase_measure.txt") %>% 
+  mutate(expt="SC15")
+
+SC21 <- read_tsv("compilation_pNRT21.LUC/SC21_luciferase/SC21_luciferase_measure.txt") %>% 
+  mutate(expt="SC21")
+
+
+All_reps_luc <- bind_rows(AV01, AV05, AV07, AV08, AV12_rep1, AV12_rep2, AV12_rep3, AV13_rep2, AV13_rep3, AV13_rep4, AV14, AV15, AV16,
+                          AV18, AV19, AV26_rep1, AV26_rep2, AV26_rep3, AV26_rep5, AV28, SC13, SC15, SC21)
+
+```
+
+
+
+Normalisation of signal by the background and root length
+
+```{r}
+
+ All_reps_luc_norm <- mutate(All_reps_luc, RawIntDenDivArea=RawIntDen/area) %>% 
+  filter(seedling=="background") %>% 
+  group_by(expt, KNO3, plate) %>% 
+  summarise(MeanBack=mean(RawIntDenDivArea)) %>% 
+  full_join(All_reps_luc, by=c("expt"="expt",  "KNO3"="KNO3", "plate"="plate")) %>% 
+  mutate(RawIntDen_NormBack= RawIntDen-(MeanBack*area)) %>% 
+  mutate(root_length_mm= length/4.95,
+         RawIntDen_NormBack_NormLen=RawIntDen_NormBack/root_length_mm) %>% 
+  filter(seedling!="background")
+
+
+
+
+
+```
+
+
+CV calculation and graph
+
+```{r}
+group_by(All_reps_luc_norm, expt, KNO3) %>% 
+  summarise(CV=sd(RawIntDen_NormBack_NormLen, na.rm=TRUE)/mean(RawIntDen_NormBack_NormLen, na.rm = TRUE)) %>% 
+  mutate(KNO3=factor(KNO3, levels=c("1mM", "10mM")))  %>% 
+  ggplot(aes(x=KNO3, y=CV))+
+  geom_line(aes(group=expt), linetype="dashed", size=0.5, colour="grey") +
+  geom_point(size=2) +
+  stat_compare_means(label.x=1.25, label.y=0.55, size=4.5) +
+  ylab(expression(paste("CV for ", italic("NRT2.1:LUC"), " signal"))) +
+  xlab(bquote('Concentration of KNO'[3]*' in media'))+
+  theme(legend.text=element_text(size=16),legend.title = element_text(size=16, face="bold"), 
+        axis.text=element_text(size=16), axis.title=element_text(size=16),
+        plot.title = element_text(size=20,face="bold"),
+        panel.background = element_rect(fill = "white", colour = "grey50"))
+
+ggsave("compilation_all_reps_CV.jpg", height = 4, width=4.5)
+
+```
+
+
+graph of the signal at 1mM relative to 10mM
+
+```{r, message=FALSE, warning=FALSE}
+
+All_reps_luc_norm
+
+group_by(All_reps_luc_norm,expt, KNO3) %>% 
+  summarise(MeanSignal=mean(RawIntDen_NormBack_NormLen)) %>% 
+  pivot_wider(names_from = KNO3, values_from = MeanSignal) %>% 
+  rename(Mean_10mM="10mM",Mean_1mM="1mM") %>% 
+  mutate(Ratio_1mM_10mM = Mean_1mM/Mean_10mM) %>% 
+  ggplot(aes(x=Ratio_1mM_10mM)) +
+  geom_density(size=1.2) +
+  geom_jitter(aes(y=0.1), width = 0, height = 0.05) +
+  xlim(0.8,2.5) +
+  ylab("density") +
+  xlab("Ratio of signal at low/high nitrate concentration") +
+  theme(legend.text=element_text(size=16),legend.title = element_text(size=16, face="bold"), 
+        axis.text=element_text(size=16), axis.title=element_text(size=16),
+        plot.title = element_text(size=20,face="bold"),
+        panel.background = element_rect(fill = "white", colour = "grey50"))
+
+
+group_by(All_reps_luc_norm,expt, KNO3) %>% 
+  summarise(MeanSignal=mean(RawIntDen_NormBack_NormLen)) %>% 
+  pivot_wider(names_from = KNO3, values_from = MeanSignal) %>% 
+  rename(Mean_10mM="10mM",Mean_1mM="1mM") %>% 
+  mutate(Ratio_1mM_10mM = Mean_1mM/Mean_10mM) %>% 
+  ggplot(aes(x=factor(0),y=Ratio_1mM_10mM))+geom_boxplot() +
+  geom_hline(yintercept = 1, linetype="dashed", colour="grey") +
+  ylab("Ratio of signal at low/high nitrate concentration") +
+  xlab("") +
+  theme(legend.text=element_text(size=16),legend.title = element_text(size=16, face="bold"), 
+        axis.text=element_text(size=16), axis.title=element_text(size=16),
+        plot.title = element_text(size=20,face="bold"),
+        panel.background = element_rect(fill = "white", colour = "grey50"))
+
+ggsave("Distribution_ratio_signal_10mM_1mM.jpg", height = 6, width=5)
+
+```
+
+
+
+## Comparison with primary root length
+
+Correlation with primary root length (at 1mM only) for some replicates (otherwise it's too many in one graph) taken randomly
+
+At 1mM
+```{r}
+
+filter(All_reps_luc_norm, KNO3=="1mM", expt%in%c("AV05", "AV12_rep1", "AV26_rep1","AV28", "SC15", "SC21")) %>% 
+  ggplot(aes(x=root_length_mm, y=RawIntDen_NormBack_NormLen, color=expt)) +
+  geom_point(size=3) +
+  stat_cor(method="spearman", size=4.8, label.x=10) +
+  ggtitle(bquote('Seedlings grown with 1mM KNO'[3])) +
+  xlab("primary root length (mm)") +
+  ylab(expression(paste("Luciferase signal for ", italic("pNRT2.1:LUC")))) +
+  theme(legend.text=element_text(size=16),legend.title = element_text(size=16, face="bold"), 
+        axis.text=element_text(size=16), axis.title=element_text(size=16),
+        plot.title = element_text(size=20,face="bold"),
+        panel.background = element_rect(fill = "white", colour = "grey50"),
+        legend.position = "none")
+
+ggsave("Correlation_rootlength_lucSignal_1mM_6reps.jpg", width=5.3, height = 4.4)
+
+```
+
+
+```{r}
+
+filter(All_reps_luc_norm, KNO3=="1mM") %>% 
+  ggplot(aes(x=root_length_mm, y=RawIntDen_NormBack_NormLen, color=expt)) +
+  geom_point(size=3) +
+  stat_cor(method="spearman", size=4.8) +
+  xlab("primary root length (mm)") +
+  ylab(expression(paste("Luciferase signal for ", italic("pNRT2.1:LUC")))) +
+  theme(legend.text=element_text(size=16),legend.title = element_text(size=16, face="bold"), 
+        axis.text=element_text(size=16), axis.title=element_text(size=16),
+        plot.title = element_text(size=20,face="bold"),
+        panel.background = element_rect(fill = "white", colour = "grey50"))
+
+#ggsave("Correlation_rootlength_lucSignal_1mM_6reps.jpg", width=5, height = 4.4)
+
+```
+
+
+At 10mM
+```{r}
+
+filter(All_reps_luc_norm, KNO3=="10mM", expt%in%c("AV05", "AV12_rep1", "AV26_rep1","AV28", "SC15", "SC21")) %>% 
+  ggplot(aes(x=root_length_mm, y=RawIntDen_NormBack_NormLen, color=expt)) +
+  geom_point(size=3) +
+  stat_cor(method="spearman", size=4.8, label.x=10) +
+  xlab("primary root length (mm)") +
+  ggtitle(bquote('Seedlings grown with 10mM KNO'[3])) +
+  ylab(expression(paste("Luciferase signal for ", italic("pNRT2.1:LUC")))) +
+  theme(legend.text=element_text(size=16),legend.title = element_text(size=16, face="bold"), 
+        axis.text=element_text(size=16), axis.title=element_text(size=16),
+        plot.title = element_text(size=20,face="bold"),
+        panel.background = element_rect(fill = "white", colour = "grey50"),
+        legend.position = "none")
+
+ggsave("Correlation_rootlength_lucSignal_10mM_6reps.jpg", width=5.3, height = 4.4)
+
+```
+
+## Comparison with secondary root density
+
+
+
+Correlation with primary root length (at 1mM only) for some replicates (otherwise it's too many in one graph) taken randomly
+
+At 1mM
+```{r}
+
+filter(All_reps_luc_norm, KNO3=="1mM", expt%in%c("AV05", "AV12_rep1", "AV26_rep1","AV28", "SC15", "SC21")) %>% 
+  mutate(SecondRootDensity= lateralRoots/root_length_mm) %>% 
+  ggplot(aes(x=SecondRootDensity, y= RawIntDen_NormBack_NormLen, color=expt)) +
+  geom_point(size=3) +
+  stat_cor(method="spearman", size=4.8, label.x=-0.1) +
+  ggtitle(bquote('Seedlings grown with 1mM KNO'[3])) +
+  xlab("Secondary root density") +
+  ylab(expression(paste("Luciferase signal for ", italic("pNRT2.1:LUC")))) +
+  theme(legend.text=element_text(size=16),legend.title = element_text(size=16, face="bold"), 
+        axis.text=element_text(size=16), axis.title=element_text(size=16),
+        plot.title = element_text(size=20,face="bold"),
+        panel.background = element_rect(fill = "white", colour = "grey50"),
+        legend.position = "none")
+
+ggsave("Correlation_scondaryRootDensity_lucSignal_1mM_6reps.jpg", width=5.3, height = 4.4)
+
+```
+
+
+At 10mM
+```{r}
+
+filter(All_reps_luc_norm, KNO3=="10mM", expt%in%c("AV05", "AV12_rep1", "AV26_rep1","AV28", "SC15", "SC21")) %>% 
+  mutate(SecondRootDensity= lateralRoots/root_length_mm) %>% 
+  ggplot(aes(x=SecondRootDensity, y= RawIntDen_NormBack_NormLen, color=expt)) +
+  geom_point(size=3) +
+  stat_cor(method="spearman", size=4.8, label.x=-0.1) +
+  ggtitle(bquote('Seedlings grown with 10mM KNO'[3])) +
+  xlab("Secondary root density") +
+  ylab(expression(paste("Luciferase signal for ", italic("pNRT2.1:LUC")))) +
+  theme(legend.text=element_text(size=16),legend.title = element_text(size=16, face="bold"), 
+        axis.text=element_text(size=16), axis.title=element_text(size=16),
+        plot.title = element_text(size=20,face="bold"),
+        panel.background = element_rect(fill = "white", colour = "grey50"),
+        legend.position = "none")
+
+ggsave("Correlation_scondaryRootDensity_lucSignal_10mM_6reps.jpg", width=5.3, height = 4.4)
+
+```

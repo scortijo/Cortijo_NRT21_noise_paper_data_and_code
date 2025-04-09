@@ -1,0 +1,111 @@
+---
+title: "Luciferase several days, no transfer"
+author: "Sandra"
+date: "2024-07-26"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+## Data preparation
+
+Preparation of the environment
+
+```{r, message=FALSE}
+library(tidyverse)
+library(ggpubr)
+library(RColorBrewer)
+```
+
+Loading and combing data 
+
+```{r, message=FALSE}
+
+
+D9 <- read_tsv("AV05_luciferase_several_days/AV05_day9/AV05_day9_luciferase_measure.txt") %>% 
+  mutate(DAY="D9")
+
+D10 <- read_tsv("AV05_luciferase_several_days/AV05_day10/AV05_day10_luciferase_measure.txt")%>% 
+  mutate(DAY="D10")
+
+D11 <- read_tsv("AV05_luciferase_several_days/AV05_day11/AV05_day11_luciferase_measure.txt")%>% 
+  mutate(DAY="D11")
+
+D12 <- read_tsv("AV05_luciferase_several_days/AV05_day12/20220120_Clf29_pNRT2.1_luc_complet_12j.txt")%>% 
+  mutate(DAY="D12")
+
+
+
+
+All_D9_12_luc <- bind_rows(D9, D10, D11, D12)
+
+```
+
+
+Normalisation of signal by the background and root length
+
+```{r}
+
+All_D9_12_luc_norm <- mutate(All_D9_12_luc, RawIntDenDivArea=RawIntDen/area) %>% 
+  filter(seedling=="background") %>% 
+  group_by( KNO3, plate, DAY) %>% 
+  summarise(MeanBack=mean(RawIntDenDivArea)) %>% 
+  full_join(All_D9_12_luc, by=c("KNO3"="KNO3", "plate"="plate", "DAY"="DAY")) %>% 
+  mutate(RawIntDen_NormBack= RawIntDen-(MeanBack*area)) %>% 
+  mutate(root_length_mm= length/4,
+         RawIntDen_NormBack_NormLen=RawIntDen_NormBack/root_length_mm) %>% 
+  filter(seedling!="background")
+
+
+```
+
+
+
+## Graph of signal over time
+
+```{r}
+
+filter(All_D9_12_luc_norm, KNO3=="1mM", plate%in%c("plate9", "plate11")) %>% 
+  mutate(DAY=factor(DAY, levels=c("D9", "D10", "D11", "D12"))) %>% 
+ggplot( aes(x=DAY, y=RawIntDen_NormBack_NormLen, group=seedling)) +
+  geom_line(aes(col=seedling), size=1) +
+  facet_wrap(~plate) +
+  xlab("Days after germination") +
+  ylab(expression(paste("Luciferase signal for ", italic("NRT2.1:LUC")))) +
+  theme(legend.text=element_text(size=16),legend.title = element_text(size=16, face="bold"), 
+        axis.text=element_text(size=16), axis.title=element_text(size=16),
+        plot.title = element_text(size=20,face="bold"),
+        panel.background = element_rect(fill = "white", colour = "grey50"),
+        legend.position = "none", strip.text.x = element_text(size = 18))
+
+ggsave("Signal_seedlings_several_days.jpg", height = 4, width=9)
+
+```
+
+
+
+## Correlation first/last day
+
+
+```{r}
+
+filter(All_D9_12_luc_norm, KNO3=="1mM") %>% 
+select( "KNO3", "plate", "DAY", "seedling", "RawIntDen_NormBack_NormLen" ) %>% 
+pivot_wider(names_from = "DAY", values_from = "RawIntDen_NormBack_NormLen") %>% 
+  ggplot(aes(x=D9, y=D12)) +
+  geom_point()+
+  xlab("Luciferase signal 9 days old seedlings") +
+  ylab("luciferase signal 12 days old seedlings") +
+  stat_cor(method="spearman", size=5) +
+  theme(legend.text=element_text(size=16),legend.title = element_text(size=16, face="bold"), 
+        axis.text=element_text(size=16), axis.title=element_text(size=16),
+        plot.title = element_text(size=20,face="bold"),
+        panel.background = element_rect(fill = "white", colour = "grey50"))
+
+ggsave("Correlation_before_after_9g_12d.jpg", height = 4.5, width=5)
+
+```

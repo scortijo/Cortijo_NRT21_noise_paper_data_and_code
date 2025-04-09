@@ -1,0 +1,113 @@
+---
+title: "lumalum 31 Jan 2025"
+author: "Sandra"
+date: "2024-02-08"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+Preparation of the environment
+
+```{r, message=FALSE, warning=FALSE}
+
+library(tidyverse)
+library(ggpubr)
+library(RColorBrewer)
+
+```
+
+
+
+
+Loading of data
+
+```{r, message=FALSE}
+Lumalum_31jan2025 <- read_tsv("lumalum_31Jan2025.txt")
+
+
+```
+
+
+
+Normalisation of signal by the background and root length
+
+
+```{r, message=FALSE, warning=FALSE}
+
+Lumalum_31jan2025_norm <- mutate(Lumalum_31jan2025, RawIntDenDivArea=RawIntDen/Area) %>% 
+  filter(seedling=="background") %>% 
+  group_by(Position, Slice) %>% 
+  summarise(MeanBack=mean(RawIntDenDivArea)) %>% 
+  full_join(Lumalum_31jan2025, by=c("Position"="Position", "Slice"="Slice")) %>% 
+  mutate(RawIntDen_NormBack= RawIntDen-(MeanBack*Area)) %>% 
+  mutate(root_length_mm= length/3.2,
+         RawIntDen_NormBack_NormLen=RawIntDen_NormBack/root_length_mm) %>% 
+  filter(seedling!="background")
+
+```
+
+
+Graph of signal over time
+
+
+```{r, message=FALSE, warning=FALSE}
+
+mutate(Lumalum_31jan2025_norm, hours= Slice*4, Position=str_replace(Position, "Pos", "Position ")) %>% 
+  mutate(days=hours/24) %>% 
+  filter(!Position%in%c("Position 6", "Position 7", "Position 8")) %>% 
+ggplot(aes(x=days, y=RawIntDen_NormBack_NormLen, group=seedling)) +
+  geom_line(aes(col=seedling)) + 
+  scale_x_continuous(n.breaks = 9) +
+  facet_wrap(genotype~Position, scales = "free") +
+  ylab("Luciferase signal") +
+  xlab("Days since stratification") +
+  theme(legend.text=element_text(size=16),legend.title = element_text(size=16, face="bold"), 
+        axis.text=element_text(size=16), axis.title=element_text(size=16),
+        plot.title = element_text(size=20,face="bold"),
+        panel.background = element_rect(fill = "white", colour = "grey50")) +
+  guides(colour = FALSE)
+
+ggsave("Lumalum_signal_seedlings_31Jan_2025.jpg", width = 9, height = 5)
+
+
+
+```
+
+
+# Graph of root growth over kinetics
+
+```{r}
+root_growth <- read_tsv("lumalum_31Jan2025_root_length.txt")
+```
+
+
+
+```{r}
+
+mutate(root_growth, hours=Slice*4, days=(Slice*4)/24 ) %>% 
+ggplot(aes(x=days, y=length_mm, group=seedling, colour=continued_growing)) +
+  geom_line() +
+  scale_x_continuous(n.breaks = 9)  +
+  ylab("Primary root length (mm)") +
+  xlab("Days since stratification") +
+  facet_wrap(~genotype) +
+  scale_color_manual(values=c("purple", "orange"), name="", labels=c("yes"="continued \ngrowing \n", 
+                                                                     "no"="stopped \ngrowing \n")) +
+  theme(legend.text=element_text(size=16),legend.title = element_text(size=16, face="bold"), 
+        axis.text=element_text(size=16), axis.title=element_text(size=16),
+        plot.title = element_text(size=20,face="bold"),
+        panel.background = element_rect(fill = "white", colour = "grey50"),
+        strip.text.x = element_text(size=16, face="italic"))
+
+ggsave("Lumalum_31Jan2025_root_growth.jpg", width = 7.5, height = 3.5)
+
+```
+
+
+
+

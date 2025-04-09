@@ -1,0 +1,165 @@
+---
+title: "influx"
+author: "Sandra"
+date: "2024-02-07"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r}
+library(tidyverse)
+library(ggpubr)
+library(RColorBrewer)
+```
+
+
+
+1mM KNO3
+
+```{r, message=FALSE}
+
+
+Inlux_luc_1mM_AR1282 <- read_tsv("AR1282_1mM_10mM_KNO3/AR1282_influx_luciferase.txt") %>% 
+  filter(KNO3=="1mM") %>% 
+  mutate(expr="AR1282")
+
+Inlux_luc_1mM_AV14 <- read_tsv("AV14_1mM_KNO3/AV14_influx_luciferase.txt")  %>% 
+  mutate(expr="AV14")
+
+Inlux_luc_1mM_AV15 <- read_tsv("AV15_1mM_KNO3/AV15_influx_luciferase.txt")  %>% 
+  mutate(expr="AV15")
+
+Inlux_luc_1mM_AV26 <- read_tsv("AV26_1mM_KNO3/AV26_influx_luciferase.txt")  %>% 
+  mutate(expr="AV26")
+
+Inlux_luc_1mM_SC21 <- read_tsv("SC21_1mM_KNO3/SC21_influx_luciferase.txt")  %>% 
+  mutate(expr="SC21")
+
+
+```
+
+
+
+
+```{r}
+
+Inlux_luc_1mM_all <- bind_rows(Inlux_luc_1mM_AR1282, Inlux_luc_1mM_AV14, Inlux_luc_1mM_AV15,
+                               Inlux_luc_1mM_AV26,Inlux_luc_1mM_SC21)
+
+
+ggplot(Inlux_luc_1mM_all, aes(x=Ninflux_umoleN_Gms_heure, y=RawIntDen_normBackg_normLen, col=expr)) +
+  geom_point(size=3) +
+  stat_cor(method="spearman", size=4.8) +
+  xlab(bquote('Nitrate influx ('*mu*'mol ' ^15*'N/gDW/h)')) +
+  ylab(expression(paste("Luciferase signal for ", italic("pNRT2.1:LUC")))) +
+  ggtitle(bquote('Seedlings grown with 1mM KNO'[3])) +
+  scale_color_brewer(palette = "Dark2") +
+  theme(legend.text=element_text(size=16),legend.title = element_text(size=16, face="bold"), 
+        axis.text=element_text(size=16), axis.title=element_text(size=16),
+        plot.title = element_text(size=19,face="bold"),
+        panel.background = element_rect(fill = "white", colour = "grey50"),
+        legend.position = "none", strip.text.x = element_text(size = 18))
+
+
+ggsave("Ninflux_1mM_WT_5reps.jpg", width=5, height = 4.4)
+
+```
+
+
+
+
+
+10mM KNO3
+
+```{r, message=FALSE}
+
+Inlux_luc_10mM_AR1270 <- read_tsv("AR1270_10mM_KNO3/AR1270_influx_luciferase.txt") %>% 
+  filter(KNO3=="10mM") %>% 
+  mutate(expr="AR1270")
+
+Inlux_luc_10mM_AR1282 <- read_tsv("AR1282_1mM_10mM_KNO3/AR1282_influx_luciferase.txt") %>% 
+  filter(KNO3=="10mM") %>% 
+  mutate(expr="AR1282")
+
+```
+
+
+
+
+
+```{r}
+
+Inlux_luc_10mM_all <- bind_rows(Inlux_luc_10mM_AR1270, Inlux_luc_10mM_AR1282)
+
+my.colors<-c(brewer.pal(4, "Paired")[2],brewer.pal(4, "Paired")[4])
+
+ggplot(Inlux_luc_10mM_all, aes(x=Ninflux_umoleN_Gms_heure, y=RawIntDen_normBackg_normLen, col=expr)) +
+  geom_point(size=3) +
+  stat_cor(method="spearman", size=4.8) +
+  xlab(bquote('Nitrate influx ('*mu*'mol ' ^15*'N/gDW/h)')) +
+  ylab(expression(paste("Luciferase signal for ", italic("pNRT2.1:LUC")))) +
+  ggtitle(bquote('Seedlings grown with 10mM KNO'[3])) +
+  scale_color_manual(values = my.colors) +
+  theme(legend.text=element_text(size=16),legend.title = element_text(size=16, face="bold"), 
+        axis.text=element_text(size=16), axis.title=element_text(size=16),
+        plot.title = element_text(size=19,face="bold"),
+        panel.background = element_rect(fill = "white", colour = "grey50"),
+        legend.position = "none", strip.text.x = element_text(size = 18))
+
+
+ggsave("Ninflux_10mM_WT_2reps.jpg", width=5, height = 4.4)
+
+```
+
+
+## Data for samples imaged with the biocorp (other luciferase camera)
+
+```{r}
+
+
+AV39 <- read_tsv("influx_biocorp/AV39_influxN15/AV39_influx_luciferase.txt") %>% 
+  mutate(exp="AV39")
+
+
+AV52 <- read_tsv("influx_biocorp/AV52_InfluxN15/AV52_influx_luciferase.txt") %>% 
+  mutate(exp="AV52")
+
+
+biocorp_Ninflux <- bind_rows( AV52,  AV39)
+```
+
+
+
+```{r}
+
+mutate(biocorp_Ninflux, KNO3=factor(KNO3, levels=c("1mM", "10mM"))) %>% 
+ggplot( aes(x=Ninflux_umoleN_Gms_heure, y=RawIntDen_normBackg_normLen, col=exp)) +
+  geom_point(size=3) +
+  stat_cor(method="spearman", size=3.8) +
+  xlab(bquote('Nitrate influx ('*mu*'mol ' ^15*'N/gDW/h)')) +
+  ylab(expression(paste("Luciferase signal for ", italic("pNRT2.1:LUC")))) +
+  scale_color_brewer(palette = "Dark2") +
+  facet_wrap(~KNO3, scales = "free") +
+  theme(legend.text=element_text(size=16),legend.title = element_text(size=16, face="bold"), 
+        axis.text=element_text(size=16), axis.title=element_text(size=16),
+        plot.title = element_text(size=19,face="bold"),
+        panel.background = element_rect(fill = "white", colour = "grey50"),
+         strip.text.x = element_text(size = 18)) +
+  guides(col=FALSE)
+
+
+ggsave("Correlation_luc_influx_1mM_10mM_biocorp.jpg", width = 6, height = 4)
+```
+
+
+
+
+
+
+
+
+

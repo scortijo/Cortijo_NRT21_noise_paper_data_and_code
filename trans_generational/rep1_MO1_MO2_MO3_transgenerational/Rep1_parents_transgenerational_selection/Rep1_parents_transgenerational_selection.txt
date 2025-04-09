@@ -1,0 +1,32 @@
+number_Parent	plate_info_Parent	area_Parent	mean_Parent	IntDen_Parent	median_Parent	RawIntDen_Parent	length_Parent	seedling_Parent	genotype_Parent	KNO3_Parent	PLATE_Parent	type_Parent	Parent_name
+7	NRT21luc_1mM_N1_luc.tif:0051-0165	1360	277.191	376979.3	277.208	376979.3	169	background	pNRT2.1:luc	1mM	plate1		
+8	NRT21luc_1mM_N1_luc.tif:0172-0249	1408	278.004	391429.223	277.986	391429.223	175	background	pNRT2.1:luc	1mM	plate1		
+9	NRT21luc_1mM_N1_luc.tif:0316-0319	1696	276.829	469501.781	276.839	469501.781	211	background	pNRT2.1:luc	1mM	plate1		
+1	NRT21luc_1mM_N1_luc.tif:0185-0059	1624	368.339	598182.726	336.625	598182.726	201.976	seedling1	pNRT2.1:luc	1mM	plate1	other	line1
+2	NRT21luc_1mM_N1_luc.tif:0175-0131	1544	360.636	556821.383	334.014	556821.383	191.977	seedling2	pNRT2.1:luc	1mM	plate1	medium	line2
+3	NRT21luc_1mM_N1_luc.tif:0160-0165	1296	311.292	403434.248	296.626	403434.248	160.997	seedling3	pNRT2.1:luc	1mM	plate1	low	line3
+4	NRT21luc_1mM_N1_luc.tif:0174-0285	1464	338.903	496154.668	313.701	496154.668	181.994	seedling4	pNRT2.1:luc	1mM	plate1	other	line4
+5	NRT21luc_1mM_N1_luc.tif:0194-0330	1720	367.255	631678.465	325.152	631678.465	213.984	seedling5	pNRT2.1:luc	1mM	plate1	other	line5
+6	NRT21luc_1mM_N1_luc.tif:0183-0386	1520	323.6	491871.416	302.661	491871.416	188.982	seedling6	pNRT2.1:luc	1mM	plate1	low	line6
+7	NRT21luc_1mM_N2_luc.tif:0049-0340	1408	276.641	389510.883	276.647	389510.883	175	background	pNRT2.1:luc	1mM	plate2		
+8	NRT21luc_1mM_N2_luc.tif:0310-0153	1312	276.52	362793.735	276.51	362793.735	163	background	pNRT2.1:luc	1mM	plate2		
+9	NRT21luc_1mM_N2_luc.tif:0176-0247	1352	277.612	375330.963	277.616	375330.963	168	background	pNRT2.1:luc	1mM	plate2		
+1	NRT21luc_1mM_N2_luc.tif:0178-0053	1400	368.42	515788.643	338.627	515788.643	173.985	seedling7	pNRT2.1:luc	1mM	plate2	other	line7
+2	NRT21luc_1mM_N2_luc.tif:0188-0093	1560	376.549	587416.958	352.752	587416.958	193.993	seedling8	pNRT2.1:luc	1mM	plate2	other	line8
+3	NRT21luc_1mM_N2_luc.tif:0186-0208	1648	391.259	644795.561	359.444	644795.561	204.998	seedling9	pNRT2.1:luc	1mM	plate2	high	line9
+4	NRT21luc_1mM_N2_luc.tif:0159-0281	1208	292.973	353911.47	286.826	353911.47	150	seedling10	pNRT2.1:luc	1mM	plate2	low	line10
+5	NRT21luc_1mM_N2_luc.tif:0179-0381	1624	352.905	573117.855	326.348	573117.855	201.988	seedling11	pNRT2.1:luc	1mM	plate2	medium	line11
+6	NRT21luc_1mM_N2_luc.tif:0181-0440	1680	392.953	660161.744	352.656	660161.744	208.989	seedling12	pNRT2.1:luc	1mM	plate2	high	line12
+6	NRT21luc_1mM_N3_luc.tif:0328-0178	1456	276.817	403046.235	276.865	403046.235	181	background	pNRT2.1:luc	1mM	plate3		
+7	NRT21luc_1mM_N3_luc.tif:0063-0325	1464	277.969	406947.115	278.002	406947.115	182	background	pNRT2.1:luc	1mM	plate3		
+8	NRT21luc_1mM_N3_luc.tif:0181-0359	1424	278.027	395909.831	278.011	395909.831	177	background	pNRT2.1:luc	1mM	plate3		
+1	NRT21luc_1mM_N3_luc.tif:0186-0154	1520	362.425	550885.634	336.175	550885.634	188.984	seedling13	pNRT2.1:luc	1mM	plate3	medium	line13
+2	NRT21luc_1mM_N3_luc.tif:0201-0220	1712	407.205	697135.116	376.438	697135.116	212.993	seedling14	pNRT2.1:luc	1mM	plate3	high	line14
+4	NRT21luc_1mM_N3_luc.tif:0162-0329	1096	296.009	324426.311	289.926	324426.311	135.998	seedling16	pNRT2.1:luc	1mM	plate3	other	line16
+5	NRT21luc_1mM_N3_luc.tif:0170-0393	1272	323.552	411558.42	303.19	411558.42	157.992	seedling17	pNRT2.1:luc	1mM	plate3	low	line17
+4	NRT21luc_1mM_N4_luc.tif:0301-0267	1072	276.863	296797.154	276.883	296797.154	133	background	pNRT2.1:luc	1mM	plate4		
+5	NRT21luc_1mM_N4_luc.tif:0039-0358	1456	277.345	403814.194	277.276	403814.194	181	background	pNRT2.1:luc	1mM	plate4		
+6	NRT21luc_1mM_N4_luc.tif:0170-0366	1288	278.774	359061.409	278.818	359061.409	160	background	pNRT2.1:luc	1mM	plate4		
+1	NRT21luc_1mM_N4_luc.tif:0171-0209	1496	343.426	513764.618	325.413	513764.618	185.995	seedling18	pNRT2.1:luc	1mM	plate4	other	line18
+2	NRT21luc_1mM_N4_luc.tif:0183-0311	1736	408.028	708337.395	365.435	708337.395	215.98	seedling19	pNRT2.1:luc	1mM	plate4	high	line19
+3	NRT21luc_1mM_N4_luc.tif:0168-0438	1416	343.393	486244.684	314.017	486244.684	175.995	seedling20	pNRT2.1:luc	1mM	plate4	other	line20

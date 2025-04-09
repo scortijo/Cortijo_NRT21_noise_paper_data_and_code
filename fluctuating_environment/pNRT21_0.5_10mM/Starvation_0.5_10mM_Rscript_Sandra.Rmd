@@ -1,0 +1,79 @@
+---
+title: "10mM to 0.5mM and vice versa_Rscript_Sandra"
+author: "Sandra"
+date: "2023-08-22"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r}
+library(tidyverse)
+library(RColorBrewer)
+```
+
+```{r}
+starvation_all <- read_tsv("AV_25.1_starvation_pNRT21_luc_allreps/AV_25.1_test_carence_pNRT2_all_reps_V2.txt")
+
+```
+
+
+Graph for CV
+```{r}
+
+filter(starvation_all, DAY!="T0.1" & seedling!="background") %>% 
+  mutate(days=str_replace(DAY, "T", "")) %>% 
+  group_by(KNO3, days) %>% 
+  summarise(CV= sd(RawIntDen_normBackg_normLen)/mean(RawIntDen_normBackg_normLen)) %>% 
+  ggplot(aes(x=days, y=CV,group=KNO3, col=KNO3 )) +
+  geom_line(size=1.5) +
+  geom_vline(xintercept = 1.4, linetype="dashed", col="darkgrey") +
+  xlab("Days after media change") +
+  ylab(expression(paste("CV for ", italic("NRT2.1:LUC"), " signal"))) +
+  ylim(0,0.65) +
+  guides(color = guide_legend(title = bquote('KNO'[3]*' treatment'))) +
+  scale_color_brewer(name="", palette="Set2") +
+  theme(legend.text=element_text(size=16),legend.title = element_text(size=16, face="bold"), 
+        axis.text=element_text(size=16), axis.title=element_text(size=16),
+        plot.title = element_text(size=20,face="bold"),
+        panel.background = element_rect(fill = "white", colour = "grey50"))
+  
+ggsave("CV_change_KNO3.jpg", height = 4, width=7)
+
+
+```
+
+Graph for signal
+
+
+```{r}
+
+filter(starvation_all, DAY!="T0.1" & seedling!="background") %>% 
+    mutate(days=str_replace(DAY, "T", "")) %>% 
+  group_by(KNO3, days) %>% 
+  summarise(Mean_signal=mean(RawIntDen_normBackg_normLen),
+            lowsd=Mean_signal-sd(RawIntDen_normBackg_normLen),
+            highsd=Mean_signal+sd(RawIntDen_normBackg_normLen)) %>%  
+ggplot(aes(x=days, y=Mean_signal, group=KNO3)) +
+  geom_line(aes(col=KNO3), size=1.5, linetype="twodash") +
+  geom_ribbon(aes(ymin=lowsd, ymax=highsd, fill=KNO3), alpha=0.2) +
+  geom_vline(xintercept = 1.4, linetype="dashed", col="darkgrey") +
+  xlab("Days after media change") +
+  ylab(expression(paste(italic("NRT2.1:luc"), " luciferase signal"))) +
+  ylim(0, 6000) +
+  guides(color = guide_legend(title = bquote('KNO'[3]*' treatment'))) +
+  guides(fill ="none") +
+  scale_color_brewer(name="", palette="Set2") +
+  scale_fill_brewer(name="", palette="Set2") +
+  theme(legend.text=element_text(size=16),legend.title = element_text(size=16, face="bold"), 
+        axis.text=element_text(size=16), axis.title=element_text(size=16),
+        plot.title = element_text(size=20,face="bold"),
+        panel.background = element_rect(fill = "white", colour = "grey50"))
+
+ ggsave("Mean_change_KNO3.jpg", height = 4, width=7)
+
+```
+

@@ -1,0 +1,199 @@
+---
+title: "Starvation experiment, CV and mean signal"
+author: "Sandra"
+date: ""
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Data preparation
+
+Preparation of the environment
+
+```{r, message=FALSE}
+library(tidyverse)
+library(ggpubr)
+library(RColorBrewer)
+```
+
+Loading and combing data 
+
+```{r, message=FALSE}
+
+
+T0 <- read_tsv("20230724_AV_30_T0_6J/20230724_AV_30_T0_6J.txt")
+
+T1 <- read_tsv("20230725_AV_30_T1_7J/20230724_AV_30_T1_7J.txt")
+
+T2 <- read_tsv("20230726_AV_30_T2_8J/20230726_AV_30_T2_8J.txt")
+
+T3 <- read_tsv("20230727_AV_30_T3_9J/20230727_AV_30_T3_9J.txt")
+
+T4 <- read_tsv("20230728_AV_30_T4_10J/20230727_AV_30_T4_10J.txt")
+
+T5 <- read_tsv("20230729_AV_30_T5_11J/20230729_AV_30_T5_11J.txt")
+
+T6 <- read_tsv("20230730_AV_30_T6_12J/20230730_AV_30_T6_12J.txt")
+
+
+
+
+
+All_time_points_starvation <- bind_rows(T0, T1, T2, T3, T4, T5, T6)
+
+```
+
+
+
+Normalisation of signal by the background and root length
+
+```{r}
+
+All_time_points_starvation_norm <- mutate(All_time_points_starvation, RawIntDenDivArea=RawIntDen/area) %>% 
+  filter(seedling=="background") %>% 
+  group_by( KNO3, PLATE, DAY) %>% 
+  summarise(MeanBack=mean(RawIntDenDivArea)) %>% 
+  full_join(All_time_points_starvation, by=c("KNO3"="KNO3", "PLATE"="PLATE", "DAY"="DAY")) %>% 
+  mutate(RawIntDen_NormBack= RawIntDen-(MeanBack*area)) %>% 
+  mutate(root_length_mm= length/4.95,
+         RawIntDen_NormBack_NormLen=RawIntDen_NormBack/root_length_mm) %>% 
+  filter(seedling!="background")
+
+
+
+
+
+```
+
+
+## Graph of signal and CV over time
+
+```{r}
+
+
+group_by(All_time_points_starvation_norm, KNO3, DAY) %>% 
+  summarise(CV=sd(RawIntDen_NormBack_NormLen)/mean(RawIntDen_NormBack_NormLen)) %>% 
+  mutate(days=str_replace(DAY, "T", "")) %>% 
+  ggplot(aes(x=days, y=CV, group=KNO3, color=KNO3)) +
+  geom_line(size=2) +
+  geom_vline(xintercept=1.3, col="grey", linetype="dashed") +
+  geom_vline(xintercept=5.3, col="grey", linetype="dashed") +
+  xlab("Days since the first transfer") +
+  ylab(expression(paste("CV for ", italic("NRT2.1:LUC"), " signal"))) +
+  ylim(0,0.65) +
+  scale_color_brewer(palette="Dark2") +
+  guides(color = guide_legend(title = bquote('KNO'[3]*' treatment'))) +
+  theme(legend.text=element_text(size=16),legend.title = element_text(size=16, face="bold"), 
+        axis.text=element_text(size=16), axis.title=element_text(size=16),
+        plot.title = element_text(size=20,face="bold"),
+        panel.background = element_rect(fill = "white", colour = "grey50"))
+  
+ggsave("CV_Starvation.jpg", height = 4, width=7.3)
+
+group_by(All_time_points_starvation_norm, KNO3, DAY) %>% 
+  summarise(Mean_signal=mean(RawIntDen_NormBack_NormLen),
+            lowsd=Mean_signal-sd(RawIntDen_NormBack_NormLen),
+            highsd=Mean_signal+sd(RawIntDen_NormBack_NormLen)) %>% 
+  mutate(days=str_replace(DAY, "T", "")) %>% 
+  ggplot(aes(x=days, y=Mean_signal, group=KNO3)) +
+  geom_line(aes(col=KNO3), size=1.5, linetype="twodash") +
+  geom_ribbon(aes(ymin=lowsd, ymax=highsd, fill=KNO3), alpha=0.2) +
+  geom_vline(xintercept=1.3, col="grey", linetype="dashed") +
+  geom_vline(xintercept=5.3, col="grey", linetype="dashed") +
+  ylab(expression(paste(italic("NRT2.1:LUC"), " luciferase signal"))) +
+  xlab("Days since the first transfer") +
+  scale_color_brewer(palette="Dark2") +
+  guides(fill ="none") +
+  guides(color = guide_legend(title = bquote('KNO'[3]*' treatment'))) +
+  theme(legend.text=element_text(size=16),legend.title = element_text(size=16, face="bold"), 
+        axis.text=element_text(size=16), axis.title=element_text(size=16),
+        plot.title = element_text(size=20,face="bold"),
+        panel.background = element_rect(fill = "white", colour = "grey50"))
+
+  ggsave("Mean_Starvation.jpg", height = 4, width=7.37)
+
+
+  
+
+
+
+```
+
+
+
+## Correlation before/during or after starvation
+
+
+Correlation before/during starvation
+
+```{r}
+
+select(All_time_points_starvation_norm, "KNO3", "PLATE", "DAY", "seedling", "RawIntDen_NormBack_NormLen" ) %>% 
+  filter(KNO3=="1mM->0mM->1mM") %>% 
+pivot_wider(names_from = "DAY", values_from = "RawIntDen_NormBack_NormLen") %>% 
+  ggplot(aes(x=T0, y=T4)) +
+  geom_point()+
+  xlab("Luciferase signal before starvation") +
+  ylab("luciferase signal during starvation") +
+  stat_cor(method="spearman", size=5) +
+  theme(legend.text=element_text(size=16),legend.title = element_text(size=16, face="bold"), 
+        axis.text=element_text(size=16), axis.title=element_text(size=16),
+        plot.title = element_text(size=20,face="bold"),
+        panel.background = element_rect(fill = "white", colour = "grey50"))
+
+ggsave("Correlation_before_during_starvation.jpg", height = 4.5, width=5)
+
+```
+
+
+
+
+Correlation before/after starvation
+
+```{r}
+
+select(All_time_points_starvation_norm, "KNO3", "PLATE", "DAY", "seedling", "RawIntDen_NormBack_NormLen" ) %>% 
+  filter(KNO3=="1mM->0mM->1mM") %>% 
+pivot_wider(names_from = "DAY", values_from = "RawIntDen_NormBack_NormLen") %>% 
+  ggplot(aes(x=T0, y=T5)) +
+  geom_point()+
+  xlab("Luciferase signal before starvation") +
+  ylab("luciferase signal after starvation") +
+  stat_cor(method="spearman", size=5) +
+  theme(legend.text=element_text(size=16),legend.title = element_text(size=16, face="bold"), 
+        axis.text=element_text(size=16), axis.title=element_text(size=16),
+        plot.title = element_text(size=20,face="bold"),
+        panel.background = element_rect(fill = "white", colour = "grey50"))
+
+ggsave("Correlation_before_after_starvation.jpg", height = 4.5, width=5)
+
+```
+
+
+## Graph for a few plants over time
+
+```{r}
+
+
+filter(All_time_points_starvation_norm, KNO3=="1mM->1mM->1mM", DAY!="T0") %>% 
+  mutate(days=str_replace(DAY, "T", "")) %>% 
+  mutate(days=as.numeric(days)+6) %>% 
+  ggplot(aes(x=days, y=RawIntDen_NormBack_NormLen, group=seedling)) +
+  geom_line(size=0.8) +
+  geom_vline(xintercept=10.3, col="blue", linetype="dashed") +
+  ylab(expression(paste(italic("NRT2.1:LUC"), " luciferase signal"))) +
+  xlab("Age of plants (days)") +
+  facet_wrap(~PLATE, scales = "free") +
+  theme(legend.text=element_text(size=16),legend.title = element_text(size=16, face="bold"), 
+        axis.text=element_text(size=16), axis.title=element_text(size=16),
+        plot.title = element_text(size=20,face="bold"),
+        panel.background = element_rect(fill = "white", colour = "grey50"))
+  
+
+ggsave("Signal_seedlings_control_starvationExp.jpg", width = 8, height = 4)
+
+
+```
