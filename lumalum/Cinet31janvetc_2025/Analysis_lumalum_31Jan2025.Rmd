@@ -49,6 +49,8 @@ Lumalum_31jan2025_norm <- mutate(Lumalum_31jan2025, RawIntDenDivArea=RawIntDen/A
          RawIntDen_NormBack_NormLen=RawIntDen_NormBack/root_length_mm) %>% 
   filter(seedling!="background")
 
+
+write_tsv(Lumalum_31jan2025_norm, file="Lumalum_31jan2025_norm.txt")
 ```
 
 
@@ -105,6 +107,25 @@ ggplot(aes(x=days, y=length_mm, group=seedling, colour=continued_growing)) +
         strip.text.x = element_text(size=16, face="italic"))
 
 ggsave("Lumalum_31Jan2025_root_growth.jpg", width = 7.5, height = 3.5)
+
+
+mutate(root_growth, hours=Slice*4, days=(Slice*4)/24 ) %>% 
+  filter(continued_growing=="yes" & genotype=="pNRT2.1:LUC") %>% 
+ggplot(aes(x=days, y=length_mm, group=seedling, colour=signal_end_experiment)) +
+  geom_line(aes(colour=signal_end_experiment)) +
+  scale_x_continuous(n.breaks = 9)  +
+  ylab("Primary root length (mm)") +
+  xlab("Days since stratification") +
+  ggtitle(expression(paste("Root length for ", italic("pNRT2.1:LUC"), " seedlings in plate 0"))) +
+  scale_color_gradient2(low = "blue",  high = "red", midpoint = 1600,
+                        breaks=c(800, 1600, 2400), name="Luciferase signal \nat the end of the\nexperiment") +
+  theme(legend.text=element_text(size=16),legend.title = element_text(size=16, face="bold"), 
+        axis.text=element_text(size=16), axis.title=element_text(size=16),
+        plot.title = element_text(size=20,face="bold"),
+        panel.background = element_rect(fill = "white", colour = "grey50"),
+        strip.text.x = element_text(size=16, face="italic"))
+
+ggsave("Lumalum_Jan_Pos0_root_length_Signal.jpg", width = 7, height = 4.5)
 
 ```
 
