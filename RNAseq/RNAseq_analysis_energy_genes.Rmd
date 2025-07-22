@@ -290,6 +290,7 @@ Corr_NRT2.1_genes_Nnutrition <- inner_join(Rcor_NRT2.1_genes_Nnutrition, Pcor_NR
 
 ```
 
+
 Plot for all groups of genes
 ```{r, message=FALSE, warning=FALSE}
 
@@ -369,6 +370,35 @@ group_by(Corr_NRT2.1_genes_all_groups, type) %>%
 
 
 
+## Volcano plot (correlation vs p-value) as recommender by reviewer 3
+
+```{r}
+
+
+
+ggplot(Corr_NRT2.1_genes_all_groups, aes(x=Pcor, y=Rcor, col=type)) +
+  geom_point()
+
+mutate(Corr_NRT2.1_genes_all_groups, type=factor(type, levels=c("Photosynthesis", "Glycolysis", "Nnutrition", 
+                                  "Tetrapyrrole", "Asp_family_pathway", "TCAcycle_mitocondrialET", "ATP_biosynthesis")),
+       logCorr=-log(Pcor, 10)) %>% 
+ggplot( aes(x=Rcor, y=logCorr, col=Pthreshold)) +
+  geom_point() +
+  ylab("correlation significance (-log10(p-value)") +
+  xlab("Spearman coefficient of correlation (R)") +
+  geom_vline(xintercept = -0.5, col="lightgrey") +
+  geom_vline(xintercept = 0.5, col="lightgrey") +
+  geom_hline(yintercept = 1.30103, col="lightgrey") +
+  facet_wrap(.~type, ncol = 4) +
+  scale_color_brewer(palette="Set2", name="P-value",labels=c("less0.05"="Lower than 0.05", "more0.05"="Higher than 0.05"))+
+   theme(legend.text=element_text(size=15),legend.title = element_text(size=15, face="bold"), 
+        axis.text=element_text(size=14), axis.title=element_text(size=15),
+        plot.title = element_text(size=16),strip.text = element_text( face="bold", size=12),
+        panel.background = element_rect(fill = "white", colour = "grey50"))
+
+ggsave(file="volcano_plot_cor_energy_genes_NRT2.2.jpg", width=12, height=7)
+
+```
 
 
 

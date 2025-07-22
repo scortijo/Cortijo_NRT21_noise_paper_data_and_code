@@ -50,7 +50,7 @@ Lumalum_31jan2025_norm <- mutate(Lumalum_31jan2025, RawIntDenDivArea=RawIntDen/A
   filter(seedling!="background")
 
 
-write_tsv(Lumalum_31jan2025_norm, file="Lumalum_31jan2025_norm.txt")
+#write_tsv(Lumalum_31jan2025_norm, file="Lumalum_31jan2025_norm.txt")
 ```
 
 

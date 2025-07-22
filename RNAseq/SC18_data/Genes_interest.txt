@@ -16,6 +16,7 @@ AT5G65210	TGA1	Positive_regulator_NRT2.1
 AT5G10030	TGA4	Positive_regulator_NRT2.1
 AT4G35270	NLP2	Positive_regulator_NRT2.1
 AT3G50610	CEP9	Positive_regulator_NRT2.1
+AT1G77920	TGA7	Positive_regulator_NRT2.1
 AT5G63160	BT1	Negative_regulator_NRT2.1
 AT3G48360	BT2	Negative_regulator_NRT2.1
 AT5G67420	LBD37	Negative_regulator_NRT2.1

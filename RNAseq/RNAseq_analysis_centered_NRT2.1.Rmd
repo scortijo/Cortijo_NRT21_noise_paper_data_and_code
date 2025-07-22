@@ -188,7 +188,7 @@ ggplot(CPM_SC18_all_WT_expr_Brennecke_data, aes(x=Mean, y=CV2)) +
   ylab(bquote(CV^2)) +
   geom_point(data=CPM_SC18_all_WT_expr_HVG,col="blue") +
  geom_point(data=CPM_SC18_all_WT_expr_Brennecke_genes_interest, aes(col=type),  size=5) +
-  scale_color_brewer(palette = "Set2", name="Type of gene",
+  scale_color_brewer(palette = "Dark2", name="Type of gene",
                      labels=expression("Nitrate assimilation",
                      "Nitrate transporters",
                      paste("Negative regulator of ", italic("NRT2.1"), " transcription"),
@@ -199,6 +199,8 @@ ggplot(CPM_SC18_all_WT_expr_Brennecke_data, aes(x=Mean, y=CV2)) +
   theme(text = element_text(size = 20))
 
 ggsave("Variability_graph_genes_nitrate_nutrition.jpg", width=11, height = 4)
+
+
 
 ```
 
@@ -225,6 +227,13 @@ Pcor_NRT2.1_genes <- sapply(CPM_SC18_all_WT_Zscore_1ColperGene[-1], function(x) 
 
 ```
 
+
+```{r}
+
+```
+
+
+
 Graph with 1 ribbon per type of gene (Z-score). Stars are added next to the name of the gene to indicate correlation: * < 0.05; ** < 0.01; *** < 0.005
 ```{r}
 
@@ -242,12 +251,18 @@ CPM_SC18_all_WT_Zscore_long_lessNRT2.1 <- filter(CPM_SC18_all_WT_Zscore_long, ge
 CPM_SC18_all_WT_Zscore_long_lessNRT2.1_N_transport <- filter(CPM_SC18_all_WT_Zscore_long_lessNRT2.1,
                                                                  type=="N_transport")
 
+
+
+my_colors <- RColorBrewer::brewer.pal(8, "Oranges")[5:8]
+
 ggplot(NRT2.1_CPM_SC18_all_WT_Zscore_long, aes(x=seedling, y=Zscore_normalised_expression)) +
   geom_point(size=2) +
   geom_line(data=CPM_SC18_all_WT_Zscore_long_lessNRT2.1_N_transport, aes(x=seedling, y=Zscore_normalised_expression, group=name, color=name), size=1.5) +
   ylab("Zscore normalised expression") +
   ggtitle("Nitrate transporters") +
-  theme(legend.text=element_text(size=16),legend.title = element_text(size=16, face="bold"), 
+  scale_color_manual(values=my_colors, labels=c(expression(bolditalic("NRT1.1")), "NRT1.2", 
+                                                expression(bolditalic("NRT2.4")), "NRT2.5")) +
+  theme(legend.text=element_text(size=16,face = "italic" ),legend.title = element_text(size=16, face="bold"), 
         axis.text=element_text(size=16), axis.title=element_text(size=16),
         plot.title = element_text(size=18),
         panel.background = element_rect(fill = "white", colour = "grey50"),axis.text.x=element_blank())
@@ -255,7 +270,14 @@ ggplot(NRT2.1_CPM_SC18_all_WT_Zscore_long, aes(x=seedling, y=Zscore_normalised_e
 
 ggsave("Correlation_NRT2.1_Ntransporters_seedlings.jpg", width=5, height=4)
 
+```
+
+
+```{r}
 # Graph for genes involved in N assimilation
+
+my_colors_greens <- RColorBrewer::brewer.pal(9, "Greens")[4:9]
+
 
 CPM_SC18_all_WT_Zscore_long_lessNRT2.1_Nassimilation <- filter(CPM_SC18_all_WT_Zscore_long_lessNRT2.1,
                                                                  type=="N_assimilation")
@@ -265,15 +287,25 @@ ggplot(NRT2.1_CPM_SC18_all_WT_Zscore_long, aes(x=seedling, y=Zscore_normalised_e
   geom_line(data=CPM_SC18_all_WT_Zscore_long_lessNRT2.1_Nassimilation, aes(x=seedling, y=Zscore_normalised_expression, group=name, color=name), size=1.5) +
   ylab("Zscore normalised expression") +
   ggtitle("Nitrate assimilation") +
-  theme(legend.text=element_text(size=16),legend.title = element_text(size=16, face="bold"), 
+  scale_color_manual(values=my_colors_greens, labels=c("GLN2", "GLU1", "GLU2", "NIA1" , 
+                                                       "NIA2",expression(bolditalic("NIR1")))) +
+  theme(legend.text=element_text(size=16,face = "italic" ),legend.title = element_text(size=16, face="bold"), 
         axis.text=element_text(size=16), axis.title=element_text(size=16),
         plot.title = element_text(size=18),
         panel.background = element_rect(fill = "white", colour = "grey50"),axis.text.x=element_blank())
 
 ggsave("Correlation_NRT2.1_Nassimilation_seedlings.jpg", width=5, height=4)
 
+```
 
+
+
+```{r}
 # Graph for genes involved in NRT2.1 protein regulation
+
+
+my_colors_lightgreens <- RColorBrewer::brewer.pal(9, "YlGn")[c(3,5)]
+
 
 CPM_SC18_all_WT_Zscore_long_lessNRT2.1_NprotRegul <- filter(CPM_SC18_all_WT_Zscore_long_lessNRT2.1,
                                                                  type=="NRT2.1_protein_regulation")
@@ -281,6 +313,8 @@ CPM_SC18_all_WT_Zscore_long_lessNRT2.1_NprotRegul <- filter(CPM_SC18_all_WT_Zsco
 ggplot(NRT2.1_CPM_SC18_all_WT_Zscore_long, aes(x=seedling, y=Zscore_normalised_expression)) +
   geom_point(size=2) +
   geom_line(data=CPM_SC18_all_WT_Zscore_long_lessNRT2.1_NprotRegul, aes(x=seedling, y=Zscore_normalised_expression, group=name, color=name), size=1.5) +
+  scale_color_manual(values=my_colors_lightgreens, labels=c(expression(bolditalic("NAR2.1")),  
+                                                       expression(bolditalic("PP2C")))) +
   ylab("Zscore normalised expression") +
   ggtitle("NRT2.1 protein regulation") +
   theme(legend.text=element_text(size=16),legend.title = element_text(size=16, face="bold"), 
@@ -291,7 +325,16 @@ ggplot(NRT2.1_CPM_SC18_all_WT_Zscore_long, aes(x=seedling, y=Zscore_normalised_e
 ggsave("Correlation_NRT2.1_NprotRegulation_seedlings.jpg", width=5, height=4)
 
 
+```
+
+
+```{r}
+
 # Graph for genes involved in negative regulation of NRT2.1 gene
+
+my_colors_purples <- c(RColorBrewer::brewer.pal(9, "PuRd")[2:3],RColorBrewer::brewer.pal(9, "Purples")[3:9])
+
+
 
 CPM_SC18_all_WT_Zscore_long_lessNRT2.1_NnegRegul <- filter(CPM_SC18_all_WT_Zscore_long_lessNRT2.1,
                                                                  type=="Negative_regulator_NRT2.1")
@@ -299,17 +342,27 @@ CPM_SC18_all_WT_Zscore_long_lessNRT2.1_NnegRegul <- filter(CPM_SC18_all_WT_Zscor
 ggplot(NRT2.1_CPM_SC18_all_WT_Zscore_long, aes(x=seedling, y=Zscore_normalised_expression)) +
   geom_point(size=2) +
   geom_line(data=CPM_SC18_all_WT_Zscore_long_lessNRT2.1_NnegRegul, aes(x=seedling, y=Zscore_normalised_expression, group=name, color=name), size=1.5) +
+   scale_color_manual(values=my_colors_purples, labels=c("BT1", "BT2", "HHO1", "HHO2", "HH3",
+                                                             "HRS1", "LBD37", "LBD38", "LBD39")) +
   ylab("Zscore normalised expression") +
   ggtitle(expression(paste("Negative regulator of ", italic("NRT2.1")))) +
-  theme(legend.text=element_text(size=16),legend.title = element_text(size=16, face="bold"), 
+  theme(legend.text=element_text(size=16, face = "italic" ),legend.title = element_text(size=16, face="bold"), 
         axis.text=element_text(size=16), axis.title=element_text(size=16),
         plot.title = element_text(size=18),
         panel.background = element_rect(fill = "white", colour = "grey50"),axis.text.x=element_blank())
 
 ggsave("Correlation_NRT2.1_NegativeRegulator_seedlings.jpg", width=5, height=4)
 
+```
+
+
+```{r}
 
 # Graph for genes involved in positive regulation of NRT2.1 gene
+
+my_colors_darkYellow <- RColorBrewer::brewer.pal(9, "YlOrRd")[1:5]
+
+
 
 CPM_SC18_all_WT_Zscore_long_lessNRT2.1_NposRegul <- filter(CPM_SC18_all_WT_Zscore_long_lessNRT2.1,
                                                                  type=="Positive_regulator_NRT2.1")
@@ -317,9 +370,10 @@ CPM_SC18_all_WT_Zscore_long_lessNRT2.1_NposRegul <- filter(CPM_SC18_all_WT_Zscor
 ggplot(NRT2.1_CPM_SC18_all_WT_Zscore_long, aes(x=seedling, y=Zscore_normalised_expression)) +
   geom_point(size=2) +
   geom_line(data=CPM_SC18_all_WT_Zscore_long_lessNRT2.1_NposRegul, aes(x=seedling, y=Zscore_normalised_expression, group=name, color=name), size=1.5) +
+  scale_color_manual(values=my_colors_darkYellow, labels=c("CEP9", "NLP2", "TGA1", "TGA4", "TGA7")) +
   ylab("Zscore normalised expression") +
   ggtitle(expression(paste("Positive regulator of ", italic("NRT2.1")))) +
-  theme(legend.text=element_text(size=16),legend.title = element_text(size=16, face="bold"), 
+  theme(legend.text=element_text(size=16, face = "italic" ),legend.title = element_text(size=16, face="bold"), 
         axis.text=element_text(size=16), axis.title=element_text(size=16),
         plot.title = element_text(size=18),
         panel.background = element_rect(fill = "white", colour = "grey50"),axis.text.x=element_blank()) 

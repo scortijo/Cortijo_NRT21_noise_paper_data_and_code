@@ -40,7 +40,7 @@ Graph
 filter(big_plate, KNO3=="1mM" & seedling!="background" & DAY!=7 ,!seedling%in%c("seedling16", "seedling19", "seedling5", "seedling6")) %>% 
   mutate(DAY=factor(DAY, levels=c("10", "14", "17", "21"))) %>% 
 ggplot( aes(x=DAY, y=RawIntDen_normBackg_normLen, group=seedling)) +
-  geom_line(aes(col=seedling), size=1) +
+  geom_line( size=1) +
   facet_wrap(~PLATE) +
   xlab("Age of plants (days)") +
   ylab(expression(paste("Luciferase signal for ", italic("NRT2.1:LUC")))) +
