@@ -445,23 +445,29 @@ write_tsv(CPM_SC18_all_WT_Zscore_BioVarsupp1, file="6clusters_genesCVsup1_NRT21.
 ```
 
 
+# Profile of clusters compared with NRT2.1
 
- plot profile of NRT2.1 and profile of cluster1 where NRT2.1 is
 ```{r}
-Cluster1_long <- filter(CPM_SC18_all_WT_Zscore_BioVarsupp1, cluster_6_pearson==1) %>% 
+AllClusters <- read_tsv("6clusters_genesCVsup1_NRT21.txt")
+```
+
+plot profile of NRT2.1 and profile of cluster1 where NRT2.1 is
+```{r}
+Cluster1_long <- filter(AllClusters, cluster_6_pearson==1) %>% 
   pivot_longer( cols = c(A1:A9), names_to = "seedling", values_to = "Zscore_normalised_expression") 
   
 
-NRT2.1_long <- filter(CPM_SC18_all_WT_Zscore_BioVarsupp1, gene=="AT1G08090") %>% 
+NRT2.1_long <- filter(AllClusters, gene=="AT1G08090") %>% 
   pivot_longer( cols = c(A1:A9), names_to = "seedling", values_to = "Zscore_normalised_expression")  %>% 
   mutate(seedling=fct_reorder(seedling, Zscore_normalised_expression))
 
 
 ggplot(NRT2.1_long, aes(x=seedling, y=Zscore_normalised_expression)) +
   geom_line(size=1.5, aes(group=gene)) +
-  geom_smooth(data=Cluster1_long, aes(x=seedling, y=Zscore_normalised_expression, group=cluster_6_pearson, color=cluster_6_pearson)) +
+  geom_smooth(data=Cluster1_long, aes(x=seedling, y=Zscore_normalised_expression, group=cluster_6_pearson, color=cluster_6_pearson_color)) +
+  scale_color_manual(values="#8DD3C7") +
   ylab("Zscore normalised expression") +
-  ggtitle("Expression in NRT2.1 cluster") +
+  ggtitle("Expression in cluster 1") +
   theme(legend.text=element_text(size=16),legend.title = element_text(size=16, face="bold"), 
         axis.text=element_text(size=16), axis.title=element_text(size=16),
         plot.title = element_text(size=18),
@@ -475,17 +481,213 @@ ggsave("Expression_cluster1_NRT2.1.jpg", width=5, height = 5)
 
 
 
+
+plot profile of NRT2.1 and profile of cluster2
+```{r}
+Cluster2_long <- filter(AllClusters, cluster_6_pearson==2) %>% 
+  pivot_longer( cols = c(A1:A9), names_to = "seedling", values_to = "Zscore_normalised_expression") 
+  
+
+NRT2.1_long <- filter(AllClusters, gene=="AT1G08090") %>% 
+  pivot_longer( cols = c(A1:A9), names_to = "seedling", values_to = "Zscore_normalised_expression")  %>% 
+  mutate(seedling=fct_reorder(seedling, Zscore_normalised_expression))
+
+
+ggplot(NRT2.1_long, aes(x=seedling, y=Zscore_normalised_expression)) +
+  geom_line(size=1.5, aes(group=gene)) +
+  geom_smooth(data=Cluster2_long, aes(x=seedling, y=Zscore_normalised_expression, group=cluster_6_pearson, color=cluster_6_pearson_color)) +
+  scale_color_manual(values="#FFFFB3") +
+  ylab("Zscore normalised expression") +
+  ggtitle("Expression in cluster 2") +
+  theme(legend.text=element_text(size=16),legend.title = element_text(size=16, face="bold"), 
+        axis.text=element_text(size=16), axis.title=element_text(size=16),
+        plot.title = element_text(size=18),
+        panel.background = element_rect(fill = "white", colour = "grey50"),axis.text.x=element_blank(), 
+        legend.position = "none")
+
+ggsave("Expression_cluster2_NRT2.1.jpg", width=5, height = 5)
+
+```
+
+
+
+plot profile of NRT2.1 and profile of cluster3
+```{r}
+Cluster3_long <- filter(AllClusters, cluster_6_pearson==3) %>% 
+  pivot_longer( cols = c(A1:A9), names_to = "seedling", values_to = "Zscore_normalised_expression") 
+  
+
+NRT2.1_long <- filter(AllClusters, gene=="AT1G08090") %>% 
+  pivot_longer( cols = c(A1:A9), names_to = "seedling", values_to = "Zscore_normalised_expression")  %>% 
+  mutate(seedling=fct_reorder(seedling, Zscore_normalised_expression))
+
+
+ggplot(NRT2.1_long, aes(x=seedling, y=Zscore_normalised_expression)) +
+  geom_line(size=1.5, aes(group=gene)) +
+  geom_smooth(data=Cluster3_long, aes(x=seedling, y=Zscore_normalised_expression, group=cluster_6_pearson, color=cluster_6_pearson_color)) +
+  scale_color_manual(values="#BEBADA") +
+  ylab("Zscore normalised expression") +
+  ggtitle("Expression in cluster 3") +
+  theme(legend.text=element_text(size=16),legend.title = element_text(size=16, face="bold"), 
+        axis.text=element_text(size=16), axis.title=element_text(size=16),
+        plot.title = element_text(size=18),
+        panel.background = element_rect(fill = "white", colour = "grey50"),axis.text.x=element_blank(), 
+        legend.position = "none")
+
+ggsave("Expression_cluster3_NRT2.1.jpg", width=5, height = 5)
+
+```
+
+
+
+plot profile of NRT2.1 and profile of cluster4
+```{r}
+Cluster4_long <- filter(AllClusters, cluster_6_pearson==4) %>% 
+  pivot_longer( cols = c(A1:A9), names_to = "seedling", values_to = "Zscore_normalised_expression") 
+  
+
+NRT2.1_long <- filter(AllClusters, gene=="AT1G08090") %>% 
+  pivot_longer( cols = c(A1:A9), names_to = "seedling", values_to = "Zscore_normalised_expression")  %>% 
+  mutate(seedling=fct_reorder(seedling, Zscore_normalised_expression))
+
+
+ggplot(NRT2.1_long, aes(x=seedling, y=Zscore_normalised_expression)) +
+  geom_line(size=1.5, aes(group=gene)) +
+  geom_smooth(data=Cluster4_long, aes(x=seedling, y=Zscore_normalised_expression, group=cluster_6_pearson, color=cluster_6_pearson_color)) +
+  scale_color_manual(values="#FB8072") +
+  ylab("Zscore normalised expression") +
+  ggtitle("Expression in cluster 4") +
+  theme(legend.text=element_text(size=16),legend.title = element_text(size=16, face="bold"), 
+        axis.text=element_text(size=16), axis.title=element_text(size=16),
+        plot.title = element_text(size=18),
+        panel.background = element_rect(fill = "white", colour = "grey50"),axis.text.x=element_blank(), 
+        legend.position = "none")
+
+ggsave("Expression_cluster4_NRT2.1.jpg", width=5, height = 5)
+
+```
+
+
+
+plot profile of NRT2.1 and profile of cluster5
+```{r}
+Cluster5_long <- filter(AllClusters, cluster_6_pearson==5) %>% 
+  pivot_longer( cols = c(A1:A9), names_to = "seedling", values_to = "Zscore_normalised_expression") 
+  
+
+NRT2.1_long <- filter(AllClusters, gene=="AT1G08090") %>% 
+  pivot_longer( cols = c(A1:A9), names_to = "seedling", values_to = "Zscore_normalised_expression")  %>% 
+  mutate(seedling=fct_reorder(seedling, Zscore_normalised_expression))
+
+
+ggplot(NRT2.1_long, aes(x=seedling, y=Zscore_normalised_expression)) +
+  geom_line(size=1.5, aes(group=gene)) +
+  geom_smooth(data=Cluster5_long, aes(x=seedling, y=Zscore_normalised_expression, group=cluster_6_pearson, color=cluster_6_pearson_color)) +
+  scale_color_manual(values="#80B1D3") +
+  ylab("Zscore normalised expression") +
+  ggtitle("Expression in cluster 5") +
+  theme(legend.text=element_text(size=16),legend.title = element_text(size=16, face="bold"), 
+        axis.text=element_text(size=16), axis.title=element_text(size=16),
+        plot.title = element_text(size=18),
+        panel.background = element_rect(fill = "white", colour = "grey50"),axis.text.x=element_blank(), 
+        legend.position = "none")
+
+ggsave("Expression_cluster5_NRT2.1.jpg", width=5, height = 5)
+
+```
+
+
+
+plot profile of NRT2.1 and profile of cluster6
+```{r}
+Cluster6_long <- filter(AllClusters, cluster_6_pearson==6) %>% 
+  pivot_longer( cols = c(A1:A9), names_to = "seedling", values_to = "Zscore_normalised_expression") 
+  
+
+NRT2.1_long <- filter(AllClusters, gene=="AT1G08090") %>% 
+  pivot_longer( cols = c(A1:A9), names_to = "seedling", values_to = "Zscore_normalised_expression")  %>% 
+  mutate(seedling=fct_reorder(seedling, Zscore_normalised_expression))
+
+
+ggplot(NRT2.1_long, aes(x=seedling, y=Zscore_normalised_expression)) +
+  geom_line(size=1.5, aes(group=gene)) +
+  geom_smooth(data=Cluster6_long, aes(x=seedling, y=Zscore_normalised_expression, group=cluster_6_pearson, color=cluster_6_pearson_color)) +
+  scale_color_manual(values="#FDB462") +
+  ylab("Zscore normalised expression") +
+  ggtitle("Expression in cluster 6") +
+  theme(legend.text=element_text(size=16),legend.title = element_text(size=16, face="bold"), 
+        axis.text=element_text(size=16), axis.title=element_text(size=16),
+        plot.title = element_text(size=18),
+        panel.background = element_rect(fill = "white", colour = "grey50"),axis.text.x=element_blank(), 
+        legend.position = "none")
+
+ggsave("Expression_cluster6_NRT2.1.jpg", width=5, height = 5)
+
+```
+
+
+# Volcano plot showing the correlation of genes in each cluster with NRT2.1
+
+```{r}
+
+cluster_info <- dplyr::select(AllClusters, gene, cluster_6_pearson)
+
+CPM_SC18_all_WT_Zscore_1ColperGene <- pivot_longer(AllClusters, cols = c(A1:A9), names_to = "seedling", values_to = "Zscore_normalised_expression") %>% 
+  dplyr::select(gene, seedling, Zscore_normalised_expression) %>% 
+  pivot_wider(names_from = gene, values_from = Zscore_normalised_expression) %>% 
+  column_to_rownames(var="seedling")
+
+
+Rcor_NRT2.1_genes_clusters <- sapply(CPM_SC18_all_WT_Zscore_1ColperGene, function(x) corr.test(x, CPM_SC18_all_WT_Zscore_1ColperGene$AT1G08090, method="spearman")$r) %>% 
+  as.data.frame() %>% 
+  rownames_to_column(var="gene") %>% 
+  dplyr::rename("Rcor" =".") %>% 
+  inner_join(cluster_info, by="gene")
+
+
+Pcor_NRT2.1_genes_clusters <- sapply(CPM_SC18_all_WT_Zscore_1ColperGene, function(x) corr.test(x, CPM_SC18_all_WT_Zscore_1ColperGene$AT1G08090, method="spearman")$p) %>% 
+  as.data.frame()%>% 
+  rownames_to_column(var="gene") %>% 
+  dplyr::rename("Pcor" =".")
+
+Corr_NRT2.1_genes_clusters <- inner_join(Rcor_NRT2.1_genes_clusters, Pcor_NRT2.1_genes_clusters, by="gene") %>% 
+  filter(gene!="AT1G08090")
+
+
+
+mutate(Corr_NRT2.1_genes_clusters, cluster_6_pearson=paste("cluster", cluster_6_pearson)) %>% 
+  mutate(cluster_6_pearson=factor(cluster_6_pearson, levels=c("cluster 1", "cluster 2", "cluster 3", 
+                                  "cluster 4", "cluster 5", "cluster 6")),
+       logCorr=-log(Pcor, 10)) %>% 
+ggplot( aes(x=Rcor, y=logCorr)) +
+  geom_point() +
+  ylab("correlation significance (-log10(p-value)") +
+  xlab("Spearman coefficient of correlation (R)") +
+  geom_vline(xintercept = -0.5, col="lightgrey") +
+  geom_vline(xintercept = 0.5, col="lightgrey") +
+  geom_hline(yintercept = 1.30103, col="lightgrey") +
+  facet_wrap(.~cluster_6_pearson, ncol = 3) +
+  scale_color_brewer(palette="Set2", name="P-value",labels=c("less0.05"="Lower than 0.05", "more0.05"="Higher than 0.05"))+
+   theme(legend.text=element_text(size=15),legend.title = element_text(size=15, face="bold"), 
+        axis.text=element_text(size=14), axis.title=element_text(size=15),
+        plot.title = element_text(size=16),strip.text = element_text( face="bold", size=12),
+        panel.background = element_rect(fill = "white", colour = "grey50"))
+
+ggsave(file="volcano_plot_cor_NRT2.1_clusters.jpg", width=10, height=5)
+
+```
+
+
+
 ## Comparison with targets of NLP7
 
 
 
-Tables of correlation between each gene and NRT2.1 for genes involved in Glycolysis
+Tables of correlation between each gene and NRT2.1 for NLP7 targets
 ```{r}
 options(scipen=999)
 
 targets_NLP7 <- read_tsv("NLP7_targets_Marchive_2013.txt")
-
-
 
 CPM_SC18_all_WT_Zscore_1ColperGene_nlp7 <- inner_join(CPM_SC18_all_WT_Zscore, targets_NLP7, by=c("gene"="AGI")) %>% 
   pivot_longer( cols = c(A1:A9), names_to = "seedling", values_to = "Zscore_normalised_expression") %>% 

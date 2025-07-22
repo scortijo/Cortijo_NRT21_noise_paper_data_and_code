@@ -291,6 +291,41 @@ Corr_NRT2.1_genes_Nnutrition <- inner_join(Rcor_NRT2.1_genes_Nnutrition, Pcor_NR
 ```
 
 
+Tables of correlation between each gene and NRT2.1 for genes involved in cell-wall
+```{r}
+options(scipen=999)
+
+cell_wall <- read_tsv("SC18_data/genes_cell_wall_Hartasanchez.txt")
+  
+  
+CPM_SC18_all_WT_Zscore_1ColperGene_cellWall <- inner_join(CPM_SC18_all_WT_Zscore, cell_wall, by="gene") %>% 
+  pivot_longer( cols = c(A1:A9), names_to = "seedling", values_to = "Zscore_normalised_expression") %>% 
+  dplyr::select(-type, - name) %>% 
+  pivot_wider(names_from = gene, values_from = Zscore_normalised_expression) %>% 
+  column_to_rownames(var="seedling")
+
+Rcor_NRT2.1_genes_cellWall <- sapply(CPM_SC18_all_WT_Zscore_1ColperGene_cellWall, function(x) corr.test(x, CPM_SC18_all_WT_Zscore_1ColperGene_cellWall$AT1G08090, method="spearman")$r) %>% 
+  as.data.frame() %>% 
+  rownames_to_column(var="gene") %>% 
+  dplyr::rename("Rcor" =".") %>% 
+  inner_join(cell_wall, by="gene")
+
+
+Pcor_NRT2.1_genes_cellWall <- sapply(CPM_SC18_all_WT_Zscore_1ColperGene_cellWall, function(x) corr.test(x, CPM_SC18_all_WT_Zscore_1ColperGene_cellWall$AT1G08090, method="spearman")$p) %>% 
+  as.data.frame()%>% 
+  rownames_to_column(var="gene") %>% 
+  dplyr::rename("Pcor" =".")
+
+Corr_NRT2.1_genes_cellWall <- inner_join(Rcor_NRT2.1_genes_cellWall, Pcor_NRT2.1_genes_cellWall, by="gene") %>% 
+  filter(gene!="AT1G08090") %>% 
+  drop_na()
+  
+
+
+```
+
+
+
 Plot for all groups of genes
 ```{r, message=FALSE, warning=FALSE}
 
@@ -374,16 +409,18 @@ group_by(Corr_NRT2.1_genes_all_groups, type) %>%
 
 ```{r}
 
-
+Corr_NRT2.1_genes_all_groups <- bind_rows(Corr_NRT2.1_genes_Glycolysis, Corr_NRT2.1_genes_Asp_family_pathway, Corr_NRT2.1_genes_ATP_biosynthesis, Corr_NRT2.1_genes_Photosynthesis,Corr_NRT2.1_genes_TCAcycle_mitocondrialET, Corr_NRT2.1_genes_Tetrapyrrole, Corr_NRT2.1_genes_Nnutrition, Corr_NRT2.1_genes_cellWall) %>% 
+  mutate(Pthreshold=ifelse(Pcor<0.05, yes="less0.05", no="more0.05"))
 
 ggplot(Corr_NRT2.1_genes_all_groups, aes(x=Pcor, y=Rcor, col=type)) +
   geom_point()
 
 mutate(Corr_NRT2.1_genes_all_groups, type=factor(type, levels=c("Photosynthesis", "Glycolysis", "Nnutrition", 
-                                  "Tetrapyrrole", "Asp_family_pathway", "TCAcycle_mitocondrialET", "ATP_biosynthesis")),
+                                  "Tetrapyrrole", "cell_wall", "Asp_family_pathway", "TCAcycle_mitocondrialET",
+                                  "ATP_biosynthesis")),
        logCorr=-log(Pcor, 10)) %>% 
 ggplot( aes(x=Rcor, y=logCorr, col=Pthreshold)) +
-  geom_point() +
+  geom_point(size=3, alpha=0.6) +
   ylab("correlation significance (-log10(p-value)") +
   xlab("Spearman coefficient of correlation (R)") +
   geom_vline(xintercept = -0.5, col="lightgrey") +
