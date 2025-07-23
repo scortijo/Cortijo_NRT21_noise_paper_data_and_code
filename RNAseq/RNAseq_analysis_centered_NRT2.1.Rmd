@@ -258,13 +258,13 @@ my_colors <- RColorBrewer::brewer.pal(8, "Oranges")[5:8]
 ggplot(NRT2.1_CPM_SC18_all_WT_Zscore_long, aes(x=seedling, y=Zscore_normalised_expression)) +
   geom_point(size=2) +
   geom_line(data=CPM_SC18_all_WT_Zscore_long_lessNRT2.1_N_transport, aes(x=seedling, y=Zscore_normalised_expression, group=name, color=name), size=1.5) +
-  ylab("Zscore normalised expression") +
+  ylab("Zscore of \nnormalised expression") +
   ggtitle("Nitrate transporters") +
   scale_color_manual(values=my_colors, labels=c(expression(bolditalic("NRT1.1")), "NRT1.2", 
                                                 expression(bolditalic("NRT2.4")), "NRT2.5")) +
   theme(legend.text=element_text(size=16,face = "italic" ),legend.title = element_text(size=16, face="bold"), 
-        axis.text=element_text(size=16), axis.title=element_text(size=16),
-        plot.title = element_text(size=18),
+        axis.text=element_text(size=18), axis.title=element_text(size=21.5),
+        plot.title = element_text(size=24),
         panel.background = element_rect(fill = "white", colour = "grey50"),axis.text.x=element_blank())
 
 
@@ -290,8 +290,8 @@ ggplot(NRT2.1_CPM_SC18_all_WT_Zscore_long, aes(x=seedling, y=Zscore_normalised_e
   scale_color_manual(values=my_colors_greens, labels=c("GLN2", "GLU1", "GLU2", "NIA1" , 
                                                        "NIA2",expression(bolditalic("NIR1")))) +
   theme(legend.text=element_text(size=16,face = "italic" ),legend.title = element_text(size=16, face="bold"), 
-        axis.text=element_text(size=16), axis.title=element_text(size=16),
-        plot.title = element_text(size=18),
+        axis.text=element_text(size=18), axis.title=element_text(size=21.5),
+        plot.title = element_text(size=24),
         panel.background = element_rect(fill = "white", colour = "grey50"),axis.text.x=element_blank())
 
 ggsave("Correlation_NRT2.1_Nassimilation_seedlings.jpg", width=5, height=4)
@@ -317,9 +317,9 @@ ggplot(NRT2.1_CPM_SC18_all_WT_Zscore_long, aes(x=seedling, y=Zscore_normalised_e
                                                        expression(bolditalic("PP2C")))) +
   ylab("Zscore normalised expression") +
   ggtitle("NRT2.1 protein regulation") +
-  theme(legend.text=element_text(size=16),legend.title = element_text(size=16, face="bold"), 
-        axis.text=element_text(size=16), axis.title=element_text(size=16),
-        plot.title = element_text(size=18),
+  theme(legend.text=element_text(size=16,face = "italic" ),legend.title = element_text(size=16, face="bold"), 
+        axis.text=element_text(size=18), axis.title=element_text(size=21.5),
+        plot.title = element_text(size=24),
         panel.background = element_rect(fill = "white", colour = "grey50"),axis.text.x=element_blank())
 
 ggsave("Correlation_NRT2.1_NprotRegulation_seedlings.jpg", width=5, height=4)
@@ -346,9 +346,9 @@ ggplot(NRT2.1_CPM_SC18_all_WT_Zscore_long, aes(x=seedling, y=Zscore_normalised_e
                                                              "HRS1", "LBD37", "LBD38", "LBD39")) +
   ylab("Zscore normalised expression") +
   ggtitle(expression(paste("Negative regulator of ", italic("NRT2.1")))) +
-  theme(legend.text=element_text(size=16, face = "italic" ),legend.title = element_text(size=16, face="bold"), 
-        axis.text=element_text(size=16), axis.title=element_text(size=16),
-        plot.title = element_text(size=18),
+  theme(legend.text=element_text(size=16,face = "italic" ),legend.title = element_text(size=16, face="bold"), 
+        axis.text=element_text(size=18), axis.title=element_text(size=21.5),
+        plot.title = element_text(size=24),
         panel.background = element_rect(fill = "white", colour = "grey50"),axis.text.x=element_blank())
 
 ggsave("Correlation_NRT2.1_NegativeRegulator_seedlings.jpg", width=5, height=4)
@@ -373,9 +373,9 @@ ggplot(NRT2.1_CPM_SC18_all_WT_Zscore_long, aes(x=seedling, y=Zscore_normalised_e
   scale_color_manual(values=my_colors_darkYellow, labels=c("CEP9", "NLP2", "TGA1", "TGA4", "TGA7")) +
   ylab("Zscore normalised expression") +
   ggtitle(expression(paste("Positive regulator of ", italic("NRT2.1")))) +
-  theme(legend.text=element_text(size=16, face = "italic" ),legend.title = element_text(size=16, face="bold"), 
-        axis.text=element_text(size=16), axis.title=element_text(size=16),
-        plot.title = element_text(size=18),
+  theme(legend.text=element_text(size=16,face = "italic" ),legend.title = element_text(size=16, face="bold"), 
+        axis.text=element_text(size=18), axis.title=element_text(size=21.5),
+        plot.title = element_text(size=24),
         panel.background = element_rect(fill = "white", colour = "grey50"),axis.text.x=element_blank()) 
 
 ggsave("Correlation_NRT2.1_PositiveRegulator_seedlings.jpg", width=5, height=4)
@@ -669,8 +669,8 @@ ggplot( aes(x=Rcor, y=logCorr)) +
   facet_wrap(.~cluster_6_pearson, ncol = 3) +
   scale_color_brewer(palette="Set2", name="P-value",labels=c("less0.05"="Lower than 0.05", "more0.05"="Higher than 0.05"))+
    theme(legend.text=element_text(size=15),legend.title = element_text(size=15, face="bold"), 
-        axis.text=element_text(size=14), axis.title=element_text(size=15),
-        plot.title = element_text(size=16),strip.text = element_text( face="bold", size=12),
+        axis.text=element_text(size=14), axis.title=element_text(size=18.5),
+        plot.title = element_text(size=16),strip.text = element_text( face="bold", size=15),
         panel.background = element_rect(fill = "white", colour = "grey50"))
 
 ggsave(file="volcano_plot_cor_NRT2.1_clusters.jpg", width=10, height=5)

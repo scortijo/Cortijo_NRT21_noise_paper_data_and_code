@@ -111,14 +111,14 @@ filter(rep1_2_parents_norm, expt=="rep1", type_Parent!="other",
          Parent_name=factor(Parent_name, levels=c("line2", "line3", "line6", "line9",
                                            "line11", "line12", "line13", "line14", "line17"))) %>% 
 ggplot(aes(x=genotype_Parent, y=RawIntDen_NormBack_NormLen_Parent, shape=type_Parent, col=Parent_name)) +
-  geom_jitter(size=3, width = 0.03, height = 0) +
+  geom_jitter(size=4, width = 0.03, height = 0) +
   ylab(expression(paste(italic("NRT2.1:LUC")," signal of parents"))) +
   xlab("") +
   scale_color_brewer(palette = "Paired", name="Line", labels=c("A", "B", "C", "D", "E",
                                                                 "F", "G", "H", "I")) +
   scale_shape(name="Type of parent") +
    theme(legend.text=element_text(size=16),legend.title = element_text(size=16, face="bold"), 
-        axis.text=element_text(size=16), axis.title=element_text(size=16),
+        axis.text=element_text(size=16), axis.title=element_text(size=20),
         plot.title = element_text(size=20,face="bold"),
         panel.background = element_rect(fill = "white", colour = "grey50")) 
 
@@ -142,7 +142,7 @@ ggplot(aes(x=genotype_Parent, y=RawIntDen_NormBack_NormLen_Parent, shape=type_Pa
   scale_shape(name="Type of parent") +
   xlab("") +
   theme(legend.text=element_text(size=16),legend.title = element_text(size=16, face="bold"), 
-        axis.text=element_text(size=16), axis.title=element_text(size=16),
+        axis.text=element_text(size=16), axis.title=element_text(size=20),
         plot.title = element_text(size=20,face="bold"),
         panel.background = element_rect(fill = "white", colour = "grey50"))  +
   guides(shape = guide_legend(order=1),
@@ -200,13 +200,13 @@ mutate(type_Parent=factor(type_Parent, levels=c("low", "medium", "high")),
                                                                 "F", "G", "H", "I")) +
     scale_shape(name="Type of parent") +
   theme(legend.text=element_text(size=16),legend.title = element_text(size=16, face="bold"), 
-        axis.text=element_text(size=16), axis.title=element_text(size=16),
+        axis.text=element_text(size=16), axis.title=element_text(size=20),
         plot.title = element_text(size=20,face="bold"),
         panel.background = element_rect(fill = "white", colour = "grey50")) +
   guides(shape = guide_legend(order=1),
          color = guide_legend(order=2))
   
-ggsave("scatterplot_transgenerational_rep1_parentsValues.jpg", height = 5, width = 6)
+ggsave("scatterplot_transgenerational_rep1_parentsValues.jpg", height = 5, width = 7)
 
 
 # for rep2
@@ -239,13 +239,13 @@ mutate(type_Parent=factor(type_Parent, levels=c("low", "medium", "high"))) %>%
                                                                 "6", "7", "8", "9", "10")) +
     
   theme(legend.text=element_text(size=16),legend.title = element_text(size=16, face="bold"), 
-        axis.text=element_text(size=16), axis.title=element_text(size=16),
+        axis.text=element_text(size=16), axis.title=element_text(size=20),
         plot.title = element_text(size=20,face="bold"),
         panel.background = element_rect(fill = "white", colour = "grey50")) +
   guides(shape = guide_legend(order=1),
          color = guide_legend(order=2))
   
-ggsave("Scatterplot_transgenerational_rep2_parentsValues.jpg", height = 5, width = 6)
+ggsave("Scatterplot_transgenerational_rep2_parentsValues.jpg", height = 5, width = 7)
 
 
 ```
