@@ -76,6 +76,7 @@ group_by(luc_all_norm, exp, genotype, KNO3) %>%
   filter(KNO3=="1mM") %>% 
   ggplot(aes(x=genotype, y=CV)) +
   geom_point(aes(col=exp),size=4) +
+  geom_line(aes(color=exp, group=exp), size=0.1, linetype="dashed") +
   stat_compare_means(label="p.format", label.x.npc= 0.3, label.y.npc= 0.95, size=6, method = "wilcox.test") +
   ylim(0,0.6) +
   scale_color_manual(values = my.colors) +
@@ -83,6 +84,7 @@ group_by(luc_all_norm, exp, genotype, KNO3) %>%
       "35s:luc" = expression(italic("p35S:LUC")),
       "NRT2.1:luc" = expression(italic("pNRT2.1:LUC")))) +
   ylab("CV for luciferase signal of reporters") +
+  xlab("Genotype") +
   theme(legend.text=element_text(size=16),legend.title = element_text(size=16, face="bold"), 
         axis.text=element_text(size=16), axis.title=element_text(size=16),
         plot.title = element_text(size=16),

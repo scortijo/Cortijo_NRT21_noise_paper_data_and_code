@@ -163,8 +163,8 @@ group_by(All_reps_luc_norm,expt, KNO3) %>%
   geom_density(size=1.2) +
   geom_jitter(aes(y=0.1), width = 0, height = 0.05) +
   xlim(0.8,2.5) +
-  ylab("density") +
-  xlab("Ratio of signal at low/high nitrate concentration") +
+  ylab("Density") +
+  xlab("Ratio of signal at low/high \nnitrate concentration") +
   theme(legend.text=element_text(size=16),legend.title = element_text(size=16, face="bold"), 
         axis.text=element_text(size=16), axis.title=element_text(size=16),
         plot.title = element_text(size=20,face="bold"),
@@ -203,11 +203,11 @@ filter(All_reps_luc_norm, KNO3=="1mM", expt%in%c("AV05", "AV12_rep1", "AV26_rep1
   geom_point(size=3) +
   stat_cor(method="spearman", size=4.8, label.x=10) +
   ggtitle(bquote('Seedlings grown with 1mM KNO'[3])) +
-  xlab("primary root length (mm)") +
+  xlab("Primary root length (mm)") +
   ylab(expression(paste("Luciferase signal for ", italic("pNRT2.1:LUC")))) +
   theme(legend.text=element_text(size=16),legend.title = element_text(size=16, face="bold"), 
-        axis.text=element_text(size=16), axis.title=element_text(size=16),
-        plot.title = element_text(size=20,face="bold"),
+        axis.text=element_text(size=16), axis.title=element_text(size=15.8),
+        plot.title = element_text(size=19.5,face="bold"),
         panel.background = element_rect(fill = "white", colour = "grey50"),
         legend.position = "none")
 
@@ -222,7 +222,7 @@ filter(All_reps_luc_norm, KNO3=="1mM") %>%
   ggplot(aes(x=root_length_mm, y=RawIntDen_NormBack_NormLen, color=expt)) +
   geom_point(size=3) +
   stat_cor(method="spearman", size=4.8) +
-  xlab("primary root length (mm)") +
+  xlab("Primary root length (mm)") +
   ylab(expression(paste("Luciferase signal for ", italic("pNRT2.1:LUC")))) +
   theme(legend.text=element_text(size=16),legend.title = element_text(size=16, face="bold"), 
         axis.text=element_text(size=16), axis.title=element_text(size=16),
@@ -241,7 +241,7 @@ filter(All_reps_luc_norm, KNO3=="10mM", expt%in%c("AV05", "AV12_rep1", "AV26_rep
   ggplot(aes(x=root_length_mm, y=RawIntDen_NormBack_NormLen, color=expt)) +
   geom_point(size=3) +
   stat_cor(method="spearman", size=4.8, label.x=10) +
-  xlab("primary root length (mm)") +
+  xlab("Primary root length (mm)") +
   ggtitle(bquote('Seedlings grown with 10mM KNO'[3])) +
   ylab(expression(paste("Luciferase signal for ", italic("pNRT2.1:LUC")))) +
   theme(legend.text=element_text(size=16),legend.title = element_text(size=16, face="bold"), 
@@ -269,7 +269,7 @@ filter(All_reps_luc_norm, KNO3=="1mM", expt%in%c("AV05", "AV12_rep1", "AV26_rep1
   geom_point(size=3) +
   stat_cor(method="spearman", size=4.8, label.x=-0.1) +
   ggtitle(bquote('Seedlings grown with 1mM KNO'[3])) +
-  xlab("Secondary root density") +
+  xlab("Lateral root density\n(number of lateral roots/primary root length)") +
   ylab(expression(paste("Luciferase signal for ", italic("pNRT2.1:LUC")))) +
   theme(legend.text=element_text(size=16),legend.title = element_text(size=16, face="bold"), 
         axis.text=element_text(size=16), axis.title=element_text(size=16),
@@ -277,7 +277,7 @@ filter(All_reps_luc_norm, KNO3=="1mM", expt%in%c("AV05", "AV12_rep1", "AV26_rep1
         panel.background = element_rect(fill = "white", colour = "grey50"),
         legend.position = "none")
 
-ggsave("Correlation_scondaryRootDensity_lucSignal_1mM_6reps.jpg", width=5.3, height = 4.4)
+ggsave("Correlation_scondaryRootDensity_lucSignal_1mM_6reps.jpg", width=5.3, height = 4.7)
 
 ```
 
@@ -291,7 +291,7 @@ filter(All_reps_luc_norm, KNO3=="10mM", expt%in%c("AV05", "AV12_rep1", "AV26_rep
   geom_point(size=3) +
   stat_cor(method="spearman", size=4.8, label.x=-0.1) +
   ggtitle(bquote('Seedlings grown with 10mM KNO'[3])) +
-  xlab("Secondary root density") +
+  xlab("Lateral root density\n(number of lateral roots/primary root length)") +
   ylab(expression(paste("Luciferase signal for ", italic("pNRT2.1:LUC")))) +
   theme(legend.text=element_text(size=16),legend.title = element_text(size=16, face="bold"), 
         axis.text=element_text(size=16), axis.title=element_text(size=16),
