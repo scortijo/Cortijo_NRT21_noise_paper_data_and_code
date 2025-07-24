@@ -1,0 +1,716 @@
+---
+title: "Network Inference"
+author: "Sandra"
+date: "2023-10-05"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r, echo=FALSE, message=FALSE}
+
+library(tidyverse)
+library(DIANE)
+library(kableExtra)
+library(matrixStats)
+library(statmod)
+library(scales)
+library(plotly)
+library(scTenifoldNet)
+library(psych)
+
+```
+
+
+
+```{r, echo=FALSE, message=FALSE}
+# Get HVG function  ----
+
+BrenneckeGetVariableGenesMod <- function(expr_mat, spikes=NA, suppress.plot=FALSE, fdr=0.1, minBiolDisp=0.5, fitMeanQuantile=0.8) {
+  #require(statmod)
+  rowVars <- function(x) { unlist(apply(x,1,var, na.rm=TRUE))}
+  colGenes <- "black"
+  colSp <- "blue"
+  fullCountTable <- expr_mat;
+  if (is.character(spikes)) {
+    sp <- rownames(fullCountTable) %in% spikes;
+    countsSp <- fullCountTable[sp,];
+    countsGenes <- fullCountTable[!sp,];
+  } else if (is.numeric(spikes)) {
+    countsSp <- fullCountTable[spikes,];
+    countsGenes <- fullCountTable[-spikes,];
+  } else {
+    countsSp <- fullCountTable;
+    countsGenes <- fullCountTable;
+  }
+  meansSp <- rowMeans(countsSp, na.rm=TRUE)
+  varsSp <- rowVars(countsSp)
+  cv2Sp <- varsSp/meansSp^2
+  meansGenes <- rowMeans(countsGenes, na.rm=TRUE)
+  varsGenes <- rowVars(countsGenes)
+  cv2Genes <- varsGenes/meansGenes^2
+  # Fit Model
+  minMeanForFit <- unname( quantile( meansSp[ which( cv2Sp > 0.3 ) ], fitMeanQuantile))
+  useForFit <- meansSp >= minMeanForFit
+  if (sum(useForFit, na.rm=TRUE) < 20) {
+    warning("Too few spike-ins exceed minMeanForFit, recomputing using all genes.")
+    meansAll <- c(meansGenes, meansSp)
+    cv2All <- c(cv2Genes,cv2Sp)
+    minMeanForFit <- unname( quantile( meansAll[ which( cv2All > 0.3 ) ], 0.80))
+    useForFit <- meansSp >= minMeanForFit
+  }
+  if (sum(useForFit, na.rm=TRUE) < 30) {warning(paste("Only", sum(useForFit), "spike-ins to be used in fitting, may result in poor fit."))}
+  fit <- glmgam.fit( cbind( a0 = 1.5, a1tilde = 1.1/meansSp[useForFit] ), cv2Sp[useForFit] )
+  a0 <- unname( fit$coefficients["a0"] )
+  a1 <- unname( fit$coefficients["a1tilde"])
+  res <- cv2Genes - (a0 + a1/meansGenes);
+  # Test
+  psia1theta <- a1
+  minBiolDisp <- minBiolDisp^2
+  m <- ncol(countsSp);
+  cv2th <- a0 + minBiolDisp + a0 * minBiolDisp
+  testDenom <- (meansGenes*psia1theta + meansGenes^2*cv2th)/(1+cv2th/m)
+  p <- 1-pchisq(varsGenes * (m-1)/testDenom,m-1)
+  padj <- p.adjust(p,"BH")
+  sig <- padj < fdr
+  sig[is.na(sig)] <- FALSE
+  if (!suppress.plot) {
+    plot( meansGenes,cv2Genes, xaxt="n", yaxt="n", log="xy",
+          xlab = "average normalized read count",
+          ylab = "squared coefficient of variation (CV^2)", col="white")
+    axis( 1, 10^(-2:5), c( "0.01", "0.1", "1", "10", "100", "1000",
+                           expression(10^4), expression(10^5) ) )
+    axis( 2, 10^(-2:3), c( "0.01", "0.1", "1", "10", "100","1000" ), las=2 )
+    abline( h=10^(-2:1), v=10^(-1:5), col="#D0D0D0", lwd=2 )
+    # Plot the genes, use a different color if they are highly variable
+    points( meansGenes, cv2Genes, pch=19, cex=.6,
+            col = alpha(ifelse( padj < .1, "blue", colGenes ), 1) )
+    # Plot/highlight the spike-ins if they are different from the genes
+    if (length(meansSp) < length(meansGenes)) {
+      points(meansSp, cv2Sp, pch=20, cex=.5, col=colSp)
+    }
+    # Add the technical noise fit
+    xg <- 10^seq( -2, 6, length.out=1000 )
+    lines( xg, (a1)/xg + a0, col="red", lwd=3 )
+    # Add a curve showing the expectation for the chosen biological CV^2 thershold
+    lines( xg, psia1theta/xg + a0 + minBiolDisp, lty="dashed", col="purple", lwd=3)
+  }
+  TABLE <- data.frame(Gene = names(meansGenes), effect.size=res, p.value = p, q.value= padj, Mean=meansGenes, CV2=cv2Genes , 
+                      TechNoise=(a1)/meansGenes+a0, BioVar=log2(cv2Genes/((a1)/meansGenes+a0)))
+  TABLE <- TABLE[order(-TABLE[,2]),];
+  return(list(data=TABLE,A0=a0,A1=a1))
+}
+
+
+```
+
+
+## 1. Data normalisation
+
+Data loading and removing small genes (essential to do variability analysis)
+```{r}
+
+WT_all <- read_tsv("../SC18_data/SC18_Raw_HTSeq_WT.txt") 
+
+
+Gene_size <- read_tsv("../SC18_data/TAIR10_Gene_sizes.txt") %>% 
+  select(gene_name,length)
+
+Genes_more150bp <-filter(Gene_size,length>150)
+
+WT_all <- inner_join(WT_all, Genes_more150bp, by=c("gene"="gene_name")) %>% 
+  select(-length) %>% 
+  column_to_rownames(var="gene")
+
+kable(tail(gene_annotations[["Arabidopsis thaliana"]], n = 10))
+
+```
+
+
+Visualisation of raw counts
+```{r}
+DIANE::draw_distributions(WT_all, boxplot = TRUE)
+```
+
+
+
+Normalisation using tmm and removal of lowly expressed genes (keep only genes with average count >10)
+```{r}
+tcc_object <- DIANE::normalize(WT_all, norm_method = 'tmm', iteration = FALSE)
+
+tcc_object <- DIANE::filter_low_counts(tcc_object, 240)
+
+normalized_counts <- TCC::getNormalizedData(tcc_object)
+
+```
+
+
+
+
+Visualisation of the impact of normalisation
+```{r}
+pre_process <- DIANE::draw_distributions(WT_all, boxplot = FALSE) + ggtitle("Before") +theme(legend.position = "none")
+post_process <- DIANE::draw_distributions(normalized_counts, boxplot = FALSE)+ ggtitle("After") +theme(legend.position = "none")
+
+gridExtra::grid.arrange(pre_process, post_process, ncol = 2)
+#> Picking joint bandwidth of 0.411
+#> Picking joint bandwidth of 0.247
+
+
+```
+
+Visualisation of the impact of normalisation (boxplots)
+```{r}
+pre_process <- DIANE::draw_distributions(WT_all, boxplot = TRUE) + ggtitle("Before") +theme(legend.position = "none")
+post_process <- DIANE::draw_distributions(normalized_counts, boxplot = TRUE)+ ggtitle("After") +theme(legend.position = "none")
+
+gridExtra::grid.arrange(pre_process, post_process, ncol = 2)
+#> Picking joint bandwidth of 0.411
+#> Picking joint bandwidth of 0.247
+
+
+```
+
+PCA
+```{r}
+DIANE::draw_PCA(data = normalized_counts)
+```
+
+
+Selection of genes with corrected CV > 1
+
+```{r}
+
+WT_HTSeq_Brennecke <- BrenneckeGetVariableGenesMod(normalized_counts, minBiolDisp = 0.1, fdr=0.01)
+
+
+data_WT_HTSeq_Brennecke <- WT_HTSeq_Brennecke$data
+
+ggplot(data_WT_HTSeq_Brennecke, aes(x=BioVar))+
+  geom_density() +
+  geom_vline(xintercept = 1) 
+
+selected_genes <- filter(data_WT_HTSeq_Brennecke, BioVar> 1) 
+
+selected_genes<- selected_genes$Gene
+
+```
+
+
+
+# Network inference
+
+grouping highly correlated regulators
+
+```{r}
+
+regressors <- intersect(selected_genes, regulators_per_organism[["Arabidopsis thaliana"]])
+
+grouping <- DIANE::group_regressors(normalized_counts, selected_genes, regressors)
+
+
+grouped_counts <- grouping$counts
+
+grouped_targets <- grouping$grouped_genes
+
+grouped_regressors <- grouping$grouped_regressors
+
+
+```
+
+
+network inference
+```{r}
+set.seed(123)
+mat <- DIANE::network_inference(grouped_counts, conds = names(WT_all), 
+                                targets = grouped_targets, regressors = grouped_regressors, 
+                                nCores = 1, verbose = FALSE)
+
+network <- DIANE::network_thresholding(mat, n_edges = length(selected_genes))
+
+data <- network_data(network, regulators_per_organism[["Arabidopsis thaliana"]], 
+                     gene_annotations$`Arabidopsis thaliana`)
+
+knitr::kable(head(data$nodes))
+
+
+DIANE::draw_network(data$nodes, data$edges)
+
+```
+
+
+# Selection of edges with density at 0.002
+
+
+```{r}
+set.seed(123)
+mat <- DIANE::network_inference(grouped_counts, 
+                                conds = names(WT_all), 
+                                targets = grouped_targets,
+                                regressors = grouped_regressors, 
+                                importance_metric = "MSEincrease_oob", 
+                                verbose = TRUE)
+
+
+nGenes = length(grouped_targets)
+nRegulators = length(grouped_regressors)
+
+res <- data.frame(density = seq(0.0001, 0.005, length.out = 20),
+                  nEdges = sapply(seq(0.0001, 0.005, length.out = 20),
+                                  get_nEdges, nGenes, nRegulators))
+ggplot(res, aes(x = density, y = nEdges)) + geom_line(size = 1) + 
+  ggtitle("Number of network edges as a function of its density") + 
+  geom_vline(xintercept = 0.002, color = "darkgreen", lty = 2, size = 1.2)
+
+
+
+set.seed(123)
+res <- DIANE::test_edges(mat, normalized_counts = grouped_counts, density = 0.002,
+                         nGenes = nGenes, 
+                         nRegulators = nRegulators, 
+                         nTrees = 1000, verbose = TRUE)
+
+res$fdr_nEdges_curve
+res$pvalues_distributions + xlim(0,0.1)
+```
+
+
+
+```{r}
+
+kable(head(res$links))
+```
+
+
+
+
+```{r}
+net <- DIANE::network_from_tests(res$links, fdr = 0.05)
+```
+
+
+```{r}
+net_data <- network_data(net, regulators_per_organism[["Arabidopsis thaliana"]], gene_annotations$`Arabidopsis thaliana`)
+draw_discarded_edges(res$links, net_data)
+```
+
+
+```{r}
+draw_network(net_data$nodes, net_data$edges)
+```
+
+
+Community detection
+```{r}
+
+data$nodes$group <- data$nodes$community
+
+louvain_membership <- data$nodes$community
+names(louvain_membership) <- data$nodes$id
+
+knitr::kable(head(louvain_membership, n = 10))
+
+data_nodes <- data$nodes
+
+write.table(data_nodes, file="network_louvain_communities_density_0.002.txt", sep='\t', row.names = FALSE)
+
+DIANE::draw_network(data$nodes, data$edges)
+
+
+group_by(data_nodes, community) %>% 
+  summarise(nb=n()) %>% 
+  arrange(desc(nb))
+
+```
+
+
+
+# Profile of the 9 modules with more than 50 genes compared with NRT2.1
+
+
+### Normalisation by the total number of raw counts (equivalent of mapped library size) 
+
+```{r, message=FALSE, warning=FALSE}
+
+SC18_all_WT <- read_tsv("../SC18_data/SC18_Raw_HTSeq_WT.txt") %>% 
+  column_to_rownames(var="gene")
+
+
+CPMnorm_SC18_all_WT <- cpmNormalization(SC18_all_WT)
+
+CPM_SC18_all_WT <- as.data.frame.matrix(CPMnorm_SC18_all_WT)
+
+```
+
+
+### Z-score normalisation on top of the library size normalisation
+
+```{r, message=FALSE, warning=FALSE}
+
+CPM_SC18_all_WT_Zscore <- mutate_all(CPM_SC18_all_WT, funs("Zscore" = (.-rowMeans(CPM_SC18_all_WT[,1:24], na.rm=TRUE))/rowSds(as.matrix(CPM_SC18_all_WT[,1:24])))) %>% 
+ dplyr::select( contains("Zscore")) %>% 
+  rename_with(~ gsub("_Zscore", "", .x, fixed = TRUE)) %>% 
+  rownames_to_column(var="gene") 
+
+```
+
+
+
+## Profile of modules compared with NRT2.1
+
+```{r}
+AllModules <- read_tsv("network_louvain_communities_density_0.002.txt") %>% 
+  dplyr::select(id, community)
+  
+```
+
+
+plot profile of NRT2.1 and profile of module1
+```{r}
+
+
+module1_long <- inner_join(AllModules, CPM_SC18_all_WT_Zscore, by=c("id"="gene")) %>%
+  filter(community==1) %>% 
+  pivot_longer( cols = c(A1:A9), names_to = "seedling", values_to = "Zscore_normalised_expression") 
+  
+
+NRT2.1_long <- filter(CPM_SC18_all_WT_Zscore, gene=="AT1G08090") %>% 
+  pivot_longer( cols = c(A1:A9), names_to = "seedling", values_to = "Zscore_normalised_expression")  %>% 
+  mutate(seedling=fct_reorder(seedling, Zscore_normalised_expression))
+
+
+ggplot(NRT2.1_long, aes(x=seedling, y=Zscore_normalised_expression)) +
+  geom_line(size=1.5, aes(group=gene)) +
+  geom_smooth(data=module1_long, aes(x=seedling, y=Zscore_normalised_expression, group=as.factor(community), color=as.factor(community))) +
+  scale_color_manual(values="#98c4fc") +
+  ylab("Zscore normalised expression") +
+  ggtitle("Expression in module 1") +
+  theme(legend.text=element_text(size=16),legend.title = element_text(size=16, face="bold"), 
+        axis.text=element_text(size=16), axis.title=element_text(size=16),
+        plot.title = element_text(size=18),
+        panel.background = element_rect(fill = "white", colour = "grey50"),axis.text.x=element_blank(), 
+        legend.position = "none")
+
+ggsave("Expression_module1_NRT2.1.jpg", width=5, height = 5)
+
+```
+
+
+
+plot profile of NRT2.1 and profile of module6
+```{r}
+
+
+module6_long <- inner_join(AllModules, CPM_SC18_all_WT_Zscore, by=c("id"="gene")) %>%
+  filter(community==6) %>% 
+  pivot_longer( cols = c(A1:A9), names_to = "seedling", values_to = "Zscore_normalised_expression") 
+  
+
+NRT2.1_long <- filter(CPM_SC18_all_WT_Zscore, gene=="AT1G08090") %>% 
+  pivot_longer( cols = c(A1:A9), names_to = "seedling", values_to = "Zscore_normalised_expression")  %>% 
+  mutate(seedling=fct_reorder(seedling, Zscore_normalised_expression))
+
+
+ggplot(NRT2.1_long, aes(x=seedling, y=Zscore_normalised_expression)) +
+  geom_line(size=1.5, aes(group=gene)) +
+  geom_smooth(data=module6_long, aes(x=seedling, y=Zscore_normalised_expression, group=as.factor(community), color=as.factor(community))) +
+  scale_color_manual(values="#b074ec") +
+  ylab("Zscore normalised expression") +
+  ggtitle("Expression in module 6") +
+  theme(legend.text=element_text(size=16),legend.title = element_text(size=16, face="bold"), 
+        axis.text=element_text(size=16), axis.title=element_text(size=16),
+        plot.title = element_text(size=18),
+        panel.background = element_rect(fill = "white", colour = "grey50"),axis.text.x=element_blank(), 
+        legend.position = "none")
+
+ggsave("Expression_module6_NRT2.1.jpg", width=5, height = 5)
+
+```
+
+
+
+plot profile of NRT2.1 and profile of module 11
+```{r}
+
+
+module11_long <- inner_join(AllModules, CPM_SC18_all_WT_Zscore, by=c("id"="gene")) %>%
+  filter(community==11) %>% 
+  pivot_longer( cols = c(A1:A9), names_to = "seedling", values_to = "Zscore_normalised_expression") 
+  
+
+NRT2.1_long <- filter(CPM_SC18_all_WT_Zscore, gene=="AT1G08090") %>% 
+  pivot_longer( cols = c(A1:A9), names_to = "seedling", values_to = "Zscore_normalised_expression")  %>% 
+  mutate(seedling=fct_reorder(seedling, Zscore_normalised_expression))
+
+
+ggplot(NRT2.1_long, aes(x=seedling, y=Zscore_normalised_expression)) +
+  geom_line(size=1.5, aes(group=gene)) +
+  geom_smooth(data=module11_long, aes(x=seedling, y=Zscore_normalised_expression, group=as.factor(community), color=as.factor(community))) +
+  scale_color_manual(values="#ee0000") +
+  ylab("Zscore normalised expression") +
+  ggtitle("Expression in module 11") +
+  theme(legend.text=element_text(size=16),legend.title = element_text(size=16, face="bold"), 
+        axis.text=element_text(size=16), axis.title=element_text(size=16),
+        plot.title = element_text(size=18),
+        panel.background = element_rect(fill = "white", colour = "grey50"),axis.text.x=element_blank(), 
+        legend.position = "none")
+
+ggsave("Expression_module11_NRT2.1.jpg", width=5, height = 5)
+
+```
+
+
+
+plot profile of NRT2.1 and profile of module 2
+```{r}
+
+
+module2_long <- inner_join(AllModules, CPM_SC18_all_WT_Zscore, by=c("id"="gene")) %>%
+  filter(community==2) %>% 
+  pivot_longer( cols = c(A1:A9), names_to = "seedling", values_to = "Zscore_normalised_expression") 
+  
+
+NRT2.1_long <- filter(CPM_SC18_all_WT_Zscore, gene=="AT1G08090") %>% 
+  pivot_longer( cols = c(A1:A9), names_to = "seedling", values_to = "Zscore_normalised_expression")  %>% 
+  mutate(seedling=fct_reorder(seedling, Zscore_normalised_expression))
+
+
+ggplot(NRT2.1_long, aes(x=seedling, y=Zscore_normalised_expression)) +
+  geom_line(size=1.5, aes(group=gene)) +
+  geom_smooth(data=module2_long, aes(x=seedling, y=Zscore_normalised_expression, group=as.factor(community), color=as.factor(community))) +
+  scale_color_manual(values="#feff00") +
+  ylab("Zscore normalised expression") +
+  ggtitle("Expression in module 2") +
+  theme(legend.text=element_text(size=16),legend.title = element_text(size=16, face="bold"), 
+        axis.text=element_text(size=16), axis.title=element_text(size=16),
+        plot.title = element_text(size=18),
+        panel.background = element_rect(fill = "white", colour = "grey50"),axis.text.x=element_blank(), 
+        legend.position = "none")
+
+ggsave("Expression_module2_NRT2.1.jpg", width=5, height = 5)
+
+```
+
+
+
+plot profile of NRT2.1 and profile of module 4
+```{r}
+
+
+module4_long <- inner_join(AllModules, CPM_SC18_all_WT_Zscore, by=c("id"="gene")) %>%
+  filter(community==4) %>% 
+  pivot_longer( cols = c(A1:A9), names_to = "seedling", values_to = "Zscore_normalised_expression") 
+  
+
+NRT2.1_long <- filter(CPM_SC18_all_WT_Zscore, gene=="AT1G08090") %>% 
+  pivot_longer( cols = c(A1:A9), names_to = "seedling", values_to = "Zscore_normalised_expression")  %>% 
+  mutate(seedling=fct_reorder(seedling, Zscore_normalised_expression))
+
+
+ggplot(NRT2.1_long, aes(x=seedling, y=Zscore_normalised_expression)) +
+  geom_line(size=1.5, aes(group=gene)) +
+  geom_smooth(data=module4_long, aes(x=seedling, y=Zscore_normalised_expression, group=as.factor(community), color=as.factor(community))) +
+  scale_color_manual(values="#7ae142") +
+  ylab("Zscore normalised expression") +
+  ggtitle("Expression in module 4") +
+  theme(legend.text=element_text(size=16),legend.title = element_text(size=16, face="bold"), 
+        axis.text=element_text(size=16), axis.title=element_text(size=16),
+        plot.title = element_text(size=18),
+        panel.background = element_rect(fill = "white", colour = "grey50"),axis.text.x=element_blank(), 
+        legend.position = "none")
+
+ggsave("Expression_module4_NRT2.1.jpg", width=5, height = 5)
+
+```
+
+
+
+
+plot profile of NRT2.1 and profile of module 10
+```{r}
+
+
+module10_long <- inner_join(AllModules, CPM_SC18_all_WT_Zscore, by=c("id"="gene")) %>%
+  filter(community==10) %>% 
+  pivot_longer( cols = c(A1:A9), names_to = "seedling", values_to = "Zscore_normalised_expression") 
+  
+
+NRT2.1_long <- filter(CPM_SC18_all_WT_Zscore, gene=="AT1G08090") %>% 
+  pivot_longer( cols = c(A1:A9), names_to = "seedling", values_to = "Zscore_normalised_expression")  %>% 
+  mutate(seedling=fct_reorder(seedling, Zscore_normalised_expression))
+
+
+ggplot(NRT2.1_long, aes(x=seedling, y=Zscore_normalised_expression)) +
+  geom_line(size=1.5, aes(group=gene)) +
+  geom_smooth(data=module10_long, aes(x=seedling, y=Zscore_normalised_expression, group=as.factor(community), color=as.factor(community))) +
+  scale_color_manual(values="#c1fabb") +
+  ylab("Zscore normalised expression") +
+  ggtitle("Expression in module 10") +
+  theme(legend.text=element_text(size=16),legend.title = element_text(size=16, face="bold"), 
+        axis.text=element_text(size=16), axis.title=element_text(size=16),
+        plot.title = element_text(size=18),
+        panel.background = element_rect(fill = "white", colour = "grey50"),axis.text.x=element_blank(), 
+        legend.position = "none")
+
+ggsave("Expression_module10_NRT2.1.jpg", width=5, height = 5)
+
+```
+
+
+
+plot profile of NRT2.1 and profile of module 13
+```{r}
+
+
+module13_long <- inner_join(AllModules, CPM_SC18_all_WT_Zscore, by=c("id"="gene")) %>%
+  filter(community==13) %>% 
+  pivot_longer( cols = c(A1:A9), names_to = "seedling", values_to = "Zscore_normalised_expression") 
+  
+
+NRT2.1_long <- filter(CPM_SC18_all_WT_Zscore, gene=="AT1G08090") %>% 
+  pivot_longer( cols = c(A1:A9), names_to = "seedling", values_to = "Zscore_normalised_expression")  %>% 
+  mutate(seedling=fct_reorder(seedling, Zscore_normalised_expression))
+
+
+ggplot(NRT2.1_long, aes(x=seedling, y=Zscore_normalised_expression)) +
+  geom_line(size=1.5, aes(group=gene)) +
+  geom_smooth(data=module13_long, aes(x=seedling, y=Zscore_normalised_expression, group=as.factor(community), color=as.factor(community))) +
+  scale_color_manual(values="#2b7ce8") +
+  ylab("Zscore normalised expression") +
+  ggtitle("Expression in module 13") +
+  theme(legend.text=element_text(size=16),legend.title = element_text(size=16, face="bold"), 
+        axis.text=element_text(size=16), axis.title=element_text(size=16),
+        plot.title = element_text(size=18),
+        panel.background = element_rect(fill = "white", colour = "grey50"),axis.text.x=element_blank(), 
+        legend.position = "none")
+
+ggsave("Expression_module13_NRT2.1.jpg", width=5, height = 5)
+
+```
+
+
+
+
+plot profile of NRT2.1 and profile of module 7
+```{r}
+
+
+module7_long <- inner_join(AllModules, CPM_SC18_all_WT_Zscore, by=c("id"="gene")) %>%
+  filter(community==7) %>% 
+  pivot_longer( cols = c(A1:A9), names_to = "seedling", values_to = "Zscore_normalised_expression") 
+  
+
+NRT2.1_long <- filter(CPM_SC18_all_WT_Zscore, gene=="AT1G08090") %>% 
+  pivot_longer( cols = c(A1:A9), names_to = "seedling", values_to = "Zscore_normalised_expression")  %>% 
+  mutate(seedling=fct_reorder(seedling, Zscore_normalised_expression))
+
+
+ggplot(NRT2.1_long, aes(x=seedling, y=Zscore_normalised_expression)) +
+  geom_line(size=1.5, aes(group=gene)) +
+  geom_smooth(data=module7_long, aes(x=seedling, y=Zscore_normalised_expression, group=as.factor(community), color=as.factor(community))) +
+  scale_color_manual(values="#ffa705") +
+  ylab("Zscore normalised expression") +
+  ggtitle("Expression in module 7") +
+  theme(legend.text=element_text(size=16),legend.title = element_text(size=16, face="bold"), 
+        axis.text=element_text(size=16), axis.title=element_text(size=16),
+        plot.title = element_text(size=18),
+        panel.background = element_rect(fill = "white", colour = "grey50"),axis.text.x=element_blank(), 
+        legend.position = "none")
+
+ggsave("Expression_module7_NRT2.1.jpg", width=5, height = 5)
+
+```
+
+
+
+
+plot profile of NRT2.1 and profile of module 12
+```{r}
+
+
+module12_long <- inner_join(AllModules, CPM_SC18_all_WT_Zscore, by=c("id"="gene")) %>%
+  filter(community==12) %>% 
+  pivot_longer( cols = c(A1:A9), names_to = "seedling", values_to = "Zscore_normalised_expression") 
+  
+
+NRT2.1_long <- filter(CPM_SC18_all_WT_Zscore, gene=="AT1G08090") %>% 
+  pivot_longer( cols = c(A1:A9), names_to = "seedling", values_to = "Zscore_normalised_expression")  %>% 
+  mutate(seedling=fct_reorder(seedling, Zscore_normalised_expression))
+
+
+ggplot(NRT2.1_long, aes(x=seedling, y=Zscore_normalised_expression)) +
+  geom_line(size=1.5, aes(group=gene)) +
+  geom_smooth(data=module12_long, aes(x=seedling, y=Zscore_normalised_expression, group=as.factor(community), color=as.factor(community))) +
+  scale_color_manual(values="#ff6000") +
+  ylab("Zscore normalised expression") +
+  ggtitle("Expression in module 12") +
+  theme(legend.text=element_text(size=16),legend.title = element_text(size=16, face="bold"), 
+        axis.text=element_text(size=16), axis.title=element_text(size=16),
+        plot.title = element_text(size=18),
+        panel.background = element_rect(fill = "white", colour = "grey50"),axis.text.x=element_blank(), 
+        legend.position = "none")
+
+ggsave("Expression_module12_NRT2.1.jpg", width=5, height = 5)
+
+```
+
+
+# Volcano plot for all mudules with more than 50 genes
+
+
+
+# Volcano plot showing the correlation of genes in each cluster with NRT2.1
+
+```{r}
+
+top10Modules_Zscore <- inner_join(AllModules, CPM_SC18_all_WT_Zscore, by=c("id"="gene")) %>% 
+  filter(community%in%c("1", "6", "11", "2", "4", "10", "13", "7", "12"))
+
+
+CPM_SC18_all_WT_Zscore_1ColperGene_modules <- pivot_longer(top10Modules_Zscore, cols = c(A1:A9), names_to = "seedling", values_to = "Zscore_normalised_expression") %>% 
+  dplyr::select(id, seedling, Zscore_normalised_expression) %>% 
+  pivot_wider(names_from = id, values_from = Zscore_normalised_expression) %>% 
+  column_to_rownames(var="seedling")
+
+
+Rcor_NRT2.1_genes_modules <- sapply(CPM_SC18_all_WT_Zscore_1ColperGene_modules, function(x) corr.test(x, CPM_SC18_all_WT_Zscore_1ColperGene_modules$AT1G08090, method="spearman")$r) %>% 
+  as.data.frame() %>% 
+  rownames_to_column(var="gene") %>% 
+  dplyr::rename("Rcor" =".") %>% 
+  inner_join(AllModules, by=c("gene"="id"))
+
+
+Pcor_NRT2.1_genes_modules <- sapply(CPM_SC18_all_WT_Zscore_1ColperGene_modules, function(x) corr.test(x, CPM_SC18_all_WT_Zscore_1ColperGene_modules$AT1G08090, method="spearman")$p) %>% 
+  as.data.frame()%>% 
+  rownames_to_column(var="gene") %>% 
+  dplyr::rename("Pcor" =".")
+
+Corr_NRT2.1_genes_modules <- inner_join(Rcor_NRT2.1_genes_modules, Pcor_NRT2.1_genes_modules, by="gene") %>% 
+  filter(gene!="AT1G08090")
+
+
+
+mutate(Corr_NRT2.1_genes_modules, community=paste("module", community)) %>% 
+  mutate(community=factor(community, levels=c("module 1", "module 2", "module 4", "module 6", "module 7", 
+                                              "module 10", "module 11", "module 12", "module 13")),
+       logCorr=-log(Pcor, 10)) %>% 
+ggplot( aes(x=Rcor, y=logCorr)) +
+  geom_point() +
+  ylab("correlation significance (-log10(p-value)") +
+  xlab("Spearman coefficient of correlation (R)") +
+  geom_vline(xintercept = -0.5, col="lightgrey") +
+  geom_vline(xintercept = 0.5, col="lightgrey") +
+  geom_hline(yintercept = 1.30103, col="lightgrey") +
+  facet_wrap(.~community, ncol = 5) +
+   theme(legend.text=element_text(size=15),legend.title = element_text(size=15, face="bold"), 
+        axis.text=element_text(size=14), axis.title=element_text(size=18.5),
+        plot.title = element_text(size=16),strip.text = element_text( face="bold", size=15),
+        panel.background = element_rect(fill = "white", colour = "grey50"))
+
+ggsave(file="volcano_plot_cor_NRT2.1_top10modules.jpg", width=10, height=5)
+
+```
+
+
