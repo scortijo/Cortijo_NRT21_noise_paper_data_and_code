@@ -431,9 +431,9 @@ ggplot( aes(x=Rcor, y=logCorr, col=Pthreshold)) +
    theme(legend.text=element_text(size=15),legend.title = element_text(size=15, face="bold"), 
         axis.text=element_text(size=14), axis.title=element_text(size=15),
         plot.title = element_text(size=16),strip.text = element_text( face="bold", size=12),
-        panel.background = element_rect(fill = "white", colour = "grey50"))
+        panel.background = element_rect(fill = "white", colour = "grey50"), legend.key = element_rect(fill = NA, color = NA), legend.position="bottom")
 
-ggsave(file="volcano_plot_cor_energy_genes_NRT2.2.jpg", width=12, height=7)
+ggsave(file="volcano_plot_cor_energy_genes_NRT2.2.jpg", width=12, height=9)
 
 ```
 

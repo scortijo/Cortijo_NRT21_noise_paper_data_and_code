@@ -228,10 +228,6 @@ Pcor_NRT2.1_genes <- sapply(CPM_SC18_all_WT_Zscore_1ColperGene[-1], function(x) 
 ```
 
 
-```{r}
-
-```
-
 
 
 Graph with 1 ribbon per type of gene (Z-score). Stars are added next to the name of the gene to indicate correlation: * < 0.05; ** < 0.01; *** < 0.005
@@ -265,7 +261,7 @@ ggplot(NRT2.1_CPM_SC18_all_WT_Zscore_long, aes(x=seedling, y=Zscore_normalised_e
   theme(legend.text=element_text(size=16,face = "italic" ),legend.title = element_text(size=16, face="bold"), 
         axis.text=element_text(size=18), axis.title=element_text(size=21.5),
         plot.title = element_text(size=24),
-        panel.background = element_rect(fill = "white", colour = "grey50"),axis.text.x=element_blank())
+        panel.background = element_rect(fill = "white", colour = "grey50"),axis.text.x=element_blank(), legend.key = element_rect(fill = NA, color = NA))
 
 
 ggsave("Correlation_NRT2.1_Ntransporters_seedlings.jpg", width=5, height=4)
@@ -292,7 +288,7 @@ ggplot(NRT2.1_CPM_SC18_all_WT_Zscore_long, aes(x=seedling, y=Zscore_normalised_e
   theme(legend.text=element_text(size=16,face = "italic" ),legend.title = element_text(size=16, face="bold"), 
         axis.text=element_text(size=18), axis.title=element_text(size=21.5),
         plot.title = element_text(size=24),
-        panel.background = element_rect(fill = "white", colour = "grey50"),axis.text.x=element_blank())
+        panel.background = element_rect(fill = "white", colour = "grey50"),axis.text.x=element_blank(), legend.key = element_rect(fill = NA, color = NA))
 
 ggsave("Correlation_NRT2.1_Nassimilation_seedlings.jpg", width=5, height=4)
 
@@ -320,7 +316,7 @@ ggplot(NRT2.1_CPM_SC18_all_WT_Zscore_long, aes(x=seedling, y=Zscore_normalised_e
   theme(legend.text=element_text(size=16,face = "italic" ),legend.title = element_text(size=16, face="bold"), 
         axis.text=element_text(size=18), axis.title=element_text(size=21.5),
         plot.title = element_text(size=24),
-        panel.background = element_rect(fill = "white", colour = "grey50"),axis.text.x=element_blank())
+        panel.background = element_rect(fill = "white", colour = "grey50"),axis.text.x=element_blank(), legend.key = element_rect(fill = NA, color = NA))
 
 ggsave("Correlation_NRT2.1_NprotRegulation_seedlings.jpg", width=5, height=4)
 
@@ -349,7 +345,7 @@ ggplot(NRT2.1_CPM_SC18_all_WT_Zscore_long, aes(x=seedling, y=Zscore_normalised_e
   theme(legend.text=element_text(size=16,face = "italic" ),legend.title = element_text(size=16, face="bold"), 
         axis.text=element_text(size=18), axis.title=element_text(size=21.5),
         plot.title = element_text(size=24),
-        panel.background = element_rect(fill = "white", colour = "grey50"),axis.text.x=element_blank())
+        panel.background = element_rect(fill = "white", colour = "grey50"),axis.text.x=element_blank(), legend.key = element_rect(fill = NA, color = NA))
 
 ggsave("Correlation_NRT2.1_NegativeRegulator_seedlings.jpg", width=5, height=4)
 
@@ -376,7 +372,7 @@ ggplot(NRT2.1_CPM_SC18_all_WT_Zscore_long, aes(x=seedling, y=Zscore_normalised_e
   theme(legend.text=element_text(size=16,face = "italic" ),legend.title = element_text(size=16, face="bold"), 
         axis.text=element_text(size=18), axis.title=element_text(size=21.5),
         plot.title = element_text(size=24),
-        panel.background = element_rect(fill = "white", colour = "grey50"),axis.text.x=element_blank()) 
+        panel.background = element_rect(fill = "white", colour = "grey50"),axis.text.x=element_blank(), legend.key = element_rect(fill = NA, color = NA)) 
 
 ggsave("Correlation_NRT2.1_PositiveRegulator_seedlings.jpg", width=5, height=4)
 

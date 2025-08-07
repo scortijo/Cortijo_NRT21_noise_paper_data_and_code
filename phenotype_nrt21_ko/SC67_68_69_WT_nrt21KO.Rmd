@@ -66,12 +66,37 @@ mutate(All_reps_WT_nrt21, KNO3 = paste(KNO3, "KNO3")) %>%
   theme(legend.text=element_text(size=16),legend.title = element_text(size=16, face="bold"), 
         axis.text=element_text(size=16), axis.title=element_text(size=16),
         plot.title = element_text(size=20,face="bold"),strip.text.x = element_text(size = 12),
-        panel.background = element_rect(fill = "white", colour = "grey50"), legend.position="bottom")
+        panel.background = element_rect(fill = "white", colour = "grey50"), legend.position="bottom", legend.key = element_rect(fill = NA, color = NA))
 
 ggsave("Primary_root_length_WT_nrt21.jpg", height = 5.2, width=8)
 
 ```
 
+
+Graph of primary root length with replicates next to each other
+
+```{r}
+
+colors_brewer <- brewer.pal(n = 9, name = "Greys")[c(5,7,9)]
+
+mutate(All_reps_WT_nrt21, KNO3 = paste(KNO3, "KNO3")) %>% 
+  mutate(KNO3=factor(KNO3, levels=c("1mM KNO3", "10mM KNO3"))) %>% 
+  ggplot( aes(x=genotype, y=root_length_mm, col= rep ))+
+  geom_boxplot() +
+  geom_jitter(position = position_jitterdodge(jitter.width = 0.2, jitter.height = 0, dodge.width = 0.75)) +
+  facet_wrap(~KNO3) +
+  stat_compare_means(size=4, label="p.format", method="anova") +
+  scale_color_manual(values=colors_brewer) +
+  ylab("Primary root length (mm) \n") +
+  xlab("")+
+  theme(legend.text=element_text(size=16),legend.title = element_text(size=16, face="bold"), 
+        axis.text=element_text(size=16), axis.title=element_text(size=16),
+        plot.title = element_text(size=20,face="bold"),strip.text.x = element_text(size = 12),
+        panel.background = element_rect(fill = "white", colour = "grey50"), legend.position="bottom", legend.key = element_rect(fill = NA, color = NA))
+
+ggsave("Primary_root_length_WT_nrt21_combined_replicates.jpg", height = 5.2, width=8)
+
+```
 
 Graph of lateral root density
 
@@ -91,7 +116,7 @@ Graph of lateral root density
   theme(legend.text=element_text(size=16),legend.title = element_text(size=16, face="bold"), 
         axis.text=element_text(size=16), axis.title=element_text(size=16),
         plot.title = element_text(size=20,face="bold"),strip.text.x = element_text(size = 12),
-        panel.background = element_rect(fill = "white", colour = "grey50"), legend.position="bottom")
+        panel.background = element_rect(fill = "white", colour = "grey50"), legend.position="bottom", legend.key = element_rect(fill = NA, color = NA))
 
 
 
@@ -102,5 +127,34 @@ ggsave("Lateral_root_density_WT_nrt21.jpg", height = 5.2, width=8)
 
 ```
 
+Graph of lateral root density with replicates next to each other
 
+```{r}
+
+colors_brewer <- brewer.pal(n = 9, name = "Greys")[c(5,7,9)]
+
+
+  mutate(All_reps_WT_nrt21, KNO3 = paste(KNO3, "KNO3")) %>%
+  mutate(KNO3=factor(KNO3, levels=c("1mM KNO3", "10mM KNO3"))) %>% 
+  ggplot( aes(x=genotype , y=LRD, col=rep))+
+  geom_boxplot() + 
+  geom_jitter(position = position_jitterdodge(jitter.width = 0.2, jitter.height = 0, dodge.width = 0.75)) +
+  facet_wrap(~KNO3) +
+  stat_compare_means(size=4, label="p.format", method="anova") +
+  scale_color_manual(values=colors_brewer) +
+  ylab("Lateral root density\n(number of lateral roots/primary root length)") +
+  xlab("")+
+  theme(legend.text=element_text(size=16),legend.title = element_text(size=16, face="bold"), 
+        axis.text=element_text(size=16), axis.title=element_text(size=16),
+        plot.title = element_text(size=20,face="bold"),strip.text.x = element_text(size = 12),
+        panel.background = element_rect(fill = "white", colour = "grey50"), legend.position="bottom", legend.key = element_rect(fill = NA, color = NA))
+
+
+
+ggsave("Lateral_root_density_WT_nrt21_combined_replicates.jpg", height = 5.2, width=8)
+
+
+
+
+```
 
