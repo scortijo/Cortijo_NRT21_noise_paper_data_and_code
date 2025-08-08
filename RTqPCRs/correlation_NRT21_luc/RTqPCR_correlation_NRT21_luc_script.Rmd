@@ -56,18 +56,18 @@ group_by(RTqPCR_allPlates,expt, plate, Primer, Name) %>%
   mutate_at(c( "LUC", "NRT2.1"), funs(PercControl=(2^(-(.-MeanControls))*100))) %>% 
   ggplot(aes(x=LUC_PercControl, y=NRT2.1_PercControl)) +
   geom_point(size=2.5) +
-  xlab(expression(atop(paste("Normalised expression for ",italic("LUC")), "measured by RT-qPCR"))) +
+  xlab(expression(paste("Normalised expression for ",italic("LUC"), "measured by RT-qPCR"))) +
   ylab(expression(atop(paste("Normalised expression for ",italic("NRT2.1")), "measured by RT-qPCR"))) +
   stat_cor(size=6, col="gray40") +
   facet_wrap(.~expt, scales = "free") +
   theme(legend.text=element_text(size=16),legend.title = element_text(size=16, face="bold"), 
-        axis.text=element_text(size=16), axis.title=element_text(size=16),
+        axis.text=element_text(size=18), axis.title=element_text(size=16),
         plot.title = element_text(size=20,face="bold"),
         panel.background = element_rect(fill = "white", colour = "grey50"),
         legend.position = "none", strip.text.x = element_text(size = 18))
 
 
-ggsave("Correlation_NRT2.1_LUC_3reps.jpg", height = 5, width = 9.5)
+ggsave("Correlation_NRT2.1_LUC_3reps.jpg", height = 3.8, width = 9.5)
 
 
 
