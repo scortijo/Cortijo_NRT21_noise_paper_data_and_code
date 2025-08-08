@@ -34,7 +34,10 @@ AR1277_plate3 <- read_tsv("AR1277_RTqPCR_luc_1mM_plate3.txt") %>%
 AV32 <- read_tsv("AV32_20240319_RT_NRT21_vs_LUC.txt") %>% 
   mutate(expt="rep2" , plate="plate1")
 
-RTqPCR_allPlates  <- bind_rows(AR1277_plate1, AR1277_plate2, AR1277_plate3, AV32)
+SC73 <- read_tsv("20250808_SC73_RTqPCR.txt") %>% 
+  mutate(expt="rep3" , plate="plate1")
+
+RTqPCR_allPlates  <- bind_rows(AR1277_plate1, AR1277_plate2, AR1277_plate3, AV32, SC73)
 
 ```
 
@@ -49,13 +52,13 @@ group_by(RTqPCR_allPlates,expt, plate, Primer, Name) %>%
   pivot_wider(names_from = Primer, values_from = MeanCp) %>% 
   select(-HVG, -LVG) %>% 
   rowwise() %>% 
-  mutate(MeanControls=mean(c(ACT2, UBQ10), na.rm = TRUE)) %>% 
+  mutate(MeanControls=mean(c( UBQ10), na.rm = TRUE)) %>% 
   mutate_at(c( "LUC", "NRT2.1"), funs(PercControl=(2^(-(.-MeanControls))*100))) %>% 
   ggplot(aes(x=LUC_PercControl, y=NRT2.1_PercControl)) +
   geom_point(size=2.5) +
   xlab(expression(atop(paste("Normalised expression for ",italic("LUC")), "measured by RT-qPCR"))) +
   ylab(expression(atop(paste("Normalised expression for ",italic("NRT2.1")), "measured by RT-qPCR"))) +
-  stat_cor(size=6) +
+  stat_cor(size=6, col="gray40") +
   facet_wrap(.~expt, scales = "free") +
   theme(legend.text=element_text(size=16),legend.title = element_text(size=16, face="bold"), 
         axis.text=element_text(size=16), axis.title=element_text(size=16),
@@ -64,7 +67,9 @@ group_by(RTqPCR_allPlates,expt, plate, Primer, Name) %>%
         legend.position = "none", strip.text.x = element_text(size = 18))
 
 
-ggsave("Correlation_NRT2.1_LUC_2reps.jpg", height = 4.5, width = 7)
+ggsave("Correlation_NRT2.1_LUC_3reps.jpg", height = 5, width = 9.5)
+
+
 
 ```
 

@@ -1,289 +1,289 @@
-Primer	Pos	Name	Cp
-ACT2	A1	pNRT2.1:luc_seedling1	28.74
-ACT2	A2	pNRT2.1:luc_seedling1	28.14
-ACT2	A3	pNRT2.1:luc_seedling1	28.28
-UBQ10	A4	pNRT2.1:luc_seedling1	20.58
-UBQ10	A5	pNRT2.1:luc_seedling1	20.6
-UBQ10	A6	pNRT2.1:luc_seedling1	20.64
-NRT2.1	A7	pNRT2.1:luc_seedling1	24.19
-NRT2.1	A8	pNRT2.1:luc_seedling1	24.31
-NRT2.1	A9	pNRT2.1:luc_seedling1	24.23
-LUC	A10	pNRT2.1:luc_seedling1	30.21
-LUC	A11	pNRT2.1:luc_seedling1	29.59
-LUC	A12	pNRT2.1:luc_seedling1	29.89
-ACT2	A13	pNRT2.1:luc_seedling17	25.65
-ACT2	A14	pNRT2.1:luc_seedling17	25.67
-ACT2	A15	pNRT2.1:luc_seedling17	25.72
-UBQ10	A16	pNRT2.1:luc_seedling17	19.16
-UBQ10	A17	pNRT2.1:luc_seedling17	19.17
-UBQ10	A18	pNRT2.1:luc_seedling17	19.16
-NRT2.1	A19	pNRT2.1:luc_seedling17	22.05
-NRT2.1	A20	pNRT2.1:luc_seedling17	22.04
-NRT2.1	A21	pNRT2.1:luc_seedling17	22
-LUC	A22	pNRT2.1:luc_seedling17	28.28
-LUC	A23	pNRT2.1:luc_seedling17	28.49
-LUC	A24	pNRT2.1:luc_seedling17	28.35
-ACT2	B1	pNRT2.1:luc_seedling9	25.75
-ACT2	B2	pNRT2.1:luc_seedling9	25.78
-ACT2	B3	pNRT2.1:luc_seedling9	25.82
-UBQ10	B4	pNRT2.1:luc_seedling9	19.06
-UBQ10	B5	pNRT2.1:luc_seedling9	19.05
-UBQ10	B6	pNRT2.1:luc_seedling9	19.05
-NRT2.1	B7	pNRT2.1:luc_seedling9	21.81
-NRT2.1	B8	pNRT2.1:luc_seedling9	21.77
-NRT2.1	B9	pNRT2.1:luc_seedling9	21.8
-LUC	B10	pNRT2.1:luc_seedling9	28.59
-LUC	B11	pNRT2.1:luc_seedling9	28.28
-LUC	B12	pNRT2.1:luc_seedling9	28.52
-ACT2	C1	pNRT2.1:luc_seedling2	24.62
-ACT2	C2	pNRT2.1:luc_seedling2	24.58
-ACT2	C3	pNRT2.1:luc_seedling2	24.53
-UBQ10	C4	pNRT2.1:luc_seedling2	18.77
-UBQ10	C5	pNRT2.1:luc_seedling2	18.75
-UBQ10	C6	pNRT2.1:luc_seedling2	18.79
-NRT2.1	C7	pNRT2.1:luc_seedling2	21.9
-NRT2.1	C8	pNRT2.1:luc_seedling2	21.82
-NRT2.1	C9	pNRT2.1:luc_seedling2	21.86
-LUC	C10	pNRT2.1:luc_seedling2	27.82
-LUC	C11	pNRT2.1:luc_seedling2	27.93
-LUC	C12	pNRT2.1:luc_seedling2	27.99
-ACT2	C13	pNRT2.1:luc_seedling18	26.13
-ACT2	C14	pNRT2.1:luc_seedling18	26.1
-ACT2	C15	pNRT2.1:luc_seedling18	26.15
-UBQ10	C16	pNRT2.1:luc_seedling18	19.54
-UBQ10	C17	pNRT2.1:luc_seedling18	19.57
-UBQ10	C18	pNRT2.1:luc_seedling18	19.58
-NRT2.1	C19	pNRT2.1:luc_seedling18	22.09
-NRT2.1	C20	pNRT2.1:luc_seedling18	22.02
-NRT2.1	C21	pNRT2.1:luc_seedling18	22.06
-LUC	C22	pNRT2.1:luc_seedling18	28.48
-LUC	C23	pNRT2.1:luc_seedling18	28.47
-LUC	C24	pNRT2.1:luc_seedling18	28.25
-ACT2	D1	pNRT2.1:luc_seedling10	25.17
-ACT2	D2	pNRT2.1:luc_seedling10	25.28
-ACT2	D3	pNRT2.1:luc_seedling10	25.33
-UBQ10	D4	pNRT2.1:luc_seedling10	18.87
-UBQ10	D5	pNRT2.1:luc_seedling10	18.89
-UBQ10	D6	pNRT2.1:luc_seedling10	18.88
-NRT2.1	D7	pNRT2.1:luc_seedling10	21.2
-NRT2.1	D8	pNRT2.1:luc_seedling10	21.17
-NRT2.1	D9	pNRT2.1:luc_seedling10	21.21
-LUC	D10	pNRT2.1:luc_seedling10	27.78
-LUC	D11	pNRT2.1:luc_seedling10	27.78
-LUC	D12	pNRT2.1:luc_seedling10	27.74
-ACT2	E1	pNRT2.1:luc_seedling3	24.72
-ACT2	E2	pNRT2.1:luc_seedling3	24.62
-ACT2	E3	pNRT2.1:luc_seedling3	24.7
-UBQ10	E4	pNRT2.1:luc_seedling3	18.79
-UBQ10	E5	pNRT2.1:luc_seedling3	18.77
-UBQ10	E6	pNRT2.1:luc_seedling3	18.79
-NRT2.1	E7	pNRT2.1:luc_seedling3	21.15
-NRT2.1	E8	pNRT2.1:luc_seedling3	21.11
-NRT2.1	E9	pNRT2.1:luc_seedling3	21.11
-LUC	E10	pNRT2.1:luc_seedling3	27.55
-LUC	E11	pNRT2.1:luc_seedling3	27.32
-LUC	E12	pNRT2.1:luc_seedling3	27.49
-ACT2	E13	pNRT2.1:luc_seedling19	27.75
-ACT2	E14	pNRT2.1:luc_seedling19	27.98
-ACT2	E15	pNRT2.1:luc_seedling19	27.77
-UBQ10	E16	pNRT2.1:luc_seedling19	19.24
-UBQ10	E17	pNRT2.1:luc_seedling19	19.24
-UBQ10	E18	pNRT2.1:luc_seedling19	19.27
-NRT2.1	E19	pNRT2.1:luc_seedling19	24.46
-NRT2.1	E20	pNRT2.1:luc_seedling19	24.44
-NRT2.1	E21	pNRT2.1:luc_seedling19	24.31
-LUC	E22	pNRT2.1:luc_seedling19	30.18
-LUC	E23	pNRT2.1:luc_seedling19	30.44
-LUC	E24	pNRT2.1:luc_seedling19	30.06
-ACT2	F1	pNRT2.1:luc_seedling11	25.67
-ACT2	F2	pNRT2.1:luc_seedling11	25.66
-ACT2	F3	pNRT2.1:luc_seedling11	25.59
-UBQ10	F4	pNRT2.1:luc_seedling11	19.69
-UBQ10	F5	pNRT2.1:luc_seedling11	19.68
-UBQ10	F6	pNRT2.1:luc_seedling11	19.7
-NRT2.1	F7	pNRT2.1:luc_seedling11	21.81
-NRT2.1	F8	pNRT2.1:luc_seedling11	21.77
-NRT2.1	F9	pNRT2.1:luc_seedling11	21.79
-LUC	F10	pNRT2.1:luc_seedling11	28.33
-LUC	F11	pNRT2.1:luc_seedling11	28.59
-LUC	F12	pNRT2.1:luc_seedling11	28.25
-ACT2	G1	pNRT2.1:luc_seedling4	25.7
-ACT2	G2	pNRT2.1:luc_seedling4	25.6
-ACT2	G3	pNRT2.1:luc_seedling4	25.6
-UBQ10	G4	pNRT2.1:luc_seedling4	18.95
-UBQ10	G5	pNRT2.1:luc_seedling4	18.95
-UBQ10	G6	pNRT2.1:luc_seedling4	18.96
-NRT2.1	G7	pNRT2.1:luc_seedling4	21.9
-NRT2.1	G8	pNRT2.1:luc_seedling4	21.85
-NRT2.1	G9	pNRT2.1:luc_seedling4	21.88
-LUC	G10	pNRT2.1:luc_seedling4	28.14
-LUC	G11	pNRT2.1:luc_seedling4	28.24
-LUC	G12	pNRT2.1:luc_seedling4	28.23
-ACT2	G13	pNRT2.1:luc_seedling20	28.73
-ACT2	G14	pNRT2.1:luc_seedling20	28.69
-ACT2	G15	pNRT2.1:luc_seedling20	28.77
-UBQ10	G16	pNRT2.1:luc_seedling20	19.73
-UBQ10	G17	pNRT2.1:luc_seedling20	19.75
-UBQ10	G18	pNRT2.1:luc_seedling20	19.72
-NRT2.1	G19	pNRT2.1:luc_seedling20	23.78
-NRT2.1	G20	pNRT2.1:luc_seedling20	23.74
-NRT2.1	G21	pNRT2.1:luc_seedling20	23.78
-LUC	G22	pNRT2.1:luc_seedling20	29.95
-LUC	G23	pNRT2.1:luc_seedling20	29.79
-LUC	G24	pNRT2.1:luc_seedling20	29.79
-ACT2	H1	pNRT2.1:luc_seedling12	26.71
-ACT2	H2	pNRT2.1:luc_seedling12	26.72
-ACT2	H3	pNRT2.1:luc_seedling12	26.68
-UBQ10	H4	pNRT2.1:luc_seedling12	19.29
-UBQ10	H5	pNRT2.1:luc_seedling12	19.29
-UBQ10	H6	pNRT2.1:luc_seedling12	19.31
-NRT2.1	H7	pNRT2.1:luc_seedling12	21.95
-NRT2.1	H8	pNRT2.1:luc_seedling12	21.92
-NRT2.1	H9	pNRT2.1:luc_seedling12	21.95
-LUC	H10	pNRT2.1:luc_seedling12	28.62
-LUC	H11	pNRT2.1:luc_seedling12	28.7
-LUC	H12	pNRT2.1:luc_seedling12	28.67
-ACT2	I1	pNRT2.1:luc_seedling5	27.76
-ACT2	I2	pNRT2.1:luc_seedling5	27.85
-ACT2	I3	pNRT2.1:luc_seedling5	27.98
-UBQ10	I4	pNRT2.1:luc_seedling5	18.99
-UBQ10	I5	pNRT2.1:luc_seedling5	19
-UBQ10	I6	pNRT2.1:luc_seedling5	19.01
-NRT2.1	I7	pNRT2.1:luc_seedling5	23.06
-NRT2.1	I8	pNRT2.1:luc_seedling5	23.05
-NRT2.1	I9	pNRT2.1:luc_seedling5	23.07
-LUC	I10	pNRT2.1:luc_seedling5	29.43
-LUC	I11	pNRT2.1:luc_seedling5	29.12
-LUC	I12	pNRT2.1:luc_seedling5	29.34
-ACT2	I13	pNRT2.1:luc_seedling21	29.16
-ACT2	I14	pNRT2.1:luc_seedling21	29.57
-ACT2	I15	pNRT2.1:luc_seedling21	29.45
-UBQ10	I16	pNRT2.1:luc_seedling21	19.64
-UBQ10	I17	pNRT2.1:luc_seedling21	19.66
-UBQ10	I18	pNRT2.1:luc_seedling21	19.63
-NRT2.1	I19	pNRT2.1:luc_seedling21	24.33
-NRT2.1	I20	pNRT2.1:luc_seedling21	24.25
-NRT2.1	I21	pNRT2.1:luc_seedling21	24.22
-LUC	I22	pNRT2.1:luc_seedling21	30.33
-LUC	I23	pNRT2.1:luc_seedling21	30.11
-LUC	I24	pNRT2.1:luc_seedling21	30.17
-ACT2	J1	pNRT2.1:luc_seedling13	27.9
-ACT2	J2	pNRT2.1:luc_seedling13	27.94
-ACT2	J3	pNRT2.1:luc_seedling13	27.87
-UBQ10	J4	pNRT2.1:luc_seedling13	20.43
-UBQ10	J5	pNRT2.1:luc_seedling13	20.43
-UBQ10	J6	pNRT2.1:luc_seedling13	20.44
-NRT2.1	J7	pNRT2.1:luc_seedling13	23.87
-NRT2.1	J8	pNRT2.1:luc_seedling13	23.95
-NRT2.1	J9	pNRT2.1:luc_seedling13	23.93
-LUC	J10	pNRT2.1:luc_seedling13	30
-LUC	J11	pNRT2.1:luc_seedling13	30.25
-LUC	J12	pNRT2.1:luc_seedling13	29.94
-ACT2	K1	pNRT2.1:luc_seedling6	26.49
-ACT2	K2	pNRT2.1:luc_seedling6	26.53
-ACT2	K3	pNRT2.1:luc_seedling6	26.58
-UBQ10	K4	pNRT2.1:luc_seedling6	18.82
-UBQ10	K5	pNRT2.1:luc_seedling6	18.83
-UBQ10	K6	pNRT2.1:luc_seedling6	18.84
-NRT2.1	K7	pNRT2.1:luc_seedling6	22.77
-NRT2.1	K8	pNRT2.1:luc_seedling6	22.8
-NRT2.1	K9	pNRT2.1:luc_seedling6	22.78
-LUC	K10	pNRT2.1:luc_seedling6	29.24
-LUC	K11	pNRT2.1:luc_seedling6	29.06
-LUC	K12	pNRT2.1:luc_seedling6	29.69
-ACT2	K13	pNRT2.1:luc_seedling22	28.1
-ACT2	K14	pNRT2.1:luc_seedling22	28.2
-ACT2	K15	pNRT2.1:luc_seedling22	28.16
-UBQ10	K16	pNRT2.1:luc_seedling22	19.99
-UBQ10	K17	pNRT2.1:luc_seedling22	19.98
-UBQ10	K18	pNRT2.1:luc_seedling22	19.97
-NRT2.1	K19	pNRT2.1:luc_seedling22	23.84
-NRT2.1	K20	pNRT2.1:luc_seedling22	23.78
-NRT2.1	K21	pNRT2.1:luc_seedling22	23.79
-LUC	K22	pNRT2.1:luc_seedling22	30.16
-LUC	K23	pNRT2.1:luc_seedling22	30.08
-LUC	K24	pNRT2.1:luc_seedling22	30.06
-ACT2	L1	pNRT2.1:luc_seedling14	26.83
-ACT2	L2	pNRT2.1:luc_seedling14	26.6
-ACT2	L3	pNRT2.1:luc_seedling14	26.86
-UBQ10	L4	pNRT2.1:luc_seedling14	19.67
-UBQ10	L5	pNRT2.1:luc_seedling14	19.68
-UBQ10	L6	pNRT2.1:luc_seedling14	19.71
-NRT2.1	L7	pNRT2.1:luc_seedling14	22.17
-NRT2.1	L8	pNRT2.1:luc_seedling14	22.14
-NRT2.1	L9	pNRT2.1:luc_seedling14	22.16
-LUC	L10	pNRT2.1:luc_seedling14	28.7
-LUC	L11	pNRT2.1:luc_seedling14	28.53
-LUC	L12	pNRT2.1:luc_seedling14	28.75
-ACT2	M1	pNRT2.1:luc_seedling7	27.42
-ACT2	M2	pNRT2.1:luc_seedling7	27.55
-ACT2	M3	pNRT2.1:luc_seedling7	27.51
-UBQ10	M4	pNRT2.1:luc_seedling7	19.33
-UBQ10	M5	pNRT2.1:luc_seedling7	19.43
-UBQ10	M6	pNRT2.1:luc_seedling7	19.44
-NRT2.1	M7	pNRT2.1:luc_seedling7	22.56
-NRT2.1	M8	pNRT2.1:luc_seedling7	22.58
-NRT2.1	M9	pNRT2.1:luc_seedling7	22.58
-LUC	M10	pNRT2.1:luc_seedling7	29.22
-LUC	M11	pNRT2.1:luc_seedling7	29.28
-LUC	M12	pNRT2.1:luc_seedling7	29.44
-ACT2	M13	pNRT2.1:luc_seedling23	26.86
-ACT2	M14	pNRT2.1:luc_seedling23	26.81
-ACT2	M15	pNRT2.1:luc_seedling23	27
-UBQ10	M16	pNRT2.1:luc_seedling23	19.31
-UBQ10	M17	pNRT2.1:luc_seedling23	19.28
-UBQ10	M18	pNRT2.1:luc_seedling23	19.29
-NRT2.1	M19	pNRT2.1:luc_seedling23	22.85
-NRT2.1	M20	pNRT2.1:luc_seedling23	22.77
-NRT2.1	M21	pNRT2.1:luc_seedling23	22.8
-LUC	M22	pNRT2.1:luc_seedling23	28.89
-LUC	M23	pNRT2.1:luc_seedling23	29.03
-LUC	M24	pNRT2.1:luc_seedling23	28.88
-ACT2	N1	pNRT2.1:luc_seedling15	26.69
-ACT2	N2	pNRT2.1:luc_seedling15	26.77
-ACT2	N3	pNRT2.1:luc_seedling15	26.84
-UBQ10	N4	pNRT2.1:luc_seedling15	19.47
-UBQ10	N5	pNRT2.1:luc_seedling15	19.46
-UBQ10	N6	pNRT2.1:luc_seedling15	19.5
-NRT2.1	N7	pNRT2.1:luc_seedling15	22.09
-NRT2.1	N8	pNRT2.1:luc_seedling15	22.09
-NRT2.1	N9	pNRT2.1:luc_seedling15	22.13
-LUC	N10	pNRT2.1:luc_seedling15	28.55
-LUC	N11	pNRT2.1:luc_seedling15	28.5
-LUC	N12	pNRT2.1:luc_seedling15	28.86
-ACT2	O1	pNRT2.1:luc_seedling8	26.59
-ACT2	O2	pNRT2.1:luc_seedling8	26.58
-ACT2	O3	pNRT2.1:luc_seedling8	26.67
-UBQ10	O4	pNRT2.1:luc_seedling8	19.3
-UBQ10	O5	pNRT2.1:luc_seedling8	19.31
-UBQ10	O6	pNRT2.1:luc_seedling8	19.34
-NRT2.1	O7	pNRT2.1:luc_seedling8	22.11
-NRT2.1	O8	pNRT2.1:luc_seedling8	22.1
-NRT2.1	O9	pNRT2.1:luc_seedling8	22.11
-LUC	O10	pNRT2.1:luc_seedling8	28.51
-LUC	O11	pNRT2.1:luc_seedling8	28.65
-LUC	O12	pNRT2.1:luc_seedling8	28.57
-ACT2	O13	pNRT2.1:luc_seedling24	25.91
-ACT2	O14	pNRT2.1:luc_seedling24	25.95
-ACT2	O15	pNRT2.1:luc_seedling24	25.84
-UBQ10	O16	pNRT2.1:luc_seedling24	19.03
-UBQ10	O17	pNRT2.1:luc_seedling24	19.09
-UBQ10	O18	pNRT2.1:luc_seedling24	19.05
-NRT2.1	O19	pNRT2.1:luc_seedling24	21.84
-NRT2.1	O20	pNRT2.1:luc_seedling24	21.82
-NRT2.1	O21	pNRT2.1:luc_seedling24	21.86
-LUC	O22	pNRT2.1:luc_seedling24	28.44
-LUC	O23	pNRT2.1:luc_seedling24	28.31
-LUC	O24	pNRT2.1:luc_seedling24	28.14
-ACT2	P1	pNRT2.1:luc_seedling16	27.32
-ACT2	P2	pNRT2.1:luc_seedling16	27.21
-ACT2	P3	pNRT2.1:luc_seedling16	27.25
-UBQ10	P4	pNRT2.1:luc_seedling16	18.93
-UBQ10	P5	pNRT2.1:luc_seedling16	18.93
-UBQ10	P6	pNRT2.1:luc_seedling16	18.96
-NRT2.1	P7	pNRT2.1:luc_seedling16	22.61
-NRT2.1	P8	pNRT2.1:luc_seedling16	22.6
-NRT2.1	P9	pNRT2.1:luc_seedling16	22.58
-LUC	P10	pNRT2.1:luc_seedling16	28.8
-LUC	P11	pNRT2.1:luc_seedling16	28.69
-LUC	P12	pNRT2.1:luc_seedling16	28.82
+Primer	Name	Cp
+ACT2	pNRT2.1:luc_seedling1	28.74
+ACT2	pNRT2.1:luc_seedling1	28.14
+ACT2	pNRT2.1:luc_seedling1	28.28
+UBQ10	pNRT2.1:luc_seedling1	20.58
+UBQ10	pNRT2.1:luc_seedling1	20.6
+UBQ10	pNRT2.1:luc_seedling1	20.64
+NRT2.1	pNRT2.1:luc_seedling1	24.19
+NRT2.1	pNRT2.1:luc_seedling1	24.31
+NRT2.1	pNRT2.1:luc_seedling1	24.23
+LUC	pNRT2.1:luc_seedling1	30.21
+LUC	pNRT2.1:luc_seedling1	29.59
+LUC	pNRT2.1:luc_seedling1	29.89
+ACT2	pNRT2.1:luc_seedling17	25.65
+ACT2	pNRT2.1:luc_seedling17	25.67
+ACT2	pNRT2.1:luc_seedling17	25.72
+UBQ10	pNRT2.1:luc_seedling17	19.16
+UBQ10	pNRT2.1:luc_seedling17	19.17
+UBQ10	pNRT2.1:luc_seedling17	19.16
+NRT2.1	pNRT2.1:luc_seedling17	22.05
+NRT2.1	pNRT2.1:luc_seedling17	22.04
+NRT2.1	pNRT2.1:luc_seedling17	22
+LUC	pNRT2.1:luc_seedling17	28.28
+LUC	pNRT2.1:luc_seedling17	28.49
+LUC	pNRT2.1:luc_seedling17	28.35
+ACT2	pNRT2.1:luc_seedling9	25.75
+ACT2	pNRT2.1:luc_seedling9	25.78
+ACT2	pNRT2.1:luc_seedling9	25.82
+UBQ10	pNRT2.1:luc_seedling9	19.06
+UBQ10	pNRT2.1:luc_seedling9	19.05
+UBQ10	pNRT2.1:luc_seedling9	19.05
+NRT2.1	pNRT2.1:luc_seedling9	21.81
+NRT2.1	pNRT2.1:luc_seedling9	21.77
+NRT2.1	pNRT2.1:luc_seedling9	21.8
+LUC	pNRT2.1:luc_seedling9	28.59
+LUC	pNRT2.1:luc_seedling9	28.28
+LUC	pNRT2.1:luc_seedling9	28.52
+ACT2	pNRT2.1:luc_seedling2	24.62
+ACT2	pNRT2.1:luc_seedling2	24.58
+ACT2	pNRT2.1:luc_seedling2	24.53
+UBQ10	pNRT2.1:luc_seedling2	18.77
+UBQ10	pNRT2.1:luc_seedling2	18.75
+UBQ10	pNRT2.1:luc_seedling2	18.79
+NRT2.1	pNRT2.1:luc_seedling2	21.9
+NRT2.1	pNRT2.1:luc_seedling2	21.82
+NRT2.1	pNRT2.1:luc_seedling2	21.86
+LUC	pNRT2.1:luc_seedling2	27.82
+LUC	pNRT2.1:luc_seedling2	27.93
+LUC	pNRT2.1:luc_seedling2	27.99
+ACT2	pNRT2.1:luc_seedling18	26.13
+ACT2	pNRT2.1:luc_seedling18	26.1
+ACT2	pNRT2.1:luc_seedling18	26.15
+UBQ10	pNRT2.1:luc_seedling18	19.54
+UBQ10	pNRT2.1:luc_seedling18	19.57
+UBQ10	pNRT2.1:luc_seedling18	19.58
+NRT2.1	pNRT2.1:luc_seedling18	22.09
+NRT2.1	pNRT2.1:luc_seedling18	22.02
+NRT2.1	pNRT2.1:luc_seedling18	22.06
+LUC	pNRT2.1:luc_seedling18	28.48
+LUC	pNRT2.1:luc_seedling18	28.47
+LUC	pNRT2.1:luc_seedling18	28.25
+ACT2	pNRT2.1:luc_seedling10	25.17
+ACT2	pNRT2.1:luc_seedling10	25.28
+ACT2	pNRT2.1:luc_seedling10	25.33
+UBQ10	pNRT2.1:luc_seedling10	18.87
+UBQ10	pNRT2.1:luc_seedling10	18.89
+UBQ10	pNRT2.1:luc_seedling10	18.88
+NRT2.1	pNRT2.1:luc_seedling10	21.2
+NRT2.1	pNRT2.1:luc_seedling10	21.17
+NRT2.1	pNRT2.1:luc_seedling10	21.21
+LUC	pNRT2.1:luc_seedling10	27.78
+LUC	pNRT2.1:luc_seedling10	27.78
+LUC	pNRT2.1:luc_seedling10	27.74
+ACT2	pNRT2.1:luc_seedling3	24.72
+ACT2	pNRT2.1:luc_seedling3	24.62
+ACT2	pNRT2.1:luc_seedling3	24.7
+UBQ10	pNRT2.1:luc_seedling3	18.79
+UBQ10	pNRT2.1:luc_seedling3	18.77
+UBQ10	pNRT2.1:luc_seedling3	18.79
+NRT2.1	pNRT2.1:luc_seedling3	21.15
+NRT2.1	pNRT2.1:luc_seedling3	21.11
+NRT2.1	pNRT2.1:luc_seedling3	21.11
+LUC	pNRT2.1:luc_seedling3	27.55
+LUC	pNRT2.1:luc_seedling3	27.32
+LUC	pNRT2.1:luc_seedling3	27.49
+ACT2	pNRT2.1:luc_seedling19	27.75
+ACT2	pNRT2.1:luc_seedling19	27.98
+ACT2	pNRT2.1:luc_seedling19	27.77
+UBQ10	pNRT2.1:luc_seedling19	19.24
+UBQ10	pNRT2.1:luc_seedling19	19.24
+UBQ10	pNRT2.1:luc_seedling19	19.27
+NRT2.1	pNRT2.1:luc_seedling19	24.46
+NRT2.1	pNRT2.1:luc_seedling19	24.44
+NRT2.1	pNRT2.1:luc_seedling19	24.31
+LUC	pNRT2.1:luc_seedling19	30.18
+LUC	pNRT2.1:luc_seedling19	30.44
+LUC	pNRT2.1:luc_seedling19	30.06
+ACT2	pNRT2.1:luc_seedling11	25.67
+ACT2	pNRT2.1:luc_seedling11	25.66
+ACT2	pNRT2.1:luc_seedling11	25.59
+UBQ10	pNRT2.1:luc_seedling11	19.69
+UBQ10	pNRT2.1:luc_seedling11	19.68
+UBQ10	pNRT2.1:luc_seedling11	19.7
+NRT2.1	pNRT2.1:luc_seedling11	21.81
+NRT2.1	pNRT2.1:luc_seedling11	21.77
+NRT2.1	pNRT2.1:luc_seedling11	21.79
+LUC	pNRT2.1:luc_seedling11	28.33
+LUC	pNRT2.1:luc_seedling11	28.59
+LUC	pNRT2.1:luc_seedling11	28.25
+ACT2	pNRT2.1:luc_seedling4	25.7
+ACT2	pNRT2.1:luc_seedling4	25.6
+ACT2	pNRT2.1:luc_seedling4	25.6
+UBQ10	pNRT2.1:luc_seedling4	18.95
+UBQ10	pNRT2.1:luc_seedling4	18.95
+UBQ10	pNRT2.1:luc_seedling4	18.96
+NRT2.1	pNRT2.1:luc_seedling4	21.9
+NRT2.1	pNRT2.1:luc_seedling4	21.85
+NRT2.1	pNRT2.1:luc_seedling4	21.88
+LUC	pNRT2.1:luc_seedling4	28.14
+LUC	pNRT2.1:luc_seedling4	28.24
+LUC	pNRT2.1:luc_seedling4	28.23
+ACT2	pNRT2.1:luc_seedling20	28.73
+ACT2	pNRT2.1:luc_seedling20	28.69
+ACT2	pNRT2.1:luc_seedling20	28.77
+UBQ10	pNRT2.1:luc_seedling20	19.73
+UBQ10	pNRT2.1:luc_seedling20	19.75
+UBQ10	pNRT2.1:luc_seedling20	19.72
+NRT2.1	pNRT2.1:luc_seedling20	23.78
+NRT2.1	pNRT2.1:luc_seedling20	23.74
+NRT2.1	pNRT2.1:luc_seedling20	23.78
+LUC	pNRT2.1:luc_seedling20	29.95
+LUC	pNRT2.1:luc_seedling20	29.79
+LUC	pNRT2.1:luc_seedling20	29.79
+ACT2	pNRT2.1:luc_seedling12	26.71
+ACT2	pNRT2.1:luc_seedling12	26.72
+ACT2	pNRT2.1:luc_seedling12	26.68
+UBQ10	pNRT2.1:luc_seedling12	19.29
+UBQ10	pNRT2.1:luc_seedling12	19.29
+UBQ10	pNRT2.1:luc_seedling12	19.31
+NRT2.1	pNRT2.1:luc_seedling12	21.95
+NRT2.1	pNRT2.1:luc_seedling12	21.92
+NRT2.1	pNRT2.1:luc_seedling12	21.95
+LUC	pNRT2.1:luc_seedling12	28.62
+LUC	pNRT2.1:luc_seedling12	28.7
+LUC	pNRT2.1:luc_seedling12	28.67
+ACT2	pNRT2.1:luc_seedling5	27.76
+ACT2	pNRT2.1:luc_seedling5	27.85
+ACT2	pNRT2.1:luc_seedling5	27.98
+UBQ10	pNRT2.1:luc_seedling5	18.99
+UBQ10	pNRT2.1:luc_seedling5	19
+UBQ10	pNRT2.1:luc_seedling5	19.01
+NRT2.1	pNRT2.1:luc_seedling5	23.06
+NRT2.1	pNRT2.1:luc_seedling5	23.05
+NRT2.1	pNRT2.1:luc_seedling5	23.07
+LUC	pNRT2.1:luc_seedling5	29.43
+LUC	pNRT2.1:luc_seedling5	29.12
+LUC	pNRT2.1:luc_seedling5	29.34
+ACT2	pNRT2.1:luc_seedling21	29.16
+ACT2	pNRT2.1:luc_seedling21	29.57
+ACT2	pNRT2.1:luc_seedling21	29.45
+UBQ10	pNRT2.1:luc_seedling21	19.64
+UBQ10	pNRT2.1:luc_seedling21	19.66
+UBQ10	pNRT2.1:luc_seedling21	19.63
+NRT2.1	pNRT2.1:luc_seedling21	24.33
+NRT2.1	pNRT2.1:luc_seedling21	24.25
+NRT2.1	pNRT2.1:luc_seedling21	24.22
+LUC	pNRT2.1:luc_seedling21	30.33
+LUC	pNRT2.1:luc_seedling21	30.11
+LUC	pNRT2.1:luc_seedling21	30.17
+ACT2	pNRT2.1:luc_seedling13	27.9
+ACT2	pNRT2.1:luc_seedling13	27.94
+ACT2	pNRT2.1:luc_seedling13	27.87
+UBQ10	pNRT2.1:luc_seedling13	20.43
+UBQ10	pNRT2.1:luc_seedling13	20.43
+UBQ10	pNRT2.1:luc_seedling13	20.44
+NRT2.1	pNRT2.1:luc_seedling13	23.87
+NRT2.1	pNRT2.1:luc_seedling13	23.95
+NRT2.1	pNRT2.1:luc_seedling13	23.93
+LUC	pNRT2.1:luc_seedling13	30
+LUC	pNRT2.1:luc_seedling13	30.25
+LUC	pNRT2.1:luc_seedling13	29.94
+ACT2	pNRT2.1:luc_seedling6	26.49
+ACT2	pNRT2.1:luc_seedling6	26.53
+ACT2	pNRT2.1:luc_seedling6	26.58
+UBQ10	pNRT2.1:luc_seedling6	18.82
+UBQ10	pNRT2.1:luc_seedling6	18.83
+UBQ10	pNRT2.1:luc_seedling6	18.84
+NRT2.1	pNRT2.1:luc_seedling6	22.77
+NRT2.1	pNRT2.1:luc_seedling6	22.8
+NRT2.1	pNRT2.1:luc_seedling6	22.78
+LUC	pNRT2.1:luc_seedling6	29.24
+LUC	pNRT2.1:luc_seedling6	29.06
+LUC	pNRT2.1:luc_seedling6	29.69
+ACT2	pNRT2.1:luc_seedling22	28.1
+ACT2	pNRT2.1:luc_seedling22	28.2
+ACT2	pNRT2.1:luc_seedling22	28.16
+UBQ10	pNRT2.1:luc_seedling22	19.99
+UBQ10	pNRT2.1:luc_seedling22	19.98
+UBQ10	pNRT2.1:luc_seedling22	19.97
+NRT2.1	pNRT2.1:luc_seedling22	23.84
+NRT2.1	pNRT2.1:luc_seedling22	23.78
+NRT2.1	pNRT2.1:luc_seedling22	23.79
+LUC	pNRT2.1:luc_seedling22	30.16
+LUC	pNRT2.1:luc_seedling22	30.08
+LUC	pNRT2.1:luc_seedling22	30.06
+ACT2	pNRT2.1:luc_seedling14	26.83
+ACT2	pNRT2.1:luc_seedling14	26.6
+ACT2	pNRT2.1:luc_seedling14	26.86
+UBQ10	pNRT2.1:luc_seedling14	19.67
+UBQ10	pNRT2.1:luc_seedling14	19.68
+UBQ10	pNRT2.1:luc_seedling14	19.71
+NRT2.1	pNRT2.1:luc_seedling14	22.17
+NRT2.1	pNRT2.1:luc_seedling14	22.14
+NRT2.1	pNRT2.1:luc_seedling14	22.16
+LUC	pNRT2.1:luc_seedling14	28.7
+LUC	pNRT2.1:luc_seedling14	28.53
+LUC	pNRT2.1:luc_seedling14	28.75
+ACT2	pNRT2.1:luc_seedling7	27.42
+ACT2	pNRT2.1:luc_seedling7	27.55
+ACT2	pNRT2.1:luc_seedling7	27.51
+UBQ10	pNRT2.1:luc_seedling7	19.33
+UBQ10	pNRT2.1:luc_seedling7	19.43
+UBQ10	pNRT2.1:luc_seedling7	19.44
+NRT2.1	pNRT2.1:luc_seedling7	22.56
+NRT2.1	pNRT2.1:luc_seedling7	22.58
+NRT2.1	pNRT2.1:luc_seedling7	22.58
+LUC	pNRT2.1:luc_seedling7	29.22
+LUC	pNRT2.1:luc_seedling7	29.28
+LUC	pNRT2.1:luc_seedling7	29.44
+ACT2	pNRT2.1:luc_seedling23	26.86
+ACT2	pNRT2.1:luc_seedling23	26.81
+ACT2	pNRT2.1:luc_seedling23	27
+UBQ10	pNRT2.1:luc_seedling23	19.31
+UBQ10	pNRT2.1:luc_seedling23	19.28
+UBQ10	pNRT2.1:luc_seedling23	19.29
+NRT2.1	pNRT2.1:luc_seedling23	22.85
+NRT2.1	pNRT2.1:luc_seedling23	22.77
+NRT2.1	pNRT2.1:luc_seedling23	22.8
+LUC	pNRT2.1:luc_seedling23	28.89
+LUC	pNRT2.1:luc_seedling23	29.03
+LUC	pNRT2.1:luc_seedling23	28.88
+ACT2	pNRT2.1:luc_seedling15	26.69
+ACT2	pNRT2.1:luc_seedling15	26.77
+ACT2	pNRT2.1:luc_seedling15	26.84
+UBQ10	pNRT2.1:luc_seedling15	19.47
+UBQ10	pNRT2.1:luc_seedling15	19.46
+UBQ10	pNRT2.1:luc_seedling15	19.5
+NRT2.1	pNRT2.1:luc_seedling15	22.09
+NRT2.1	pNRT2.1:luc_seedling15	22.09
+NRT2.1	pNRT2.1:luc_seedling15	22.13
+LUC	pNRT2.1:luc_seedling15	28.55
+LUC	pNRT2.1:luc_seedling15	28.5
+LUC	pNRT2.1:luc_seedling15	28.86
+ACT2	pNRT2.1:luc_seedling8	26.59
+ACT2	pNRT2.1:luc_seedling8	26.58
+ACT2	pNRT2.1:luc_seedling8	26.67
+UBQ10	pNRT2.1:luc_seedling8	19.3
+UBQ10	pNRT2.1:luc_seedling8	19.31
+UBQ10	pNRT2.1:luc_seedling8	19.34
+NRT2.1	pNRT2.1:luc_seedling8	22.11
+NRT2.1	pNRT2.1:luc_seedling8	22.1
+NRT2.1	pNRT2.1:luc_seedling8	22.11
+LUC	pNRT2.1:luc_seedling8	28.51
+LUC	pNRT2.1:luc_seedling8	28.65
+LUC	pNRT2.1:luc_seedling8	28.57
+ACT2	pNRT2.1:luc_seedling24	25.91
+ACT2	pNRT2.1:luc_seedling24	25.95
+ACT2	pNRT2.1:luc_seedling24	25.84
+UBQ10	pNRT2.1:luc_seedling24	19.03
+UBQ10	pNRT2.1:luc_seedling24	19.09
+UBQ10	pNRT2.1:luc_seedling24	19.05
+NRT2.1	pNRT2.1:luc_seedling24	21.84
+NRT2.1	pNRT2.1:luc_seedling24	21.82
+NRT2.1	pNRT2.1:luc_seedling24	21.86
+LUC	pNRT2.1:luc_seedling24	28.44
+LUC	pNRT2.1:luc_seedling24	28.31
+LUC	pNRT2.1:luc_seedling24	28.14
+ACT2	pNRT2.1:luc_seedling16	27.32
+ACT2	pNRT2.1:luc_seedling16	27.21
+ACT2	pNRT2.1:luc_seedling16	27.25
+UBQ10	pNRT2.1:luc_seedling16	18.93
+UBQ10	pNRT2.1:luc_seedling16	18.93
+UBQ10	pNRT2.1:luc_seedling16	18.96
+NRT2.1	pNRT2.1:luc_seedling16	22.61
+NRT2.1	pNRT2.1:luc_seedling16	22.6
+NRT2.1	pNRT2.1:luc_seedling16	22.58
+LUC	pNRT2.1:luc_seedling16	28.8
+LUC	pNRT2.1:luc_seedling16	28.69
+LUC	pNRT2.1:luc_seedling16	28.82
