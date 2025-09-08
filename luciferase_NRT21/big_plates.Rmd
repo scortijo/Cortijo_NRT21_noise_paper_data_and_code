@@ -64,15 +64,15 @@ select(big_plate, KNO3, PLATE, DAY, seedling, RawIntDen_normBackg_normLen ) %>%
 pivot_wider(names_from = "DAY", values_from = "RawIntDen_normBackg_normLen") %>% 
   ggplot(aes(x=T10, y=T21)) +
   geom_point()+
-  xlab(expression(paste(italic("NRT2.1:LUC")," luciferase signal in 10 days old seedlings"))) +
-  ylab(expression(paste(italic("NRT2.1:LUC")," luciferase signal in 21 days old seedlings"))) +
+  xlab(expression(atop(paste(italic("NRT2.1:LUC")," luciferase signal"), "in 10 days old seedlings"))) +
+  ylab(expression(atop(paste(italic("NRT2.1:LUC")," luciferase signal"), "in 21 days old seedlings"))) +
   stat_cor(method="spearman", size=5) +
   theme(legend.text=element_text(size=16),legend.title = element_text(size=16, face="bold"), 
-        axis.text=element_text(size=16), axis.title=element_text(size=16),
+        axis.text=element_text(size=16), axis.title=element_text(size=18),
         plot.title = element_text(size=20,face="bold"),
         panel.background = element_rect(fill = "white", colour = "grey50"))
 
-ggsave("Correlation_big_plates_10dVS21d_PR.jpg", height = 6, width=6.5)
+ggsave("Correlation_big_plates_10dVS21d_PR.jpg", height = 5, width=5.5)
 
 ```
 

@@ -465,12 +465,12 @@ ggplot(NRT2.1_long, aes(x=seedling, y=Zscore_normalised_expression)) +
   ylab("Zscore normalised expression") +
   ggtitle("Expression in cluster 1") +
   theme(legend.text=element_text(size=16),legend.title = element_text(size=16, face="bold"), 
-        axis.text=element_text(size=16), axis.title=element_text(size=16),
-        plot.title = element_text(size=18),
+        axis.text=element_text(size=16), axis.title=element_text(size=18),
+        plot.title = element_text(size=20),
         panel.background = element_rect(fill = "white", colour = "grey50"),axis.text.x=element_blank(), 
         legend.position = "none")
 
-ggsave("Expression_cluster1_NRT2.1.jpg", width=5, height = 5)
+ggsave("Expression_cluster1_NRT2.1.jpg", width=4.5, height = 4.5)
 
 ```
 
@@ -650,9 +650,9 @@ Corr_NRT2.1_genes_clusters <- inner_join(Rcor_NRT2.1_genes_clusters, Pcor_NRT2.1
   filter(gene!="AT1G08090")
 
 
-
-mutate(Corr_NRT2.1_genes_clusters, cluster_6_pearson=paste("cluster", cluster_6_pearson)) %>% 
-  mutate(cluster_6_pearson=factor(cluster_6_pearson, levels=c("cluster 1", "cluster 2", "cluster 3", 
+filter(Corr_NRT2.1_genes_clusters, cluster_6_pearson!="1") %>% 
+mutate(cluster_6_pearson=paste("cluster", cluster_6_pearson)) %>% 
+  mutate(cluster_6_pearson=factor(cluster_6_pearson, levels=c("cluster 2", "cluster 3", 
                                   "cluster 4", "cluster 5", "cluster 6")),
        logCorr=-log(Pcor, 10)) %>% 
 ggplot( aes(x=Rcor, y=logCorr)) +
@@ -669,7 +669,27 @@ ggplot( aes(x=Rcor, y=logCorr)) +
         plot.title = element_text(size=16),strip.text = element_text( face="bold", size=15),
         panel.background = element_rect(fill = "white", colour = "grey50"))
 
-ggsave(file="volcano_plot_cor_NRT2.1_clusters.jpg", width=10, height=5)
+ggsave(file="volcano_plot_cor_NRT2.1_clusters_except1.jpg", width=10, height=5)
+
+
+
+filter(Corr_NRT2.1_genes_clusters, cluster_6_pearson=="1") %>% 
+mutate(cluster_6_pearson=paste("cluster", cluster_6_pearson), logCorr=-log(Pcor, 10)) %>% 
+ggplot( aes(x=Rcor, y=logCorr)) +
+  geom_point() +
+  ylab("correlation significance (-log10(p-value)") +
+  xlab("Spearman coefficient of correlation (R)") +
+  geom_vline(xintercept = -0.5, col="lightgrey") +
+  geom_vline(xintercept = 0.5, col="lightgrey") +
+  geom_hline(yintercept = 1.30103, col="lightgrey") +
+  ggtitle("Correlation in cluster 1") +
+  scale_color_brewer(palette="Set2", name="P-value",labels=c("less0.05"="Lower than 0.05", "more0.05"="Higher than 0.05"))+
+   theme(legend.text=element_text(size=15),legend.title = element_text(size=15, face="bold"), 
+        axis.text=element_text(size=14), axis.title=element_text(size=18),
+        plot.title = element_text(size=20),strip.text = element_text( face="bold", size=15),
+        panel.background = element_rect(fill = "white", colour = "grey50"))
+
+ggsave(file="volcano_plot_cor_NRT2.1_cluster1.jpg", width=5, height=5)
 
 ```
 
@@ -735,13 +755,13 @@ ggplot(CPM_SC18_all_WT_Zscore_long_NRT21, aes(x=seedling, y=Zscore_normalised_ex
   ylab("Zscore normalised expression") +
   ggtitle(expression(paste("Genes regulated by ", italic("NLP7")))) +
   theme(legend.text=element_text(size=16),legend.title = element_text(size=16, face="bold"), 
-        axis.text=element_text(size=16), axis.title=element_text(size=16),
-        plot.title = element_text(size=18),
+        axis.text=element_text(size=16), axis.title=element_text(size=18),
+        plot.title = element_text(size=21),
         panel.background = element_rect(fill = "white", colour = "grey50"),axis.text.x=element_blank(),
         legend.position = "none")
 
 
-ggsave("Expression_nlp7Targets_smooth_NRT2.1.jpg", width=5, height = 5)
+ggsave("Expression_nlp7Targets_smooth_NRT2.1.jpg", width=4, height = 4)
 
 
 
