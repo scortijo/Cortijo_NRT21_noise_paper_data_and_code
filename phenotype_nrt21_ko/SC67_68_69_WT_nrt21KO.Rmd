@@ -98,6 +98,76 @@ ggsave("Primary_root_length_WT_nrt21_combined_replicates.jpg", height = 5.2, wid
 
 ```
 
+
+
+Graph of primary root length with letters (from wilcoxon tests)
+
+```{r}
+
+
+library(multcompView)
+ 
+tri.to.squ<-function(x)
+{
+rn<-row.names(x)
+cn<-colnames(x)
+an<-unique(c(cn,rn))
+myval<-x[!is.na(x)]
+mymat<-matrix(1,nrow=length(an),ncol=length(an),dimnames=list(an,an))
+for(ext in 1:length(cn))
+{
+ for(int in 1:length(rn))
+ {
+ if(is.na(x[row.names(x)==rn[int],colnames(x)==cn[ext]])) next
+ mymat[row.names(mymat)==rn[int],colnames(mymat)==cn[ext]]<-x[row.names(x)==rn[int],colnames(x)==cn[ext]]
+ mymat[row.names(mymat)==cn[ext],colnames(mymat)==rn[int]]<-x[row.names(x)==rn[int],colnames(x)==cn[ext]]
+ }
+  
+}
+return(mymat)
+}
+
+
+
+Data_10mM <- filter(All_reps_WT_nrt21, KNO3 == "10mM") %>% 
+  unite(genotype, rep, col="genotype_rep", remove = FALSE) %>% 
+  mutate(genotype_rep=str_replace(genotype_rep,"_replicate ", "_rep")) %>% 
+  mutate(genotype_rep=factor(genotype_rep, 
+                             levels=c("Col0_WT_rep1", "nrt2.1_KO_rep1", "Col0_WT_rep2","nrt2.1_KO_rep2",
+                                      "Col0_WT_rep3","nrt2.1_KO_rep3"))) 
+ 
+pp10<-pairwise.wilcox.test(Data_10mM$root_length_mm, Data_10mM$genotype_rep, p.adjust.method = "none", paired = FALSE)
+mymat10<-tri.to.squ(pp10$p.value)
+myletters10<-multcompLetters(mymat10,compare="<=",threshold=0.05,Letters=letters)
+ 
+boxplot(Data_10mM$root_length_mm ~ Data_10mM$genotype_rep)
+text(c(1,2,3,4,5,6),0.2+max(Data_10mM$root_length_mm),c(myletters10$Letters[1],myletters10$Letters[2],
+                                                        myletters10$Letters[3],myletters10$Letters[4],
+                                                        myletters10$Letters[5],myletters10$Letters[6]))
+
+
+
+Data_1mM <- filter(All_reps_WT_nrt21, KNO3 == "1mM") %>% 
+  unite(genotype, rep, col="genotype_rep", remove = FALSE) %>% 
+  mutate(genotype_rep=str_replace(genotype_rep,"_replicate ", "_rep")) %>% 
+  mutate(genotype_rep=factor(genotype_rep, 
+                             levels=c("Col0_WT_rep1", "nrt2.1_KO_rep1", "Col0_WT_rep2","nrt2.1_KO_rep2",
+                                      "Col0_WT_rep3","nrt2.1_KO_rep3"))) 
+ 
+pp<-pairwise.wilcox.test(Data_1mM$root_length_mm, Data_1mM$genotype_rep, p.adjust.method = "none", paired = FALSE)
+mymat<-tri.to.squ(pp$p.value)
+myletters<-multcompLetters(mymat,compare="<=",threshold=0.05,Letters=letters)
+ 
+boxplot(Data_1mM$root_length_mm ~ Data_1mM$genotype_rep)
+text(c(1,2,3,4,5,6),0.2+max(Data_1mM$root_length_mm),c(myletters$Letters[1],myletters$Letters[2],myletters$Letters[3],
+                                                 myletters$Letters[4],myletters$Letters[5],myletters$Letters[6]))
+
+
+
+
+```
+
+
 Graph of lateral root density
 
 ```{r}
@@ -158,3 +228,72 @@ ggsave("Lateral_root_density_WT_nrt21_combined_replicates.jpg", height = 5.2, wi
 
 ```
 
+
+
+
+Graph of lateral root density with letters (from wilcoxon tests)
+
+```{r}
+
+
+library(multcompView)
+ 
+tri.to.squ<-function(x)
+{
+rn<-row.names(x)
+cn<-colnames(x)
+an<-unique(c(cn,rn))
+myval<-x[!is.na(x)]
+mymat<-matrix(1,nrow=length(an),ncol=length(an),dimnames=list(an,an))
+for(ext in 1:length(cn))
+{
+ for(int in 1:length(rn))
+ {
+ if(is.na(x[row.names(x)==rn[int],colnames(x)==cn[ext]])) next
+ mymat[row.names(mymat)==rn[int],colnames(mymat)==cn[ext]]<-x[row.names(x)==rn[int],colnames(x)==cn[ext]]
+ mymat[row.names(mymat)==cn[ext],colnames(mymat)==rn[int]]<-x[row.names(x)==rn[int],colnames(x)==cn[ext]]
+ }
+  
+}
+return(mymat)
+}
+
+
+
+Data_10mM <- filter(All_reps_WT_nrt21, KNO3 == "10mM") %>% 
+  unite(genotype, rep, col="genotype_rep", remove = FALSE) %>% 
+  mutate(genotype_rep=str_replace(genotype_rep,"_replicate ", "_rep")) %>% 
+  mutate(genotype_rep=factor(genotype_rep, 
+                             levels=c("Col0_WT_rep1", "nrt2.1_KO_rep1", "Col0_WT_rep2","nrt2.1_KO_rep2",
+                                      "Col0_WT_rep3","nrt2.1_KO_rep3"))) 
+ 
+pp10<-pairwise.wilcox.test(Data_10mM$LRD, Data_10mM$genotype_rep, p.adjust.method = "none", paired = FALSE)
+mymat10<-tri.to.squ(pp10$p.value)
+myletters10<-multcompLetters(mymat10,compare="<=",threshold=0.05,Letters=letters)
+ 
+boxplot(Data_10mM$LRD ~ Data_10mM$genotype_rep)
+text(c(1,2,3,4,5,6),0.002+max(Data_10mM$LRD),c(myletters10$Letters[1],myletters10$Letters[2],
+                                                        myletters10$Letters[3],myletters10$Letters[4],
+                                                        myletters10$Letters[5],myletters10$Letters[6]))
+
+
+
+Data_1mM <- filter(All_reps_WT_nrt21, KNO3 == "1mM") %>% 
+  unite(genotype, rep, col="genotype_rep", remove = FALSE) %>% 
+  mutate(genotype_rep=str_replace(genotype_rep,"_replicate ", "_rep")) %>% 
+  mutate(genotype_rep=factor(genotype_rep, 
+                             levels=c("Col0_WT_rep1", "nrt2.1_KO_rep1", "Col0_WT_rep2","nrt2.1_KO_rep2",
+                                      "Col0_WT_rep3","nrt2.1_KO_rep3"))) 
+ 
+pp<-pairwise.wilcox.test(Data_1mM$LRD, Data_1mM$genotype_rep, p.adjust.method = "none", paired = FALSE)
+mymat<-tri.to.squ(pp$p.value)
+myletters<-multcompLetters(mymat,compare="<=",threshold=0.05,Letters=letters)
+ 
+boxplot(Data_1mM$LRD ~ Data_1mM$genotype_rep)
+text(c(1,2,3,4,5,6),0.002+max(Data_1mM$LRD),c(myletters$Letters[1],myletters$Letters[2],myletters$Letters[3],
+                                                 myletters$Letters[4],myletters$Letters[5],myletters$Letters[6]))
+
+
+
+
+```

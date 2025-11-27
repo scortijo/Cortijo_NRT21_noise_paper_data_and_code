@@ -176,7 +176,9 @@ group_by(All_reps_luc_norm,expt, KNO3) %>%
   pivot_wider(names_from = KNO3, values_from = MeanSignal) %>% 
   rename(Mean_10mM="10mM",Mean_1mM="1mM") %>% 
   mutate(Ratio_1mM_10mM = Mean_1mM/Mean_10mM) %>% 
-  ggplot(aes(x=factor(0),y=Ratio_1mM_10mM))+geom_boxplot() +
+  ggplot(aes(x=factor(0),y=Ratio_1mM_10mM))+
+  geom_boxplot() +
+  geom_jitter(height = 0, width = 0.02) +
   geom_hline(yintercept = 1, linetype="dashed", colour="grey") +
   ylab("Ratio of signal at low/high nitrate concentration") +
   xlab("") +

@@ -56,7 +56,7 @@ group_by(RTqPCR_allPlates,expt, plate, Primer, Name) %>%
   mutate_at(c( "LUC", "NRT2.1"), funs(PercControl=(2^(-(.-MeanControls))*100))) %>% 
   ggplot(aes(x=LUC_PercControl, y=NRT2.1_PercControl)) +
   geom_point(size=2.5) +
-  xlab(expression(paste("Normalised expression for ",italic("LUC"), "measured by RT-qPCR"))) +
+  xlab(expression(paste("Normalised expression for ",italic("LUC"), " measured by RT-qPCR"))) +
   ylab(expression(atop(paste("Normalised expression for ",italic("NRT2.1")), "measured by RT-qPCR"))) +
   stat_cor(size=6, col="gray40") +
   facet_wrap(.~expt, scales = "free") +
